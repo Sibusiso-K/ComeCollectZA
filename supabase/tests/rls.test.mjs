@@ -7,7 +7,7 @@
 //
 // Limits: this is not a Supabase project. Check the migration once against a real project too.
 
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert/strict";
@@ -15,8 +15,13 @@ import { PGlite } from "@electric-sql/pglite";
 import { postgis } from "@electric-sql/pglite-postgis";
 
 const here = dirname(fileURLToPath(import.meta.url));
-// MIGRATION_FILE lets the negative check run the suite against a deliberately broken copy.
-const migration = readFileSync(process.env.MIGRATION_FILE ?? join(here, "..", "migrations", "0001_init.sql"), "utf8");
+// Every migration in order. MIGRATION_FILE replaces the first one, so the negative check can
+// run the suite against a deliberately broken copy.
+const migrationsDir = join(here, "..", "migrations");
+const migrations = readdirSync(migrationsDir)
+  .filter((f) => f.endsWith(".sql"))
+  .sort()
+  .map((f, i) => (i === 0 && process.env.MIGRATION_FILE ? readFileSync(process.env.MIGRATION_FILE, "utf8") : readFileSync(join(migrationsDir, f), "utf8")));
 const seed = readFileSync(join(here, "..", "seed.sql"), "utf8");
 
 // Fixed test identities.
@@ -72,7 +77,9 @@ async function setup() {
     $$;
   `);
 
-  await db.exec(migration);
+  for (const sql of migrations) {
+    await db.exec(sql);
+  }
 
   // Supabase grants table access to these roles by default. RLS decides what each one sees.
   await db.exec(`
@@ -314,7 +321,7 @@ async function runTests() {
   });
   await check("nearest centre query works with PostGIS", async () => {
     const near = await rows(
-      "select name from centres where st_dwithin(location, st_setsrid(st_makepoint(27.9100, -26.2485), 4326)::geography, 5000)",
+      "select name from centres where extensions.st_dwithin(location, extensions.st_setsrid(extensions.st_makepoint(27.9100, -26.2485), 4326)::extensions.geography, 5000)",
     );
     assert.ok(near.some((r) => r.name === "Demo Centre Orlando East"));
   });

@@ -8,7 +8,7 @@ Built by team JBB for the FNB App of the Year Hackathon 2026 (virtual, 23 to 25 
 
 ## Status
 
-Scaffold. The screens run on demo data, the database schema is written but not yet applied to a Supabase project, and the sales API validates requests and returns 501 until storage is connected. See [docs/HANDOVER.md](docs/HANDOVER.md) for the full state.
+Scaffold. The screens run on demo data. The database schema and seed are applied to the `comecollectza` Supabase project, and the role checks pass. The sales API validates requests and returns 501 until storage is connected. See [docs/HANDOVER.md](docs/HANDOVER.md) for the full state.
 
 ## Documentation
 

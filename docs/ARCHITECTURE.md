@@ -185,7 +185,7 @@ Every request carries the Supabase session as `Authorization: Bearer <jwt>`. Ret
 
 ## Known gaps
 
-- The schema is written but not applied to a Supabase project.
+- Demo auth users are not created yet, so role checks have not been run with real sign-ins.
 - The sales route does not store data yet.
 - Authentication and demo accounts are not created.
 - Payouts and SAWPRS registration are mocks.

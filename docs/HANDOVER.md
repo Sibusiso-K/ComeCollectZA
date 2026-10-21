@@ -14,8 +14,8 @@ ComeCollectZA is a reclaimer-side app for South Africa's informal recyclers, bui
 | Sell flow | Works in the browser | Estimate, keypad, code and QR. Does not save a sale |
 | Money moment | Works | Count-up ends on the real amount |
 | Design tokens and components | Done | Light and dark themes |
-| Database schema and policies | Tested locally: 40 checks pass | Run on PostgreSQL 17 with PostGIS (PGlite) with stubbed Supabase auth. Not yet applied to a Supabase project |
-| Seed data | Written | Demo centres and prices. Not yet run |
+| Database schema and policies | Applied to Supabase project `comecollectza` (ref `roiwontybdbhkuitffll`, eu-west-2) | Migrations 0001 and 0002 applied. 40 local checks pass. Role checks pass on the live project |
+| Seed data | Applied | 3 demo centres, 12 prices, 7 materials |
 | Sales API | Validates | Returns 501 until storage is connected |
 | Health route | Done | Does not check the database yet |
 | Authentication | Not started | Demo accounts not created |
@@ -34,13 +34,19 @@ ComeCollectZA is a reclaimer-side app for South Africa's informal recyclers, bui
 4. `cp .env.example .env.local` and fill in the values. Ask the product owner for the Supabase and OpenRouter keys. Never commit them.
 5. `npm run dev` and open http://localhost:3000.
 
-## Connect Supabase
+## Supabase
 
-1. Create a project at supabase.com.
-2. In the SQL editor, run `supabase/migrations/0001_init.sql`.
-3. Run `supabase/seed.sql` once. Re-running it adds duplicate price rows.
-4. Copy the project URL and anon key into `.env.local`. The service role key stays on the server and must never reach the browser.
-5. Create demo auth users, then link them to `profiles`, `reclaimers` and `centres.operator_id`.
+The project `comecollectza` (ref `roiwontybdbhkuitffll`, region eu-west-2, organisation Sibusiso-K's Org) already has both migrations and the seed applied, in this order:
+
+1. `supabase/migrations/0001_init.sql`
+2. `supabase/migrations/0002_harden_helpers.sql`
+3. `supabase/seed.sql`
+
+Do not run the seed again. It adds duplicate price rows.
+
+To set up a fresh project, run the three files in that order in the SQL editor. Then copy the project URL and the publishable key into `.env.local`. The service role key stays on the server and must never reach the browser.
+
+Demo auth users are not created yet. Create them, then link them to `profiles`, `reclaimers` and `centres.operator_id`.
 
 ## Checks before asking for review
 
@@ -58,7 +64,7 @@ Then start the built app with `npm run start` and check the routes. Check the sc
 
 Work each item on its own branch. See the branch convention in the README.
 
-1. **`feature/supabase-schema`** (in progress): local tests pass (`npm run test:db`). Still to do: apply the migration and seed to a real Supabase project, then repeat the role checks there with real sign-ins. Needs the product owner to create the project or share access.
+1. **`feature/supabase-schema`** (nearly done): migrations and seed are live, and the local and live role checks pass. Still to do: create demo auth users and repeat the role checks with real sign-ins.
 2. **`feature/reclaimer-prices`:** connect the home screen and the prices screen to the `prices` table.
 3. **`feature/centre-sales-api`:** store sales in `POST /api/v1/centre/transactions`, with the idempotency key, the service fee and the audit row.
 4. **`feature/sell-flow-save`:** save the sale from the reclaimer side and show the receipt.
