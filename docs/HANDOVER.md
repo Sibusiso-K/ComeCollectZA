@@ -11,6 +11,7 @@ ComeCollectZA is a reclaimer-side app for South Africa's informal recyclers, bui
 | Area | State | Notes |
 |---|---|---|
 | Reclaimer home, prices and sell estimate | Live board prices | Read through `board_prices()`. Sample prices are shown, and labelled, if the database cannot be reached |
+| Reclaimer money screen | Signed-in receipts, with a labelled sample fallback | Reads the reclaimer's own transactions and fees under row level security. Shows sample receipts until someone signs in |
 | Centre and PRO screens | Done as shells | Run on demo data, labelled as such |
 | Sell flow | Works in the browser | Estimate, keypad, code and QR. Does not save a sale |
 | Money moment | Works | Count-up ends on the real amount |
@@ -68,7 +69,7 @@ Work each item on its own branch. See the branch convention in the README.
 1. **`feature/supabase-schema`** (nearly done): migrations and seed are live, and the local and live role checks pass. Still to do: create demo auth users and repeat the role checks with real sign-ins.
 2. **`feature/reclaimer-prices`** (done, not yet merged): the home, prices and sell screens read live board prices. Still to do: the centre console should write prices through the API once the sales route is built.
 3. **`feature/centre-sales-api`** (built, not yet merged or live): `POST /api/v1/centre/transactions` checks the operator's session, the centre and the board price, then calls `record_sale()`. Still to do: apply migration 0004 to the live project, set `SUPABASE_SERVICE_ROLE_KEY` on the server, and test a real operator sign-in end to end.
-4. **`feature/sell-flow-save`:** save the sale from the reclaimer side and show the receipt.
+4. **`feature/sell-receipts`** (built, not yet merged): the reclaimer money screen shows their last ten sales, each with its service fee and status, and totals for the fees. It shows sample receipts until someone signs in. Still to do: sign-in for reclaimers, and a live update when a centre records a sale.
 5. **`feature/demo-accounts`:** create the three demo accounts and link them to their roles.
 6. **`feature/recommendations`:** build the sell-or-wait and best-centre logic on cached forecasts.
 7. **`feature/service-fees`:** fee tracker and the mock SAWPRS registration.
