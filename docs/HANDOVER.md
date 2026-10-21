@@ -14,7 +14,7 @@ ComeCollectZA is a reclaimer-side app for South Africa's informal recyclers, bui
 | Sell flow | Works in the browser | Estimate, keypad, code and QR. Does not save a sale |
 | Money moment | Works | Count-up ends on the real amount |
 | Design tokens and components | Done | Light and dark themes |
-| Database schema and policies | Written | Not yet applied to a Supabase project |
+| Database schema and policies | Tested locally: 40 checks pass | Run on PostgreSQL 17 with PostGIS (PGlite) with stubbed Supabase auth. Not yet applied to a Supabase project |
 | Seed data | Written | Demo centres and prices. Not yet run |
 | Sales API | Validates | Returns 501 until storage is connected |
 | Health route | Done | Does not check the database yet |
@@ -47,7 +47,10 @@ ComeCollectZA is a reclaimer-side app for South Africa's informal recyclers, bui
 ```bash
 npm run typecheck
 npm run build
+npm run test:db
 ```
+
+`npm run test:db` applies the migration and seed to an in-process PostgreSQL 17 with PostGIS, then checks row level security for each role (anon, reclaimer, operator, PRO) and the table constraints. It stubs Supabase's `auth` schema and `auth.uid()`. It does not replace a check against a real Supabase project.
 
 Then start the built app with `npm run start` and check the routes. Check the screens at phone width (375 px) for horizontal scrolling.
 
@@ -55,7 +58,7 @@ Then start the built app with `npm run start` and check the routes. Check the sc
 
 Work each item on its own branch. See the branch convention in the README.
 
-1. **`feature/supabase-schema`:** apply the migration and seed to a Supabase project. Confirm each policy with a test user for each role.
+1. **`feature/supabase-schema`** (in progress): local tests pass (`npm run test:db`). Still to do: apply the migration and seed to a real Supabase project, then repeat the role checks there with real sign-ins. Needs the product owner to create the project or share access.
 2. **`feature/reclaimer-prices`:** connect the home screen and the prices screen to the `prices` table.
 3. **`feature/centre-sales-api`:** store sales in `POST /api/v1/centre/transactions`, with the idempotency key, the service fee and the audit row.
 4. **`feature/sell-flow-save`:** save the sale from the reclaimer side and show the receipt.
