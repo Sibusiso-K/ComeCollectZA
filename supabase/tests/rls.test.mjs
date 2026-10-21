@@ -287,6 +287,28 @@ async function runTests() {
     await assert.rejects(db.query("select * from pro_material_summary('2000-01-01', '2100-01-01')"));
   });
 
+  // Board prices: public without sign-in, latest price per centre and material, no personal data.
+  await check("anon can read board prices through the function", async () => {
+    await as("anon");
+    const board = await rows("select * from board_prices()");
+    assert.equal(board.length, 12);
+    assert.equal(await count("select id from prices"), 0);
+  });
+  await check("board prices never include the operator id", async () => {
+    await as("anon");
+    const [first] = await rows("select * from board_prices() limit 1");
+    assert.ok(!("operator_id" in first));
+    assert.ok(!("recorded_by" in first));
+  });
+  await check("board prices show the latest price (operator added PET at Orlando East)", async () => {
+    await as("anon");
+    const [pet] = await rows(
+      "select cents_per_kg from board_prices() where centre_id = $1 and material = 'PET'",
+      [ORLANDO],
+    );
+    assert.equal(pet.cents_per_kg, 395);
+  });
+
   // Constraints and generated values, as the superuser.
   await db.exec("reset role");
   await check("sale amount is generated as weight x price / 1000", async () => {

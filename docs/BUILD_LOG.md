@@ -4,6 +4,7 @@ Dated record of decisions and work. Newest entries go at the top.
 
 ## 21 Oct 2026
 
+- **`feature/reclaimer-prices` (from the schema branch):** migration 0003 adds `board_prices()`, which returns the latest price per centre and material to anonymous callers, with no operator ids. Applied live. A plain REST call with the publishable key returns 12 rows, and a direct read of `prices` returns none. The advisors now flag `board_prices()` as a security definer function that anonymous clients can call. That is intended: it returns only non-sensitive columns and cannot read the tables directly. The home, prices and sell screens now read these prices, and each one says whether the prices are live or sample. The sell estimate uses the live cans price: 6.4 kg gives R65.28. Typecheck, build, and 43 local checks pass. The sample fallback was not exercised in the browser.
 - **Supabase project created:** `comecollectza` (ref `roiwontybdbhkuitffll`) in Sibusiso-K's Org, region eu-west-2, at $0 a month. Connected through the Supabase MCP.
 - **Migration 0001 applied** through the MCP. The applied version also contained table grants that the repo file did not have, so 0002 repeats them.
 - **Seed applied:** 3 demo centres, 12 prices, 7 materials.
