@@ -17,7 +17,7 @@ ComeCollectZA is a reclaimer-side app for South Africa's informal recyclers, bui
 | Design tokens and components | Done | Light and dark themes |
 | Database schema and policies | Applied to Supabase project `comecollectza` (ref `roiwontybdbhkuitffll`, eu-west-2) | Migrations 0001 and 0002 applied. 40 local checks pass. Role checks pass on the live project |
 | Seed data | Applied | 3 demo centres, 12 prices, 7 materials |
-| Sales API | Validates | Returns 501 until storage is connected |
+| Sales API | Records sales through `record_sale()` (migration 0004), with session and price checks | Returns 501 until `SUPABASE_SERVICE_ROLE_KEY` is set and migration 0004 is applied to the live project |
 | Health route | Done | Does not check the database yet |
 | Authentication | Not started | Demo accounts not created |
 | Payouts and SAWPRS | Not started | Adapters are planned as mocks |
@@ -67,7 +67,7 @@ Work each item on its own branch. See the branch convention in the README.
 
 1. **`feature/supabase-schema`** (nearly done): migrations and seed are live, and the local and live role checks pass. Still to do: create demo auth users and repeat the role checks with real sign-ins.
 2. **`feature/reclaimer-prices`** (done, not yet merged): the home, prices and sell screens read live board prices. Still to do: the centre console should write prices through the API once the sales route is built.
-3. **`feature/centre-sales-api`:** store sales in `POST /api/v1/centre/transactions`, with the idempotency key, the service fee and the audit row.
+3. **`feature/centre-sales-api`** (built, not yet merged or live): `POST /api/v1/centre/transactions` checks the operator's session, the centre and the board price, then calls `record_sale()`. Still to do: apply migration 0004 to the live project, set `SUPABASE_SERVICE_ROLE_KEY` on the server, and test a real operator sign-in end to end.
 4. **`feature/sell-flow-save`:** save the sale from the reclaimer side and show the receipt.
 5. **`feature/demo-accounts`:** create the three demo accounts and link them to their roles.
 6. **`feature/recommendations`:** build the sell-or-wait and best-centre logic on cached forecasts.

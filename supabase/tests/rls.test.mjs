@@ -309,6 +309,84 @@ async function runTests() {
     assert.equal(pet.cents_per_kg, 395);
   });
 
+  // Recording sales through record_sale(). Only the service role may call it.
+  await check("anon and signed-in users cannot call record_sale", async () => {
+    await as("anon");
+    await assert.rejects(db.query("select public.record_sale('x', $1, $2, 'ccza_r_7Q2KX9', 'CAN_AL', 1000, 1020)", [O1, ORLANDO]));
+    await as("authenticated", O1);
+    await assert.rejects(db.query("select public.record_sale('x', $1, $2, 'ccza_r_7Q2KX9', 'CAN_AL', 1000, 1020)", [O1, ORLANDO]));
+  });
+
+  const recordSale = async (key, operator, centre, qr, material, weight, cents, load = null) => {
+    await as("service_role");
+    const [row] = await rows(
+      "select public.record_sale($1, $2, $3, $4, $5, $6, $7, $8, 25) as r",
+      [key, operator, centre, qr, material, weight, cents, load],
+    );
+    return row.r;
+  };
+
+  let happySale;
+  await check("a sale is stored with the fee and no flags for a usual reclaimer", async () => {
+    happySale = await recordSale("sale-happy-1", O1, ORLANDO, "ccza_r_7Q2KX9", "CAN_AL", 2000, 1020);
+    assert.equal(happySale.amount_cents, 2040);
+    assert.equal(happySale.service_fee_cents, 50);
+    assert.deepEqual(happySale.flags, []);
+    assert.equal(happySale.replayed, false);
+  });
+  await check("replaying the same key returns the same sale", async () => {
+    const again = await recordSale("sale-happy-1", O1, ORLANDO, "ccza_r_7Q2KX9", "CAN_AL", 2000, 1020);
+    assert.equal(again.transaction_id, happySale.transaction_id);
+    assert.equal(again.replayed, true);
+  });
+  await check("the same key with a different body is refused", async () => {
+    await assert.rejects(recordSale("sale-happy-1", O1, ORLANDO, "ccza_r_7Q2KX9", "CAN_AL", 3000, 1020), /IDEMPOTENCY_CONFLICT/);
+  });
+  await check("an unknown reclaimer code is refused", async () => {
+    await assert.rejects(recordSale("sale-unknown-1", O1, ORLANDO, "ccza_r_NOBODY", "CAN_AL", 1000, 1020), /UNKNOWN_CODE/);
+  });
+  await check("an operator cannot record a sale at another centre", async () => {
+    await assert.rejects(recordSale("sale-wrong-centre", O1, KLIPSPRUIT, "ccza_r_7Q2KX9", "CAN_AL", 1000, 1020), /NOT_OPERATOR/);
+  });
+  await check("a first sale outside the reclaimer's home area is flagged and stored as an anomaly", async () => {
+    const sale = await recordSale("sale-first-outside", O1, ORLANDO, "ccza_r_OTHER01", "CAN_AL", 1000, 1020);
+    assert.deepEqual(sale.flags, ["first sale at a centre outside home area"]);
+    await db.exec("reset role");
+    assert.equal(await count("select id from anomalies where transaction_id = '" + sale.transaction_id + "'"), 1);
+  });
+  await check("a load far above the reclaimer's usual weight is flagged", async () => {
+    await db.exec("reset role");
+    // Four earlier sales of 1 kg for the Alexandra reclaimer, plus their existing 10 kg sale.
+    for (let i = 1; i <= 4; i++) {
+      await db.query(
+        "insert into transactions (reclaimer_id, centre_id, material, weight_g, cents_per_kg, recorded_by, idempotency_key) values ($1, $2, 'PET', 1000, 365, $3, $4)",
+        [R2, ALEXANDRA, O1, "hist-r2-" + i],
+      );
+    }
+    const sale = await recordSale("sale-heavy-r2", O1, ORLANDO, "ccza_r_OTHER01", "CAN_AL", 300000, 1020);
+    assert.ok(sale.flags.includes("weight over 3x 30-day 95th percentile"), JSON.stringify(sale.flags));
+  });
+  await check("a photo that matches an earlier load is flagged", async () => {
+    await db.exec("reset role");
+    // Same hash as the Orlando reclaimer's existing load, which is in the 30-day window.
+    await db.query(
+      "insert into loads (id, reclaimer_id, photo_path, dhash) values ('50000000-0000-4000-8000-000000000001', $1, 'loads/r2/dup.jpg', repeat('0', 64)::bit(64))",
+      [R2],
+    );
+    const sale = await recordSale("sale-dup-photo", O1, ORLANDO, "ccza_r_OTHER01", "CAN_AL", 1000, 1020, "50000000-0000-4000-8000-000000000001");
+    assert.ok(sale.flags.includes("photo matches an earlier load"), JSON.stringify(sale.flags));
+  });
+  await check("a load belonging to another reclaimer is refused", async () => {
+    await assert.rejects(
+      recordSale("sale-bad-load", O1, ORLANDO, "ccza_r_7Q2KX9", "CAN_AL", 1000, 1020, "50000000-0000-4000-8000-000000000001"),
+      /UNKNOWN_LOAD/,
+    );
+  });
+  await check("record_sale writes an audit row", async () => {
+    await db.exec("reset role");
+    assert.ok((await count("select id from audit_log where action = 'record_sale'")) >= 1);
+  });
+
   // Constraints and generated values, as the superuser.
   await db.exec("reset role");
   await check("sale amount is generated as weight x price / 1000", async () => {
