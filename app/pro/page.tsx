@@ -1,4 +1,6 @@
+import { ImpactCard } from "@/components/impact-card";
 import { ShellNotice } from "@/components/shell-notice";
+import { impactOf, WORK_DAY_CENTS } from "@/lib/impact";
 import { PRO_ANOMALIES, PRO_SUMMARY } from "@/lib/demo";
 import { MATERIALS } from "@/lib/materials";
 import { formatRand } from "@/lib/money";
@@ -6,6 +8,11 @@ import { formatRand } from "@/lib/money";
 // PRO dashboard, desktop layout. Shows aggregates only, never names or personal data.
 export default function ProPage() {
   const maxTonnes = Math.max(...PRO_SUMMARY.by_material.map((m) => m.tonnes));
+  const impact = {
+    ...impactOf(PRO_SUMMARY.by_material.map((m) => ({ material: m.code, kg: m.tonnes * 1000 }))),
+    workDays: PRO_SUMMARY.paid_to_reclaimers_cents / WORK_DAY_CENTS,
+  };
+  const youthShare = Math.round((PRO_SUMMARY.youth_reclaimers / PRO_SUMMARY.active_reclaimers) * 100);
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-6 px-4 py-6">
@@ -26,6 +33,20 @@ export default function ProPage() {
           <p className="font-mono text-3xl tabular-nums">{formatRand(PRO_SUMMARY.fees_owed_cents)}</p>
         </div>
       </section>
+
+      <ImpactCard
+        impact={impact}
+        title="Impact this month"
+        note={
+          "Youth (18 to 34): " +
+          PRO_SUMMARY.youth_reclaimers.toLocaleString("en-US") +
+          " of " +
+          PRO_SUMMARY.active_reclaimers.toLocaleString("en-US") +
+          " active reclaimers (" +
+          youthShare +
+          "%). CO2e from US EPA WARM v16. Work days are pay to reclaimers at the 2026 minimum wage."
+        }
+      />
 
       <section className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-5">
         <h2 className="font-display text-lg font-bold">Tonnes by material</h2>
