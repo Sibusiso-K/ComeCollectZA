@@ -12,6 +12,10 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      # The app runs ONNX models in the browser, so the Node CUDA binaries are not needed in CI.
+      # Without this, npm ci downloads a large GPU package from NuGet and can time out.
+      ONNXRUNTIME_NODE_INSTALL: skip
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
