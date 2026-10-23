@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { CentreTransactionRequest } from "@/lib/contracts";
+import { IDEMPOTENCY_KEY } from "@/lib/reclaimer-code";
 
 // Demo service fee rate: 25 cents per kilogram. Set per programme once the real rate is confirmed.
 const SERVICE_FEE_CENTS_PER_KG = 25;
+// A sale body is under 400 bytes. Anything far larger is refused before parsing.
+const MAX_BODY_BYTES = 4096;
 
 function fail(status: number, code: string, message: string, details?: unknown) {
   return NextResponse.json(
@@ -22,17 +25,25 @@ export async function POST(req: Request) {
   if (!idempotencyKey) {
     return fail(422, "VALIDATION_FAILED", "Idempotency-Key header is required");
   }
+  if (!IDEMPOTENCY_KEY.test(idempotencyKey)) {
+    return fail(422, "VALIDATION_FAILED", "Idempotency-Key must be 8 to 128 letters, digits, dashes or underscores");
+  }
 
+  const raw = await req.text();
+  if (raw.length > MAX_BODY_BYTES) {
+    return fail(413, "BODY_TOO_LARGE", "Request body is too large");
+  }
   let body: unknown;
   try {
-    body = await req.json();
+    body = JSON.parse(raw);
   } catch {
     return fail(422, "VALIDATION_FAILED", "Body must be valid JSON");
   }
 
   const parsed = CentreTransactionRequest.safeParse(body);
   if (!parsed.success) {
-    return fail(422, "VALIDATION_FAILED", parsed.error.issues[0]?.message ?? "Invalid body", parsed.error.issues);
+    const issue = parsed.error.issues[0];
+    return fail(422, "VALIDATION_FAILED", issue?.message ?? "Invalid body", { field: issue?.path.join(".") });
   }
   const sale = parsed.data;
 
