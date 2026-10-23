@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MATERIALS, type MaterialCode } from "@/lib/materials";
-import { suggestFrom, type Suggestion } from "@/lib/vision/suggestion";
+import { bestGuess, mixFrom, suggestFrom, type Mix, type Suggestion } from "@/lib/vision/suggestion";
 import { loadClassifier, type ClassifierInput } from "@/lib/vision/waste-classifier";
 
 type Phase = "idle" | "camera" | "thinking" | "result";
@@ -19,6 +19,7 @@ export function MaterialScanner({ onPick }: { onPick: (material: MaterialCode) =
   const [modelReady, setModelReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
+  const [mix, setMix] = useState<Mix | null>(null);
   const [ms, setMs] = useState(0);
   const [message, setMessage] = useState("");
   const [saved, setSaved] = useState(false);
@@ -72,9 +73,10 @@ export function MaterialScanner({ onPick }: { onPick: (material: MaterialCode) =
     setPhase("thinking");
     try {
       const classifier = await loadClassifier(setProgress);
-      const prediction = await classifier.classify(input);
-      setMs(prediction.ms);
-      setSuggestion(suggestFrom(prediction));
+      const load = await classifier.classifyLoad(input);
+      setMs(load.ms);
+      setSuggestion(suggestFrom(bestGuess(load)));
+      setMix(mixFrom(load));
       setPhase("result");
     } catch {
       setMessage("The scan did not work. Pick the material yourself.");
@@ -107,6 +109,7 @@ export function MaterialScanner({ onPick }: { onPick: (material: MaterialCode) =
   function reset() {
     stopCamera();
     setSuggestion(null);
+    setMix(null);
     setPhase("idle");
   }
 
@@ -157,7 +160,39 @@ export function MaterialScanner({ onPick }: { onPick: (material: MaterialCode) =
         </p>
       )}
 
-      {phase === "result" && suggestion && (
+      {phase === "result" && mix && (
+        <div className="grid gap-3" aria-live="polite">
+          <div>
+            <p className="font-display text-xl font-extrabold">Looks like a mixed load</p>
+            <p className="text-xs text-muted">{ms} ms on your phone</p>
+          </div>
+          <ul className="grid gap-1 text-sm">
+            {mix.parts.map((part) => (
+              <li key={part.label} className="flex justify-between gap-2">
+                <span className="font-bold">{part.label}</span>
+                <span className="text-muted">about {part.quarters} of 4 parts</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-muted">
+            Centres weigh and pay each material apart. Sort the pile first, then sell one material at a time.
+          </p>
+          <div className="grid gap-2">
+            {mix.parts.flatMap((part) =>
+              part.candidates.map((code) => (
+                <Button key={code} onClick={() => choose(code)}>
+                  Sell {MATERIALS[code as Exclude<MaterialCode, "OTHER">].label} first
+                </Button>
+              )),
+            )}
+          </div>
+          <Button variant="secondary" onClick={reset}>
+            Scan again
+          </Button>
+        </div>
+      )}
+
+      {phase === "result" && !mix && suggestion && (
         <div className="grid gap-3" aria-live="polite">
           <div>
             <p className="font-display text-xl font-extrabold">
