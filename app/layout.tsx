@@ -1,41 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Atkinson_Hyperlegible_Next, Bricolage_Grotesque, Silkscreen } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { PwaRegister } from "@/components/pwa-register";
 import { Providers } from "@/components/app/providers";
 import { THEME_BOOT } from "@/lib/app/theme-boot";
 import "./globals.css";
 
-const display = Bricolage_Grotesque({
+// One typeface for everything, as in the design reference: Manrope (open source, SIL OFL).
+const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-display-face",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
   display: "swap",
-});
-
-// Next has no metric data for these faces, so it skips the generated fallback. The CSS stacks already fall back to system fonts.
-const body = Atkinson_Hyperlegible_Next({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-body-face",
-  display: "swap",
-  adjustFontFallback: false,
-});
-
-const dot = Silkscreen({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-dot-face",
-  display: "swap",
-  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
   title: "ComeCollectZA",
   description: "Get paid fairly for every kilogram you collect.",
   applicationName: "ComeCollectZA",
-  appleWebApp: { capable: true, title: "ComeCollectZA", statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: "ComeCollectZA", statusBarStyle: "black" },
   icons: {
-    icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    icon: [
+      { url: "/logo-mark.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
     apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
   },
 };
@@ -44,12 +31,12 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0B0F0C",
+  themeColor: "#0b2415",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={display.variable + " " + body.variable + " " + dot.variable}>
+    <html lang="en" suppressHydrationWarning className={manrope.variable}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
       </head>

@@ -4,23 +4,24 @@ The app scored against the seven Sonke judging criteria for the FNB App of the Y
 
 Scores are our own honest estimate, not the judges'. Where a score is low, the "To raise it" column is the plan.
 
-## Current score: 42 / 70 (23 Oct 2026, evening)
+## Current score: 46 / 70 (23 Oct 2026, night)
 
 | Criterion | Score | Evidence today | To raise it |
 |---|---|---|---|
-| **Product** | 6 | Live site. Reclaimer home, live prices with R/t, sell flow with scanner and QR, money screen with receipts, fees and impact. Centre console scans codes. PRO dashboard. Database with role checks (54 tests) | Create demo accounts and set the service key so a sale goes end to end. Build pickup listings for taverns and bottle stores |
-| **Creativity** | 8 | Reclaimer-side app that plugs into EPR rails. On-device scanner that also spots mixed loads, with no data. Taverns as a supply source | Show the pickup handshake in the demo |
-| **Usability** | 6 | Big controls, icon-first, three taps to a sale, phone layout checked at 375 px, installable, works offline after first use | Test with three real reclaimers. Add isiZulu and Sesotho labels. Test on a cheap Android phone |
-| **Sustainability** | 6 | Business model with unit economics: R220 a month per active reclaimer from PROs and buyers, reclaimers never pay. Lean Canvas drafted | One conversation with a PRO or centre to test the R50/t and 2% assumptions. Put the numbers in the deck |
-| **Impact** | 7 | CO2e avoided (EPA WARM v16), landfill diverted, work days at minimum wage, service fees tracked. Sourced 2026 prices per tonne | Collect an age band at registration for real youth figures. Show a before and after for one reclaimer |
-| **Presentation** | 3 | Docs are thorough. No deck or video yet | 20-second pitch video by Sat 13:30. Ten-slide deck and 90-second demo for Monday |
-| **Intelligence** | 6 | On-device TinyCLIP scanner: 82% on held-out photos, 93% with quarter agreement, mixed loads flagged with 8% false alarms. Rule-based anomaly flags in the database | Sell-or-wait advice from price history. Duplicate-photo check. Measure the scanner on real loads |
+| **Product** | 7 | Real accounts, real prices, a scanner on the phone, a marketplace map, a centre console and a programme dashboard, all on a live database with role checks (63 database tests). Not yet a full loop with a real sale | Add the service key, create one centre account, and record one real sale from scan to receipt. Then payouts |
+| **Creativity** | 8 | Reclaimer-side app that plugs into EPR rails. On-device scanner that spots mixed loads and lets you tap a part of the photo to see its reasoning. Taverns and bottle stores as a supply source on a map | Show the tavern to reclaimer pickup in the demo |
+| **Usability** | 7 | One typeface, big controls, a first-time tour, 11 languages offered (4 drafted), light and dark, works offline once saved, installable | Test with three real reclaimers on a cheap Android phone. Have first-language speakers check the translations |
+| **Sustainability** | 6 | A business model with unit economics (about R220 a month per active reclaimer from PROs and buyers, reclaimers never pay) and a Lean Canvas | One conversation with a PRO or a centre to test the R50 per tonne and 2% assumptions. Put the numbers in the deck |
+| **Impact** | 7 | CO2e avoided (EPA WARM v16), landfill kept, work days at minimum wage, service fees tracked, and a real youth share from an age band collected at sign-up. Sourced 2026 prices per tonne | Real sales to show real numbers. A before and after for one reclaimer |
+| **Presentation** | 5 | Four mockup boards, a clear README, handover, admin guide and docs. No pitch video or deck yet | The 20-second pitch video by Saturday 13:30. The ten-slide deck with a demo login and a 90-second demo video |
+| **Intelligence** | 6 | On-device scanner at 82% on held-out real photos, mixed-load detection, a lookup assistant that reads the live board and your fees. No forecasts yet | Sell-or-wait advice from price history. The duplicate photo check. Measure the scanner on real loads |
 
 ## Biggest gains for the least work
 
 1. **Presentation +4:** record the 20-second video and build the deck. Nothing else moves the total as much.
-2. **Product +2:** demo accounts and the service key turn the sales route on, so judges can do a full sale.
-3. **Usability +1:** a five-minute test with one real reclaimer, written up honestly.
+2. **Product +2:** switch on sale recording and show one real sale from start to finish.
+3. **Usability +1:** a ten-minute test with one real reclaimer, written up honestly.
+4. **Sustainability +1:** one real conversation with a PRO or a centre.
 
 ## History
 
@@ -29,6 +30,7 @@ Scores are our own honest estimate, not the judges'. Where a score is low, the "
 | 21 Oct | 4 | 7 | 5 | 4 | 4 | 2 | 2 | 28 | Scaffold, schema, live prices |
 | 23 Oct, morning | 5 | 7 | 6 | 4 | 4 | 2 | 5 | 33 | Installable app, on-device scanner, QR scan |
 | 23 Oct, evening | 6 | 8 | 6 | 6 | 7 | 3 | 6 | 42 | Security hardening, offline scanner, mixed loads, prices per tonne, impact, business model |
+| 23 Oct, night | 7 | 8 | 7 | 6 | 7 | 5 | 6 | 46 | Real accounts and data, marketplace map, first-time tour, restyle, logo, mockup boards |
 
 The 21 Oct and morning rows were scored afterwards from the build log.
 

@@ -1,52 +1,74 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
 import { LANGUAGES } from "@/lib/app/i18n";
 import { usePrefs, useT } from "@/lib/app/prefs";
-import { ThemeToggle } from "@/components/app/shell";
-import { Sticker } from "@/components/app/bits";
+import { useAuth } from "@/lib/app/auth";
+import { Backdrop, ThemeToggle } from "@/components/app/shell";
+import { Logo } from "@/components/app/logo";
 import { cn } from "@/lib/utils";
 
 export default function Welcome() {
   const t = useT();
+  const router = useRouter();
   const { lang, setLang } = usePrefs();
+  const { ready, user } = useAuth();
+
+  // Someone who is already signed in goes straight in.
+  useEffect(() => {
+    if (ready && user) router.replace("/home");
+  }, [ready, user, router]);
+
   return (
-    <div className="mx-auto min-h-screen w-full max-w-md space-y-6 overflow-x-hidden px-4 py-6">
-      <div className="flex items-start justify-between gap-3">
-        <h1 className="font-display text-5xl font-extrabold leading-[0.95]">ComeCollectZA</h1>
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-6 overflow-x-hidden px-4 py-5">
+      <Backdrop place="towers" />
+      <div className="flex items-center justify-between gap-3">
+        <Logo size={44} />
         <ThemeToggle />
       </div>
-      <p className="text-xl font-bold">{t("Get paid fairly for every kilogram you collect.")}</p>
-      <section aria-labelledby="lang">
-        <h2 id="lang" className="mb-3 font-display text-2xl font-bold">
-          {t("Choose your language")}
-        </h2>
-        <div className="grid grid-cols-2 gap-2">
+
+      <div className="flex-1 space-y-3 pt-6">
+        <h1 className="text-5xl font-extrabold uppercase leading-[0.95] tracking-tight">
+          {t("Fair pay for every kilogram")}
+        </h1>
+        <p className="text-lg text-muted-foreground">{t("Get paid fairly for every kilogram you collect.")}</p>
+      </div>
+
+      <section aria-labelledby="lang" className="glass space-y-2 rounded-3xl p-3">
+        <h2 id="lang" className="px-1 text-base font-extrabold">{t("Choose your language")}</h2>
+        <div className="grid grid-cols-3 gap-1.5">
           {LANGUAGES.map((l) => (
             <button
               key={l.code}
               onClick={() => setLang(l.code)}
               aria-pressed={lang === l.code}
-              className={cn(
-                "min-h-16 rounded-2xl px-3 py-2 text-left font-bold",
-                lang === l.code ? "bg-primary text-primary-foreground" : "bg-card",
-              )}
+              className={cn("min-h-12 rounded-xl px-2 py-1 text-sm font-bold", lang === l.code ? "bg-primary text-primary-foreground" : "bg-secondary")}
             >
               {l.name}
-              {!l.full && <span className="block text-xs font-normal opacity-80">{t("translation in progress")}</span>}
+              {!l.full && <span aria-label={t("translation in progress")}> *</span>}
             </button>
           ))}
         </div>
+        <p className="px-1 text-xs text-muted-foreground">* {t("translation in progress")}</p>
       </section>
-      <Link
-        href="/sign-in"
-        className="flex min-h-14 w-full items-center justify-center rounded-full bg-primary font-display text-lg font-bold text-primary-foreground"
-      >
-        {t("Get started")}
-      </Link>
-      <div className="space-y-2 text-center">
-        <Sticker>{t("Stays on your phone")}</Sticker>
-        <p className="text-muted-foreground">{t("Works with no data after your first scan")}</p>
+
+      <div className="flex items-center justify-between gap-4">
+        <Link href="/home" className="font-bold underline underline-offset-4">
+          {t("Look around first")}
+        </Link>
+        <Link
+          href="/sign-in"
+          aria-label={t("Get started")}
+          className="flex min-h-16 items-center gap-3 rounded-full bg-white py-2 pl-6 pr-2 text-lg font-extrabold text-[#0b2415] shadow-[var(--shadow-soft)]"
+        >
+          {t("Get started")}
+          <span className="grid size-12 place-items-center rounded-full bg-[#0b2415] text-white ring-4 ring-highlight">
+            <ArrowRight size={22} aria-hidden />
+          </span>
+        </Link>
       </div>
     </div>
   );
