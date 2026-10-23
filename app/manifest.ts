@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "ComeCollectZA",
     short_name: "ComeCollect",
     description: "Get paid fairly for every kilogram you collect.",
-    start_url: "/reclaimer",
+    start_url: "/home",
     scope: "/",
     display: "standalone",
     orientation: "portrait",

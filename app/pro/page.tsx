@@ -1,82 +1,104 @@
-import { ImpactCard } from "@/components/impact-card";
-import { ShellNotice } from "@/components/shell-notice";
-import { impactOf, WORK_DAY_CENTS } from "@/lib/impact";
-import { PRO_ANOMALIES, PRO_SUMMARY } from "@/lib/demo";
-import { MATERIALS } from "@/lib/materials";
-import { formatRand } from "@/lib/money";
+"use client";
 
-// PRO dashboard, desktop layout. Shows aggregates only, never names or personal data.
-export default function ProPage() {
-  const maxTonnes = Math.max(...PRO_SUMMARY.by_material.map((m) => m.tonnes));
-  const impact = {
-    ...impactOf(PRO_SUMMARY.by_material.map((m) => ({ material: m.code, kg: m.tonnes * 1000 }))),
-    workDays: PRO_SUMMARY.paid_to_reclaimers_cents / WORK_DAY_CENTS,
-  };
-  const youthShare = Math.round((PRO_SUMMARY.youth_reclaimers / PRO_SUMMARY.active_reclaimers) * 100);
+import { WideScreen } from "@/components/app/shell";
+import { Card, DemoLabel, Donut, MaterialBadge, Bar } from "@/components/app/bits";
+import { useT } from "@/lib/app/prefs";
+import { PRO } from "@/lib/app/demo-data";
+import { MATERIALS, MATERIAL_LABEL, formatRand, formatTonnes, type Material } from "@/lib/app/logic";
+import { MATERIAL_VAR } from "@/components/app/bits";
+
+export default function Pro() {
+  const t = useT();
+  const total = Object.values(PRO.tonnesByMaterialGrams).reduce((s, g) => s + g, 0);
+  const max = Math.max(...Object.values(PRO.tonnesByMaterialGrams));
+  const youthPct = Math.round((PRO.youth.count / PRO.youth.total) * 100);
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-6 px-4 py-6">
-      <ShellNotice>PRO dashboard. Figures are example aggregates.</ShellNotice>
-      <h1 className="font-display text-3xl font-extrabold">Collections dashboard</h1>
-
-      <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-2xl border border-line bg-surface p-4">
-          <p className="text-sm text-muted">Active reclaimers</p>
-          <p className="font-mono text-3xl tabular-nums">{PRO_SUMMARY.active_reclaimers.toLocaleString("en-US")}</p>
+    <WideScreen title={t("Collections")}>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="font-display text-3xl font-extrabold">{t("Collections dashboard")}</h1>
+          <DemoLabel />
         </div>
-        <div className="rounded-2xl border border-line bg-surface p-4">
-          <p className="text-sm text-muted">Tonnes this month</p>
-          <p className="font-mono text-3xl tabular-nums">{PRO_SUMMARY.tonnes_total}</p>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Card className="p-5">
+            <p className="text-sm text-muted-foreground">{t("Active reclaimers")}</p>
+            <p className="font-dot text-3xl">{PRO.activeReclaimers.toLocaleString("en-ZA").replace(/,/g, " ")}</p>
+          </Card>
+          <Card className="p-5">
+            <p className="text-sm text-muted-foreground">{t("Tonnes this month")}</p>
+            <p className="font-dot text-3xl">{formatTonnes(PRO.tonnesThisMonthGrams)}</p>
+          </Card>
+          <Card className="p-5">
+            <p className="text-sm text-muted-foreground">{t("Fees owed")}</p>
+            <p className="font-dot text-3xl">{formatRand(PRO.feesOwedCents)}</p>
+          </Card>
         </div>
-        <div className="rounded-2xl border border-line bg-surface p-4">
-          <p className="text-sm text-muted">Fees owed</p>
-          <p className="font-mono text-3xl tabular-nums">{formatRand(PRO_SUMMARY.fees_owed_cents)}</p>
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Card className="flex flex-col items-center gap-4">
+            <h2 className="self-start font-display text-xl font-bold">{t("Tonnes by material")}</h2>
+            <Donut
+              size={200}
+              stroke={26}
+              parts={MATERIALS.map((m: Material) => ({ value: PRO.tonnesByMaterialGrams[m], color: MATERIAL_VAR[m] }))}
+              center={<span className="font-dot text-lg">{formatTonnes(total)}</span>}
+            />
+            <ul className="w-full space-y-2">
+              {MATERIALS.map((m) => (
+                <li key={m} className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
+                  <MaterialBadge m={m} size={28} />
+                  <div className="space-y-1">
+                    <span className="font-bold">{t(MATERIAL_LABEL[m])}</span>
+                    <Bar value={PRO.tonnesByMaterialGrams[m]} max={max} color={MATERIAL_VAR[m]} />
+                  </div>
+                  <span className="font-mono tabular-nums">{formatTonnes(PRO.tonnesByMaterialGrams[m])}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+
+          <div className="space-y-6">
+            <Card className="space-y-3">
+              <h2 className="font-display text-xl font-bold">{t("Impact this month")}</h2>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-2xl bg-secondary p-4">
+                  <p className="text-xs text-muted-foreground">{t("CO2e avoided")}</p>
+                  <p className="font-dot text-2xl">{(PRO.co2Tenths / 10).toFixed(1)} t</p>
+                </div>
+                <div className="rounded-2xl bg-secondary p-4">
+                  <p className="text-xs text-muted-foreground">{t("Work days paid")}</p>
+                  <p className="font-dot text-2xl">{(PRO.workDaysTenths / 10).toFixed(1)}</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {t("Youth (18 to 34): {count} of {total} active reclaimers ({pct}%)", {
+                  count: PRO.youth.count,
+                  total: PRO.youth.total,
+                  pct: youthPct,
+                })}
+              </p>
+              <Bar value={PRO.youth.count} max={PRO.youth.total} />
+              <p className="text-xs text-muted-foreground">{t("Aggregates only. No names are shown.")}</p>
+            </Card>
+
+            <Card className="space-y-3">
+              <h2 className="font-display text-xl font-bold">{t("Review queue")}</h2>
+              <ul className="divide-y divide-border">
+                {PRO.reviewQueue.map((a) => (
+                  <li key={a.id} className="flex flex-col py-3">
+                    <span className="font-bold">{a.text}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {a.id} · {t(a.reason)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </div>
         </div>
-      </section>
-
-      <ImpactCard
-        impact={impact}
-        title="Impact this month"
-        note={
-          "Youth (18 to 34): " +
-          PRO_SUMMARY.youth_reclaimers.toLocaleString("en-US") +
-          " of " +
-          PRO_SUMMARY.active_reclaimers.toLocaleString("en-US") +
-          " active reclaimers (" +
-          youthShare +
-          "%). CO2e from US EPA WARM v16. Work days are pay to reclaimers at the 2026 minimum wage."
-        }
-      />
-
-      <section className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-5">
-        <h2 className="font-display text-lg font-bold">Tonnes by material</h2>
-        <ul className="grid gap-3">
-          {PRO_SUMMARY.by_material.map((m) => {
-            const material = MATERIALS[m.code as Exclude<typeof m.code, "OTHER">];
-            return (
-              <li key={m.code} className="grid grid-cols-[120px_1fr_64px] items-center gap-3 text-sm">
-                <span className="font-bold">{material.label}</span>
-                <span className="h-2.5 overflow-hidden rounded-full bg-sunk">
-                  <span className="block h-full rounded-full" style={{ width: (m.tonnes / maxTonnes) * 100 + "%", background: "var(--" + material.token + ")" }} />
-                </span>
-                <span className="text-right font-mono tabular-nums">{m.tonnes}</span>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
-      <section className="flex flex-col gap-3">
-        <h2 className="font-display text-lg font-bold">Review queue</h2>
-        <ul className="grid gap-2">
-          {PRO_ANOMALIES.map((a) => (
-            <li key={a.id} className="flex flex-col gap-1 rounded-xl border border-line bg-surface px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-              <span className="text-sm">{a.reason}</span>
-              <span className="font-mono text-xs text-muted">{a.transaction}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </main>
+      </div>
+    </WideScreen>
   );
 }
