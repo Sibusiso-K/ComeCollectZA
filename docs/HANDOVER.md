@@ -17,6 +17,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Sell flow | Built | Choose centre, weigh, show a QR code |
 | My money and impact | Built, from the person's own sales | Fees paid, owed, missing. CO2e, landfill, work days. Needs a signed-in reclaimer with recorded sales |
 | Marketplace | Built | Map and list of centres and posts. Reclaimers and businesses can post. Posts have no contact method yet |
+| Electronics | Built | Guide, drop-off finder (8 places, none visited), and a sell, give or ask board with contact shown to signed-in people. Only one seeded place is in Soweto, and it needs a phone call. See [ADMIN.md](ADMIN.md) section 7 |
 | Centre console | Built | Sets the price board, looks up codes. Recording a sale needs `SUPABASE_SERVICE_ROLE_KEY` on the server |
 | Programme dashboard | Built | Totals only. Needs a PRO account |
 | First-time tour, languages, light and dark | Built | 11 languages offered. English, Afrikaans, isiZulu and isiXhosa are drafts that need a first-language reader |
@@ -24,7 +25,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Payouts and SAWPRS | Not started | The `payouts` table exists. Nothing writes to it |
 | Phone number sign-in | Not started | Needs an SMS service |
 | Offline write queue | Not started | Reading works offline. Writing needs a signal |
-| Tests | 63 database checks, 7 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
+| Tests | 71 database checks, 13 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
 
 ## Set up on a new machine
 
@@ -65,13 +66,14 @@ Each item gets its own branch and pull request.
 
 1. **Owner setup** ([ADMIN.md](ADMIN.md)): the service key in Vercel, a custom email sender, a centre account, a programme account, and real centres replacing the demo ones. Without these, nobody can record a real sale.
 2. **Test on a real phone** ([PHONE_TEST.md](PHONE_TEST.md)): the camera, install, offline use, and the scanner on real loads.
-3. **Contact on the market:** a post has no way to reach the poster. Add an optional WhatsApp number shown only to signed-in people, and a report button.
-4. **Payouts and SAWPRS:** adapters for a payout rail and the registration check. The FNB options are in the research notes in the build log.
-5. **Phone number sign-in:** connect an SMS service, then add a phone option to the sign-in screen.
-6. **Translations:** have first-language speakers check the four drafts and write the other seven.
-7. **Offline queue:** keep sales lookups and market posts and send them when a signal returns.
-8. **Sell-or-wait advice** from price history, and the duplicate photo check.
-9. **Sonke submission:** the 20-second pitch video, the deck with a demo login, the SSDLC form and the Lean Canvas. The canvas text is in [BUSINESS_MODEL.md](BUSINESS_MODEL.md).
+3. **Electronics data:** phone or visit the seeded places and set them to `confirmed`, add places near Soweto, add a report button, and put listings on the map.
+4. **Contact on the market:** a post has no way to reach the poster. Add an optional WhatsApp number shown only to signed-in people, and a report button.
+5. **Payouts and SAWPRS:** adapters for a payout rail and the registration check. The FNB options are in the research notes in the build log.
+6. **Phone number sign-in:** connect an SMS service, then add a phone option to the sign-in screen.
+7. **Translations:** have first-language speakers check the four drafts and write the other seven.
+8. **Offline queue:** keep sales lookups and market posts and send them when a signal returns.
+9. **Sell-or-wait advice** from price history, and the duplicate photo check.
+10. **Sonke submission:** the 20-second pitch video, the deck with a demo login, the SSDLC form and the Lean Canvas. The canvas text is in [BUSINESS_MODEL.md](BUSINESS_MODEL.md).
 
 ## Known issues
 

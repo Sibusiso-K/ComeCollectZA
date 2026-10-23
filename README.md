@@ -15,6 +15,7 @@ Built by team JBB for the FNB App of the Year Hackathon 2026 (virtual, 23 to 25 
 - **Sell.** Pick the centre, type the weight, and show your code as a QR for the centre to scan.
 - **Accounts.** Email sign-up for reclaimers and for businesses. Each reclaimer gets one code. Eleven official languages, light and dark themes, and a first-time tour.
 - **My money and impact.** Sales, service fees paid, owed and missing, kilograms kept from landfill, CO2e avoided, and work days paid. All of it is worked out from the person's own sales.
+- **Electronics.** Old phones, laptops, TVs, fridges and batteries. A guide says what to do with each item and state, a finder lists shop bins, recyclers and municipal sites with their source and the date they were checked, and a board lets people sell, give away or ask for electronics, with a call or WhatsApp link shown only to signed-in people.
 - **Marketplace.** A map of buy-back centres, buyers and sellers, with a list view. Reclaimers and businesses can post material for sale or a price they will pay.
 - **Centre console.** A centre account sets its price board, looks up a code and records the weighed sale.
 - **Programme dashboard.** Totals only: tonnes, impact, youth share, fees owed and a review queue.

@@ -54,4 +54,14 @@ openssl s_client -connect comecollectza.vercel.app:443 -tls1_1      # must fail
 | iPhone | The status bar style is solid, so the header can never sit under the clock. |
 | Personal data | Name, area and an age band, with consent in plain words at sign-up. The age band feeds only the programme's youth total. Programme screens show totals, never names. |
 
+## Electronics (migration 0007)
+
+| Area | What changed |
+|---|---|
+| Public places | `ewaste_points` is readable by everyone and writable by no API role. Only the dashboard or the service key can change it. |
+| Phone numbers | A listing's number is stored in `ewaste_posts`, which only the owner can read. `ewaste_listings()` leaves it out. `ewaste_contact()` returns it to signed-in people only, and only for open listings. Anonymous callers cannot run it. |
+| Listing limits | At most 10 open listings per person. They expire after 30 days. The number is checked in the database against a South African style pattern. |
+| Location | Snapped to about 250 m in the database. The screens show only the area name. |
+| Meeting people | The board shows a safety note: public place, daylight, test before paying, never share a PIN or one-time code. |
+
 Still open: rate limits on the sales route, nonces for the content security policy, a DAST scan, and phone number verification.

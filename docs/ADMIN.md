@@ -59,8 +59,25 @@ delete from prices where centre_id in (select id from centres where name like 'D
 delete from centres where name like 'Demo Centre%' and not exists (select 1 from transactions t where t.centre_id = centres.id);
 ```
 
-## 7. Checks
+## 7. Electronics drop-off points
+
+The finder reads the `ewaste_points` table. Eight places are seeded from public pages and none has been visited. Every row has a `source_url`, a `checked_on` date and a `confidence` of `confirmed`, `listed` or `unsure`. The app shows all three, and tells people to phone first.
+
+Add or fix a place in the Supabase SQL editor (nobody else can write to this table):
+```sql
+insert into ewaste_points (id, name, kind, accepts, area_label, address, lat, lng, pin, phone, website, hours, free, note, confidence, source_url, checked_on)
+values ('makro-example', 'Makro e-waste bin, Example', 'retail_bin', array['phone','computer','tv','battery'], 'Example, Johannesburg',
+        null, -26.2, 28.0, 'area', null, null, null, true, 'Bin near the entrance.', 'confirmed', 'https://example.com/page-that-says-so', current_date);
+```
+- `kind` is `retail_bin`, `municipal`, `recycler` or `buyer`. `accepts` uses: phone, computer, tv, large_appliance, small_appliance, battery, cables, lighting, printer, other.
+- Use `pin = 'site'` only when the coordinates are the door. Use `'area'` when they are the suburb.
+- After you visit or phone a place, set `confidence = 'confirmed'` and `checked_on = current_date`.
+- To hide a place, set `active = false`. Do not delete rows, so the history stays.
+- The first places to add are the ones near Soweto that reclaimers can reach. Only one seeded place is in Soweto, and it needs checking: the Marie Louise landfill stopped taking household waste in September 2025.
+
+## 8. Checks
 
 - `select count(*) from market_points();` returns the map pins.
+- `select count(*) from ewaste_points;` returns the electronics places, and `select * from ewaste_listings();` the open listings (without phone numbers).
 - `select * from pro_overview();` run as a PRO user returns totals. Anyone else gets no rows.
 - Supabase, then Advisors. The warnings about `board_prices`, `market_points` and the sign-in functions are expected: each checks the caller inside.

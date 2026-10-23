@@ -3,17 +3,14 @@
 import "leaflet/dist/leaflet.css";
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import type { MapPoint } from "@/lib/app/api";
+import type { MapPin } from "@/lib/app/map-pins";
 
 // The middle of Soweto, used until there are pins to fit.
 const SOWETO: [number, number] = [-26.25, 27.9];
-const BUYER = "#2e9e5b";
-const SELLER = "#f5b544";
-
-function pinIcon(p: MapPoint, selected: boolean) {
-  const colour = p.kind === "buy" ? BUYER : SELLER;
+function pinIcon(p: MapPin, selected: boolean) {
+  const colour = p.tone;
   const ring = selected ? "#ffffff" : "rgba(0,0,0,0.35)";
-  const inner = p.source === "centre" ? "#ffffff" : "#0b2415";
+  const inner = p.solid ? "#ffffff" : "#0b2415";
   const size = selected ? 38 : 30;
   // Only fixed strings go in here. Names and notes never enter the HTML.
   return L.divIcon({
@@ -31,13 +28,15 @@ export default function MarketMap({
   picking,
   onPick,
   draft,
+  label = "Map of buyers and sellers",
 }: {
-  points: MapPoint[];
+  points: MapPin[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   picking: boolean;
   onPick: (lat: number, lng: number) => void;
   draft: { lat: number; lng: number } | null;
+  label?: string;
 }) {
   const el = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
@@ -100,7 +99,7 @@ export default function MarketMap({
     <div
       ref={el}
       role="application"
-      aria-label="Map of buyers and sellers"
+      aria-label={label}
       className="h-80 w-full overflow-hidden rounded-3xl"
       style={{ cursor: picking ? "crosshair" : undefined }}
     />

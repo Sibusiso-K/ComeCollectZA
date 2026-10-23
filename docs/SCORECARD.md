@@ -9,11 +9,11 @@ Scores are our own honest estimate, not the judges'. Where a score is low, the "
 | Criterion | Score | Evidence today | To raise it |
 |---|---|---|---|
 | **Product** | 7 | Real accounts, real prices, a scanner on the phone, a marketplace map, a centre console and a programme dashboard, all on a live database with role checks (63 database tests). Not yet a full loop with a real sale | Add the service key, create one centre account, and record one real sale from scan to receipt. Then payouts |
-| **Creativity** | 8 | Reclaimer-side app that plugs into EPR rails. On-device scanner that spots mixed loads and lets you tap a part of the photo to see its reasoning. Taverns and bottle stores as a supply source on a map | Show the tavern to reclaimer pickup in the demo |
+| **Creativity** | 9 | Reclaimer-side app that plugs into EPR rails. On-device scanner that spots mixed loads and lets you tap a part of the photo to see its reasoning. Taverns and bottle stores as a supply source on a map. A second problem solved in the same app: what to do with old electronics, with sourced drop-off points and a sell or give board | Show the tavern to reclaimer pickup in the demo |
 | **Usability** | 7 | One typeface, big controls, a first-time tour, 11 languages offered (4 drafted), light and dark, works offline once saved, installable | Test with three real reclaimers on a cheap Android phone. Have first-language speakers check the translations |
 | **Sustainability** | 6 | A business model with unit economics (about R220 a month per active reclaimer from PROs and buyers, reclaimers never pay) and a Lean Canvas | One conversation with a PRO or a centre to test the R50 per tonne and 2% assumptions. Put the numbers in the deck |
 | **Impact** | 7 | CO2e avoided (EPA WARM v16), landfill kept, work days at minimum wage, service fees tracked, and a real youth share from an age band collected at sign-up. Sourced 2026 prices per tonne | Real sales to show real numbers. A before and after for one reclaimer |
-| **Presentation** | 5 | Four mockup boards, a clear README, handover, admin guide and docs. No pitch video or deck yet | The 20-second pitch video by Saturday 13:30. The ten-slide deck with a demo login and a 90-second demo video |
+| **Presentation** | 5 | Five mockup boards, a clear README, handover, admin guide and docs. No pitch video or deck yet | The 20-second pitch video by Saturday 13:30. The ten-slide deck with a demo login and a 90-second demo video |
 | **Intelligence** | 6 | On-device scanner at 82% on held-out real photos, mixed-load detection, a lookup assistant that reads the live board and your fees. No forecasts yet | Sell-or-wait advice from price history. The duplicate photo check. Measure the scanner on real loads |
 
 ## Biggest gains for the least work
@@ -31,6 +31,7 @@ Scores are our own honest estimate, not the judges'. Where a score is low, the "
 | 23 Oct, morning | 5 | 7 | 6 | 4 | 4 | 2 | 5 | 33 | Installable app, on-device scanner, QR scan |
 | 23 Oct, evening | 6 | 8 | 6 | 6 | 7 | 3 | 6 | 42 | Security hardening, offline scanner, mixed loads, prices per tonne, impact, business model |
 | 23 Oct, night | 7 | 8 | 7 | 6 | 7 | 5 | 6 | 46 | Real accounts and data, marketplace map, first-time tour, restyle, logo, mockup boards |
+| 23 Oct, late | 7 | 9 | 7 | 6 | 7 | 5 | 6 | 47 | Electronics: guide, drop-off finder and a sell or give board |
 
 The 21 Oct and morning rows were scored afterwards from the build log.
 

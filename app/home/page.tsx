@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ChevronRight, Smartphone } from "lucide-react";
 import { AppScreen } from "@/components/app/shell";
 import { Card, Gauge, MaterialBadge, SavedNote } from "@/components/app/bits";
 import { LoadScanner } from "@/components/app/scanner";
@@ -40,6 +41,15 @@ export default function Home() {
       </div>
 
       <LoadScanner onPick={(m) => router.push(`/sell?m=${m}`)} />
+
+      <Link href="/ewaste" className="glass flex min-h-20 items-center gap-4 rounded-3xl p-4">
+        <span className="grid size-12 shrink-0 place-items-center rounded-full bg-highlight text-on-bright"><Smartphone size={26} aria-hidden /></span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-lg font-extrabold leading-tight">{t("Old phone, laptop or fridge?")}</span>
+          <span className="block text-sm text-muted-foreground">{t("See where to take it, or sell it to someone nearby.")}</span>
+        </span>
+        <ChevronRight size={22} aria-hidden className="shrink-0" />
+      </Link>
 
       {user ? (
         sales.length > 0 && (
