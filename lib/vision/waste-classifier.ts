@@ -1,6 +1,8 @@
 // On-device waste material classifier. Runs entirely in the browser: photos never leave the phone.
 //
-// Model: TinyCLIP ViT-8M (MIT licence), int8, about 23 MB, downloaded once and cached by the browser.
+// Model: TinyCLIP ViT-8M (MIT licence), int8, about 23 MB. Served by this app from /models/tinyclip/ and
+// the runtime from /ort/ (see tools/vision/fetch-assets.mjs). The service worker keeps both, so after the
+// first download the scanner works with no data at all.
 // Head: a small linear classifier trained on TrashNet image features (public/models/waste-head.json).
 // Browser only. Import this from client components, and call loadClassifier() on demand.
 
@@ -28,7 +30,12 @@ type Head = {
   b: number[];
 };
 
-const MODEL_ID = "onnx-community/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M-ONNX";
+// Local folder under /models/. Source: onnx-community/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M-ONNX, pinned revision.
+const MODEL_ID = "tinyclip";
+
+// The combined CLIP model also wants text input. These are the CLIP token ids for "a photo"
+// (start, "a", "photo", end), checked against the model's own tokenizer, so the 5 MB tokenizer is not downloaded.
+const DUMMY_TOKEN_IDS = [49406, 320, 1125, 49407];
 
 let loading: Promise<Classifier> | null = null;
 
@@ -44,12 +51,21 @@ export function loadClassifier(onProgress?: (fraction: number) => void): Promise
 }
 
 async function build(onProgress?: (fraction: number) => void): Promise<Classifier> {
-  const { AutoProcessor, AutoTokenizer, CLIPModel, RawImage, env } = await import("@huggingface/transformers");
-  env.allowLocalModels = false;
+  const { AutoProcessor, CLIPModel, RawImage, Tensor, env } = await import("@huggingface/transformers");
+  // Everything comes from this app, never from a CDN. The service worker caches it, so the library's own cache is off.
+  env.allowRemoteModels = false;
+  env.allowLocalModels = true;
+  env.localModelPath = "/models/";
+  env.useBrowserCache = false;
+  env.useWasmCache = false;
+  const wasm = env.backends.onnx.wasm;
+  if (wasm) {
+    wasm.wasmPaths = { mjs: "/ort/ort-wasm-simd-threaded.mjs", wasm: "/ort/ort-wasm-simd-threaded.wasm" };
+    wasm.numThreads = 1;
+  }
 
-  const [processor, tokenizer, model, head] = await Promise.all([
+  const [processor, model, head] = await Promise.all([
     AutoProcessor.from_pretrained(MODEL_ID),
-    AutoTokenizer.from_pretrained(MODEL_ID),
     CLIPModel.from_pretrained(MODEL_ID, {
       dtype: "int8",
       progress_callback: (event: { status?: string; file?: string; progress?: number }) => {
@@ -61,8 +77,11 @@ async function build(onProgress?: (fraction: number) => void): Promise<Classifie
     fetch("/models/waste-head.json").then((response) => response.json() as Promise<Head>),
   ]);
 
-  // The combined CLIP model also wants text input. One short dummy prompt keeps that cost tiny.
-  const dummyText = tokenizer(["a photo"], { padding: true, truncation: true });
+  const ids = BigInt64Array.from(DUMMY_TOKEN_IDS.map(BigInt));
+  const dummyText = {
+    input_ids: new Tensor("int64", ids, [1, ids.length]),
+    attention_mask: new Tensor("int64", new BigInt64Array(ids.length).fill(BigInt(1)), [1, ids.length]),
+  };
 
   return {
     async classify(input) {
