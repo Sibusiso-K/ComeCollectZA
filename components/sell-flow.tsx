@@ -8,6 +8,7 @@ import { formatRand, formatPricePerKg } from "@/lib/money";
 import { Button } from "@/components/ui/button";
 import { MaterialTile } from "@/components/material-tile";
 import { BoardNotice } from "@/components/board-notice";
+import { MaterialScanner } from "@/components/material-scanner";
 
 const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "back"];
 const MAX_DIGITS = 6; // grams, so up to 999.999 kg
@@ -42,6 +43,7 @@ export function SellFlow({
 
       <section aria-labelledby="pick-material" className="flex flex-col gap-3">
         <h2 id="pick-material" className="text-sm font-bold text-muted">1. What are you selling?</h2>
+        <MaterialScanner onPick={setMaterial} />
         <div className="grid grid-cols-3 gap-2">
           {(Object.keys(MATERIALS) as Exclude<MaterialCode, "OTHER">[]).map((code) => (
             <MaterialTile
