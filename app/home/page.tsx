@@ -1,109 +1,114 @@
 "use client";
 
-import Link from "next/link";
-import { Recycle, Tag, Search } from "lucide-react";
-import { AppScreen, PageTitle } from "@/components/app/shell";
-import { ActionCard, Card, DeltaPill, DemoLabel, Donut, MaterialBadge, Ring, Sticker } from "@/components/app/bits";
-import { Orb } from "@/components/app/assistant";
-import { useT, usePrefs } from "@/lib/app/prefs";
-import { MONTH_BY_MATERIAL, SCORE } from "@/lib/app/demo-data";
-import { MATERIALS, MATERIAL_LABEL, formatRand, formatPerKg, type Material } from "@/lib/app/logic";
-import { getBoardPrices, bestPrice } from "@/lib/app/api";
 import { useEffect, useState } from "react";
-import type { BoardPrice } from "@/lib/app/demo-data";
-import { MATERIAL_VAR } from "@/components/app/bits";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { AppScreen } from "@/components/app/shell";
+import { Card, Gauge, MaterialBadge, SavedNote } from "@/components/app/bits";
+import { LoadScanner } from "@/components/app/scanner";
+import { useT } from "@/lib/app/prefs";
+import { firstName, useAuth } from "@/lib/app/auth";
+import { bestPrice, getBoardPrices, getMySales, type BoardPrice, type Fetched, type MySale } from "@/lib/app/api";
+import { MATERIALS, MATERIAL_LABEL, formatPerKg, formatRand } from "@/lib/app/logic";
+import { feeRecoveryPercent, monthTotals } from "@/lib/app/summary";
+import { PLACES, PLACE_ORDER } from "@/lib/app/photos";
 
 export default function Home() {
   const t = useT();
-  const { firstName } = usePrefs();
-  const [prices, setPrices] = useState<BoardPrice[]>([]);
+  const router = useRouter();
+  const { user, profile } = useAuth();
+  const [prices, setPrices] = useState<Fetched<BoardPrice[]> | null>(null);
+  const [sales, setSales] = useState<MySale[]>([]);
 
   useEffect(() => {
-    getBoardPrices().then((d) => setPrices(d.prices));
+    getBoardPrices().then(setPrices);
   }, []);
+  useEffect(() => {
+    if (user) getMySales(user.id).then((r) => setSales(r.data));
+    else setSales([]);
+  }, [user]);
 
-  const total = Object.values(MONTH_BY_MATERIAL).reduce((s, v) => s + v.cents, 0);
-  const parts = MATERIALS.map((m) => ({ value: MONTH_BY_MATERIAL[m].cents, color: MATERIAL_VAR[m] }));
+  const name = firstName(profile);
+  const recovery = feeRecoveryPercent(sales);
+  const month = monthTotals(sales);
 
   return (
-    <AppScreen>
-      <PageTitle>{t("Hello, {name}", { name: firstName })}</PageTitle>
-
-      <Card className="space-y-4 bg-primary text-primary-foreground">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-sm opacity-80">{t("Money this month")}</p>
-            <p className="font-dot text-4xl tabular-nums">{formatRand(total)}</p>
-          </div>
-          <DemoLabel className="border-primary-foreground/40 text-primary-foreground">{t("Demo data")}</DemoLabel>
-        </div>
-        <div className="flex items-center gap-4">
-          <Donut size={120} stroke={16} parts={parts} />
-          <ul className="min-w-0 flex-1 space-y-1 text-sm">
-            {MATERIALS.slice(0, 4).map((m) => (
-              <li key={m} className="flex items-center justify-between gap-2">
-                <span className="flex items-center gap-2 truncate">
-                  <span className="size-2.5 shrink-0 rounded-full" style={{ background: MATERIAL_VAR[m] }} aria-hidden />
-                  {t(MATERIAL_LABEL[m])}
-                </span>
-                <span className="font-mono tabular-nums">{formatRand(MONTH_BY_MATERIAL[m].cents)}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Card>
-
-      <Card className="flex items-center gap-4">
-        <Ring value={SCORE.today} size={92} />
-        <div className="min-w-0 flex-1">
-          <p className="font-display text-lg font-bold">{t("Today's score")}</p>
-          <p className="text-sm text-muted-foreground">{t("out of 100")}</p>
-          <div className="mt-1">
-            <DeltaPill>{t("+{n} vs last week", { n: SCORE.deltaVsLastWeek })}</DeltaPill>
-          </div>
-        </div>
-        <Sticker>{t("Small steps")}</Sticker>
-      </Card>
-
-      <div className="grid grid-cols-3 gap-3">
-        <Link href="/sell" className="grid min-h-24 place-items-center rounded-3xl bg-cta text-cta-foreground font-display font-bold">
-          <span className="flex flex-col items-center gap-1"><Recycle size={24} aria-hidden />{t("Sell")}</span>
-        </Link>
-        <Link href="/prices" className="grid min-h-24 place-items-center rounded-3xl bg-card font-display font-bold shadow-[var(--shadow-soft)]">
-          <span className="flex flex-col items-center gap-1"><Tag size={24} aria-hidden />{t("Prices")}</span>
-        </Link>
-        <Link href="/sell" className="grid min-h-24 place-items-center rounded-3xl bg-card font-display font-bold shadow-[var(--shadow-soft)]">
-          <span className="flex flex-col items-center gap-1"><Search size={24} aria-hidden />{t("Scan")}</span>
-        </Link>
+    <AppScreen place="orlando">
+      <div>
+        <p className="text-sm text-muted-foreground">{name ? t("Hello") : t("Welcome")}</p>
+        <h1 className="text-4xl font-extrabold leading-none">{name || t("What are you selling today?")}</h1>
       </div>
 
+      <LoadScanner onPick={(m) => router.push(`/sell?m=${m}`)} />
+
+      {user ? (
+        sales.length > 0 && (
+          <div className="grid gap-3">
+            <Card className="space-y-3">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-sm text-muted-foreground">{t("Money this month")}</p>
+                  <p className="text-4xl font-extrabold tabular-nums">{formatRand(month.cents)}</p>
+                </div>
+                <Link href="/money" className="font-bold text-primary underline underline-offset-4">{t("See all")}</Link>
+              </div>
+            </Card>
+            {recovery !== null && (
+              <Card className="space-y-2">
+                <h2 className="text-lg font-extrabold">{t("Service fees paid")}</h2>
+                <Gauge value={recovery} label={t("Service fees paid")} caption={t("of fees raised")} />
+              </Card>
+            )}
+          </div>
+        )
+      ) : (
+        <Card className="space-y-3">
+          <h2 className="text-xl font-extrabold">{t("Keep your sales and your code")}</h2>
+          <p className="text-sm text-muted-foreground">
+            {t("A free account saves your sales, tracks the fees you are owed, and lets you post on the market.")}
+          </p>
+          <Link href="/sign-in" className="flex min-h-14 items-center justify-center rounded-full bg-primary px-6 text-lg font-extrabold text-primary-foreground">
+            {t("Create account")}
+          </Link>
+        </Card>
+      )}
+
       <section aria-labelledby="board" className="space-y-3">
-        <div className="flex items-end justify-between">
-          <h2 id="board" className="font-display text-2xl font-bold">{t("Board prices")}</h2>
-          <DemoLabel />
+        <div className="flex items-center justify-between gap-2">
+          <h2 id="board" className="text-2xl font-extrabold">{t("Board prices")}</h2>
+          {prices && <SavedNote fromCache={prices.fromCache} savedAt={prices.savedAt} />}
         </div>
         <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
           {MATERIALS.map((m) => {
-            const best = prices.length ? bestPrice(prices, m) : null;
+            const best = prices ? bestPrice(prices.data, m) : undefined;
             return (
-              <div key={m} className="min-w-40 space-y-2 rounded-3xl bg-card p-4 shadow-[var(--shadow-soft)]">
+              <Link href="/prices" key={m} className="glass min-w-40 space-y-2 rounded-3xl p-4">
                 <MaterialBadge m={m} size={36} />
                 <p className="font-bold">{t(MATERIAL_LABEL[m])}</p>
-                <p className="font-mono text-lg tabular-nums">{best ? formatPerKg(best.centsPerKg) : "…"}</p>
-                <p className="text-xs text-muted-foreground">{best?.centre ?? ""}</p>
-              </div>
+                <p className="text-lg font-extrabold tabular-nums">{best ? formatPerKg(best.centsPerKg) : prices ? t("No price yet") : "…"}</p>
+                <p className="truncate text-xs text-muted-foreground">{best?.centre ?? ""}</p>
+              </Link>
             );
           })}
         </div>
       </section>
 
-      <Link href="/assistant" className="block">
-        <ActionCard
-          icon={<Orb size={40} />}
-          title={t("Ask the assistant")}
-          subtitle={t("Scripted answers for the demo")}
-        />
-      </Link>
+      <section aria-labelledby="areas" className="space-y-3">
+        <h2 id="areas" className="text-2xl font-extrabold">{t("Explore your area")}</h2>
+        <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
+          {PLACE_ORDER.map((p) => (
+            <Link
+              key={p}
+              href={`/market?area=${encodeURIComponent(PLACES[p].label)}`}
+              className="relative block h-32 w-44 shrink-0 overflow-hidden rounded-3xl"
+              style={{ backgroundImage: `url(${PLACES[p].src})`, backgroundSize: "cover", backgroundPosition: "center" }}
+            >
+              <span className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" aria-hidden />
+              <span className="absolute bottom-3 left-3 text-lg font-extrabold text-white">{PLACES[p].label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
     </AppScreen>
   );
 }

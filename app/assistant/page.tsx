@@ -7,7 +7,7 @@ import { useT } from "@/lib/app/prefs";
 export default function Assistant() {
   const t = useT();
   return (
-    <AppScreen>
+    <AppScreen place="orlando">
       <PageTitle>{t("Assistant")}</PageTitle>
       <AssistantChat />
     </AppScreen>

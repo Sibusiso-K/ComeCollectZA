@@ -89,7 +89,7 @@ Users must be real and trusted before money or data moves. Verification is stepp
 | 2. Business | Taverns, bottle stores, buyers | CIPC registration or liquor licence number, address pin, and a first pickup confirmed by a level 1 reclaimer | Pickup listings, marketplace sales |
 | Ongoing | Everyone | Two-sided QR handshake on pickups, ratings after each pickup, anomaly rules on weights and duplicate photos, server-side audit log | Trust score shown to the other side |
 
-What is built today: QR codes, operator checks in the sales route, anomaly rules in `record_sale()`, and the audit log. Phone sign-in, profile photos, business checks and ratings are not built.
+What is built today: email accounts with reclaimer and business roles, one code per reclaimer, operator checks in the sales route, anomaly rules in `record_sale()`, the audit log, and marketplace posts. Phone sign-in, profile photos, business document checks, ratings and a way to contact a poster are not built.
 
 POPIA: collect the minimum (phone, area, age band, photo with consent), never sell personal data, and share only aggregates with PROs and buyers.
 

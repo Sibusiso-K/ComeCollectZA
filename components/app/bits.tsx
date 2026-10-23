@@ -1,19 +1,11 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type HTMLAttributes, type ReactNode } from "react";
 import { Box, ChevronRight, CupSoda, FileText, Milk, Package, Wine } from "lucide-react";
 import { useT, usePrefs } from "@/lib/app/prefs";
 import type { Material } from "@/lib/app/logic";
 import { cn } from "@/lib/utils";
 
-export const MATERIAL_BG: Record<Material, string> = {
-  cans: "bg-m-cans",
-  pet: "bg-m-pet",
-  hdpe: "bg-m-hdpe",
-  cardboard: "bg-m-cardboard",
-  paper: "bg-m-paper",
-  glass: "bg-m-glass",
-};
 export const MATERIAL_VAR: Record<Material, string> = {
   cans: "var(--m-cans)",
   pet: "var(--m-pet)",
@@ -27,18 +19,28 @@ const ICON: Record<Material, typeof Box> = { cans: CupSoda, pet: Milk, hdpe: Mil
 export function MaterialBadge({ m, size = 44 }: { m: Material; size?: number }) {
   const I = ICON[m];
   return (
-    <span className={cn("grid shrink-0 place-items-center rounded-full text-on-bright", MATERIAL_BG[m])} style={{ width: size, height: size }} aria-hidden>
+    <span className="grid shrink-0 place-items-center rounded-full text-on-bright" style={{ width: size, height: size, background: MATERIAL_VAR[m] }} aria-hidden>
       <I size={size * 0.5} />
     </span>
   );
 }
 
-export function DemoLabel({ className, children }: { className?: string; children?: ReactNode }) {
-  const t = useT();
+export function Pill({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full border border-border px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-muted-foreground", className)}>
-      {children ?? t("Demo data")}
+    <span className={cn("inline-flex items-center rounded-full border border-border px-2.5 py-0.5 text-xs font-bold tracking-wide text-muted-foreground", className)}>
+      {children}
     </span>
+  );
+}
+
+/** Says when a screen is showing the copy saved on the phone instead of fresh data. */
+export function SavedNote({ fromCache, savedAt }: { fromCache: boolean; savedAt: string | null }) {
+  const t = useT();
+  if (!fromCache) return null;
+  return (
+    <Pill>
+      {savedAt ? t("Saved copy from {date}", { date: new Date(savedAt).toLocaleDateString("en-ZA", { day: "numeric", month: "short" }) }) : t("No saved copy yet")}
+    </Pill>
   );
 }
 
@@ -46,12 +48,13 @@ export function Sticker({ children, className }: { children: ReactNode; classNam
   return <span className={cn("sticker", className)}>{children}</span>;
 }
 
-export function Card({ children, className, glass }: { children: ReactNode; className?: string; glass?: boolean }) {
-  return <section className={cn("rounded-3xl p-5", glass ? "glass" : "bg-card shadow-[var(--shadow-soft)]", className)}>{children}</section>;
-}
-
-export function DeltaPill({ children }: { children: ReactNode }) {
-  return <span className="inline-flex items-center gap-1 rounded-full bg-highlight px-2.5 py-1 text-sm font-bold text-on-bright">▲ {children}</span>;
+/** Frosted glass, as in the design reference. Pass solid for a filled accent card. */
+export function Card({ children, className, solid, ...rest }: { children: ReactNode; className?: string; solid?: boolean } & HTMLAttributes<HTMLElement>) {
+  return (
+    <section {...rest} className={cn("rounded-3xl p-5", solid ? "bg-primary text-primary-foreground shadow-[var(--shadow-soft)]" : "glass", className)}>
+      {children}
+    </section>
+  );
 }
 
 export function Bar({ value, max, color = "var(--primary)" }: { value: number; max: number; color?: string }) {
@@ -59,6 +62,16 @@ export function Bar({ value, max, color = "var(--primary)" }: { value: number; m
   return (
     <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary" role="presentation">
       <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
+    </div>
+  );
+}
+
+/** A horizontal bar from red (low) to green (high) with a marker, like the weather bar in the reference. */
+export function RangeBar({ position, label }: { position: number; label: string }) {
+  const p = Math.max(0, Math.min(1, position));
+  return (
+    <div role="img" aria-label={label} className="relative h-3 w-full rounded-full" style={{ background: "linear-gradient(90deg, var(--g3), var(--g2) 50%, var(--g1))" }}>
+      <span className="absolute top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-background bg-foreground" style={{ left: `${p * 100}%` }} />
     </div>
   );
 }
@@ -98,17 +111,8 @@ export function Donut({
         {parts.map((p, i) => {
           const len = (p.value / total) * c;
           const el = (
-            <circle
-              key={i}
-              cx={size / 2}
-              cy={size / 2}
-              r={r}
-              fill="none"
-              stroke={p.color}
-              strokeWidth={stroke}
-              strokeDasharray={`${Math.max(len - 2, 0)} ${c}`}
-              strokeDashoffset={-offset}
-            />
+            <circle key={i} cx={size / 2} cy={size / 2} r={r} fill="none" stroke={p.color} strokeWidth={stroke}
+              strokeDasharray={`${Math.max(len - 2, 0)} ${c}`} strokeDashoffset={-offset} />
           );
           offset += len;
           return el;
@@ -119,30 +123,33 @@ export function Donut({
   );
 }
 
-export function Ring({ value, max = 100, size = 96 }: { value: number; max?: number; size?: number }) {
+/** The half-circle gauge from the reference, red on the left to green on the right. */
+export function Gauge({ value, max = 100, label, caption }: { value: number; max?: number; label: string; caption: string }) {
+  const w = 240;
+  const r = 98;
+  const cx = w / 2;
+  const cy = 120;
+  const arc = `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`;
+  const len = Math.PI * r;
+  const frac = Math.max(0, Math.min(1, value / max));
   return (
-    <Donut
-      size={size}
-      stroke={10}
-      parts={[
-        { value, color: "var(--primary)" },
-        { value: max - value, color: "transparent" },
-      ]}
-      center={<span className="font-dot text-2xl">{value}</span>}
-    />
-  );
-}
-
-export function Spark({ values, color = "var(--primary)" }: { values: number[]; color?: string }) {
-  const max = Math.max(...values);
-  const min = Math.min(...values);
-  const pts = values
-    .map((v, i) => `${(i / (values.length - 1)) * 100},${30 - ((v - min) / (max - min || 1)) * 26 - 2}`)
-    .join(" ");
-  return (
-    <svg viewBox="0 0 100 30" className="h-8 w-full" preserveAspectRatio="none" aria-hidden>
-      <polyline points={pts} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-    </svg>
+    <div className="relative mx-auto w-full max-w-60" role="img" aria-label={`${label}: ${value} of ${max}`}>
+      <svg viewBox={`0 0 ${w} 132`} className="w-full" aria-hidden>
+        <defs>
+          <linearGradient id="gauge-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="var(--g3)" />
+            <stop offset="0.5" stopColor="var(--g2)" />
+            <stop offset="1" stopColor="var(--g1)" />
+          </linearGradient>
+        </defs>
+        <path d={arc} fill="none" stroke="var(--secondary)" strokeWidth="18" strokeLinecap="round" />
+        <path d={arc} fill="none" stroke="url(#gauge-grad)" strokeWidth="18" strokeLinecap="round" strokeDasharray={`${len * frac} ${len}`} />
+      </svg>
+      <div className="absolute inset-x-0 bottom-0 text-center">
+        <p className="text-xs text-muted-foreground">{caption}</p>
+        <p className="text-4xl font-extrabold tabular-nums leading-none">{value}%</p>
+      </div>
+    </div>
   );
 }
 
@@ -165,10 +172,7 @@ export function Segmented<T extends string>({
           role="tab"
           aria-selected={value === o.value}
           onClick={() => onChange(o.value)}
-          className={cn(
-            "min-h-12 rounded-full px-3 font-bold transition-colors",
-            value === o.value ? "bg-foreground text-background" : "text-muted-foreground",
-          )}
+          className={cn("min-h-12 rounded-full px-3 font-bold transition-colors", value === o.value ? "bg-foreground text-background" : "text-muted-foreground")}
         >
           {o.label}
         </button>
@@ -195,7 +199,7 @@ export function PillButton({
   const v = {
     primary: "bg-primary text-primary-foreground",
     cta: "bg-cta text-cta-foreground",
-    ghost: "border border-border bg-card text-foreground",
+    ghost: "glass text-foreground",
   }[variant];
   return (
     <button
@@ -203,7 +207,7 @@ export function PillButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full px-6 font-display text-lg font-bold transition-transform active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full px-6 text-lg font-extrabold transition-transform active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
         v,
         className,
       )}
@@ -241,12 +245,25 @@ export function ListRow({
 
 export function ActionCard({ icon, title, subtitle, onClick }: { icon: ReactNode; title: string; subtitle: string; onClick?: () => void }) {
   return (
-    <button onClick={onClick} className="flex w-full items-center gap-4 rounded-3xl bg-card p-4 text-left shadow-[var(--shadow-soft)]">
+    <button onClick={onClick} className="glass flex w-full items-center gap-4 rounded-3xl p-4 text-left">
       <span className="grid size-12 shrink-0 place-items-center rounded-full bg-highlight text-on-bright">{icon}</span>
       <span className="min-w-0">
-        <span className="block font-display text-lg font-bold">{title}</span>
+        <span className="block text-lg font-extrabold">{title}</span>
         <span className="block text-sm text-muted-foreground">{subtitle}</span>
       </span>
     </button>
   );
 }
+
+export function EmptyState({ title, body, children }: { title: string; body: string; children?: ReactNode }) {
+  return (
+    <div className="glass space-y-3 rounded-3xl p-6 text-center">
+      <p className="text-xl font-extrabold">{title}</p>
+      <p className="text-sm text-muted-foreground">{body}</p>
+      {children}
+    </div>
+  );
+}
+
+export const inputClass =
+  "min-h-14 w-full rounded-2xl border border-border bg-secondary px-4 text-base text-foreground placeholder:text-muted-foreground";

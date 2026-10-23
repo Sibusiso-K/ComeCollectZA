@@ -15,7 +15,8 @@ The product uses free, open-source models only. No paid model APIs are called fr
 | Material suggestion from a photo, including mixed loads (built) | TinyCLIP ViT-8M, int8, plus a 30 KB classifier head trained on TrashNet. Scores the whole photo and its four quarters. Runs on the phone with no data after the first download | MIT (model), MIT (TrashNet) | In the browser, using transformers.js | The reclaimer picks a material by hand |
 | isiZulu speech to text (stretch) | `uctnlp/omniASR-CTC-300M-v2-Zulu-All-v2` | Apache-2.0 | Hugging Face ZeroGPU Gradio Space | Icons and typing |
 | English and Afrikaans speech to text (stretch) | `openai/whisper-large-v3-turbo` | MIT | Same Space | Icons and typing |
-| Assistant answers (stretch) | Gemma 4 on OpenRouter, given the recommendation as context | Open weights. Confirm the licence | OpenRouter free tier | Template answers per language |
+| Assistant answers | Built as a lookup, not a model: it reads the live board, the national ranges and the person's own fees, and writes the answer from templates | Own code | In the browser | Says there are no saved prices yet |
+| Assistant answers, with a language model (stretch) | Gemma 4 on OpenRouter, given the recommendation as context | Open weights. Confirm the licence | OpenRouter free tier | The lookup above |
 
 Current code: the on-device material scanner and the QR reader run in the app. The server-side models in this table, such as the forecast and the speech models, are not called yet.
 

@@ -1,28 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { QRCodeSVG } from "qrcode.react";
 import { AppScreen, PageTitle } from "@/components/app/shell";
-import { Card, DemoLabel, ListRow, MaterialBadge, Sticker } from "@/components/app/bits";
+import { Card, EmptyState, ListRow, MaterialBadge, PillButton, SavedNote, Sticker } from "@/components/app/bits";
 import { useT } from "@/lib/app/prefs";
-import { getImpact, getMyMoney } from "@/lib/app/api";
-import { RECENT_SALES, type Sale } from "@/lib/app/demo-data";
-import {
-  MATERIAL_LABEL,
-  formatHundredths,
-  formatKg,
-  formatRand,
-  formatCo2Grams,
-  formatTonnes,
-  saleCents,
-  workDaysHundredths,
-  type Material,
-} from "@/lib/app/logic";
+import { useAuth } from "@/lib/app/auth";
+import { getMySales, type Fetched, type MySale } from "@/lib/app/api";
+import { MATERIAL_LABEL, formatCo2Grams, formatHundredths, formatKg, formatRand, formatTonnes, workDaysHundredths } from "@/lib/app/logic";
+import { allTimeImpact, feeTotals, monthTotals } from "@/lib/app/summary";
 
 /** Counts up to the latest sale with timers, not requestAnimationFrame, so it still finishes in a hidden tab. */
-function useCountUp(target: number, reduced: boolean) {
+function useCountUp(target: number) {
   const [value, setValue] = useState(target);
   useEffect(() => {
-    if (reduced) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setValue(target);
       return;
     }
@@ -39,105 +32,125 @@ function useCountUp(target: number, reduced: boolean) {
       clearInterval(id);
       clearTimeout(settle);
     };
-  }, [target, reduced]);
+  }, [target]);
   return value;
 }
 
 export default function Money() {
   const t = useT();
-  const [fees, setFees] = useState({ paidCents: 0, owedCents: 0, missingCents: 0 });
-  const [monthCents, setMonthCents] = useState(0);
-  const [sales, setSales] = useState<Sale[]>([]);
-  const [impact, setImpact] = useState<{ totalGrams: number; co2Grams: number; payCents: number } | null>(null);
-  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const { ready, user, profile } = useAuth();
+  const [sales, setSales] = useState<Fetched<MySale[]> | null>(null);
+  const [showCode, setShowCode] = useState(false);
 
   useEffect(() => {
-    getMyMoney().then((m) => {
-      setFees({ paidCents: m.fees.paidCents, owedCents: m.fees.owedCents, missingCents: m.fees.missingCents });
-      setMonthCents(m.monthCents);
-      setSales(m.sales);
-    });
-    getImpact("month").then((i) => setImpact(i));
-  }, []);
+    if (user) getMySales(user.id).then(setSales);
+  }, [user]);
 
-  const latest = sales[0] ?? RECENT_SALES[0];
-  const latestCents = saleCents(latest.grams, latest.centsPerKg);
-  const shown = useCountUp(latestCents, reduced);
-  const workDays = impact ? formatHundredths(workDaysHundredths(impact.payCents)) : "…";
+  const list = sales?.data ?? [];
+  const latest = list[0];
+  const shown = useCountUp(latest?.amountCents ?? 0);
+
+  if (!ready) {
+    return (
+      <AppScreen place="kliptown">
+        <PageTitle>{t("My money")}</PageTitle>
+      </AppScreen>
+    );
+  }
+
+  if (!user) {
+    return (
+      <AppScreen place="kliptown">
+        <PageTitle>{t("My money")}</PageTitle>
+        <EmptyState title={t("Sign in to see your money")} body={t("Your sales, fees and impact are saved to your account.")}>
+          <Link href="/sign-in" className="flex min-h-14 items-center justify-center rounded-full bg-primary px-6 text-lg font-extrabold text-primary-foreground">{t("Sign in")}</Link>
+        </EmptyState>
+      </AppScreen>
+    );
+  }
+
+  if (profile && profile.role !== "reclaimer") {
+    return (
+      <AppScreen place="kliptown">
+        <PageTitle>{t("My money")}</PageTitle>
+        <EmptyState title={t("This screen is for reclaimers")} body={t("Business, centre and programme accounts do not have a sales history here.")} />
+      </AppScreen>
+    );
+  }
+
+  const fees = feeTotals(list);
+  const month = monthTotals(list);
+  const impact = allTimeImpact(list);
 
   return (
-    <AppScreen>
-      <PageTitle aside={<DemoLabel />}>{t("My money")}</PageTitle>
+    <AppScreen place="kliptown">
+      <PageTitle aside={sales && <SavedNote fromCache={sales.fromCache} savedAt={sales.savedAt} />}>{t("My money")}</PageTitle>
 
-      <Card className="space-y-2 bg-primary text-primary-foreground">
-        <p className="text-sm opacity-80">
-          {t("Latest sale: {kg} of {material} at {centre}", {
-            kg: formatKg(latest.grams),
-            material: t(MATERIAL_LABEL[latest.material]),
-            centre: latest.centre,
-          })}
-        </p>
-        <p className="font-dot text-5xl tabular-nums" aria-live="polite">{formatRand(shown)}</p>
-        <p className="text-sm opacity-80">{t("This month: {amount}", { amount: formatRand(monthCents) })}</p>
-      </Card>
-
-      <section className="grid grid-cols-3 gap-2 text-center" aria-labelledby="fees">
-        <h2 id="fees" className="sr-only">{t("Service fees")}</h2>
-        <Card className="p-3">
-          <p className="text-xs text-muted-foreground">{t("Paid")}</p>
-          <p className="font-mono text-sm tabular-nums">{formatRand(fees.paidCents)}</p>
+      {latest ? (
+        <Card solid className="space-y-2">
+          <p className="text-sm opacity-80">
+            {t("Latest sale: {kg} of {material} at {centre}", { kg: formatKg(latest.grams), material: t(MATERIAL_LABEL[latest.material]), centre: latest.centre })}
+          </p>
+          <p className="text-5xl font-extrabold tabular-nums" aria-live="polite">{formatRand(shown)}</p>
+          <p className="text-sm opacity-80">{t("This month: {amount}", { amount: formatRand(month.cents) })}</p>
         </Card>
-        <Card className="p-3">
-          <p className="text-xs text-muted-foreground">{t("Still owed")}</p>
-          <p className="font-mono text-sm tabular-nums">{formatRand(fees.owedCents)}</p>
-        </Card>
-        <Card className="p-3">
-          <p className="text-xs text-muted-foreground">{t("Missing")}</p>
-          <p className="font-mono text-sm tabular-nums text-warning">{formatRand(fees.missingCents)}</p>
-        </Card>
-      </section>
+      ) : (
+        <EmptyState title={t("No sales yet")} body={t("Scan your load, pick a material, then show your code at a buy-back centre. Your first sale will appear here.")}>
+          <Link href="/home" className="flex min-h-14 items-center justify-center rounded-full bg-primary px-6 text-lg font-extrabold text-primary-foreground">{t("Scan a load")}</Link>
+        </EmptyState>
+      )}
 
-      <Card className="space-y-3" aria-labelledby="impact">
-        <div className="flex items-center justify-between gap-2">
-          <h2 id="impact" className="font-display text-xl font-bold">{t("My impact")}</h2>
-          <Sticker>{t("This month")}</Sticker>
-        </div>
-        <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="rounded-2xl bg-secondary p-3">
-            <p className="text-xs text-muted-foreground">{t("Kept from landfill")}</p>
-            <p className="font-dot text-lg">{impact ? formatTonnes(impact.totalGrams) : "…"}</p>
-          </div>
-          <div className="rounded-2xl bg-secondary p-3">
-            <p className="text-xs text-muted-foreground">{t("CO2e avoided")}</p>
-            <p className="font-dot text-lg">{impact ? formatCo2Grams(impact.co2Grams).replace(" CO2e", "") : "…"}</p>
-          </div>
-          <div className="rounded-2xl bg-secondary p-3">
-            <p className="text-xs text-muted-foreground">{t("Work days paid")}</p>
-            <p className="font-dot text-lg">{workDays}</p>
-          </div>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          {t("CO2e from US EPA WARM v16 factors. Work days use the 2026 minimum wage of R30.23 an hour.")}
-        </p>
-      </Card>
+      {profile?.qrToken &&
+        (showCode ? (
+          <Card className="flex flex-col items-center gap-3">
+            <div className="rounded-2xl bg-white p-3"><QRCodeSVG value={profile.qrToken} size={200} marginSize={1} /></div>
+            <p className="text-lg font-extrabold tracking-wider">{profile.qrToken}</p>
+            <PillButton variant="ghost" onClick={() => setShowCode(false)}>{t("Hide my code")}</PillButton>
+          </Card>
+        ) : (
+          <PillButton variant="cta" onClick={() => setShowCode(true)}>{t("Show my code")}</PillButton>
+        ))}
 
-      <section className="space-y-2" aria-labelledby="recent">
-        <h2 id="recent" className="font-display text-xl font-bold">{t("Recent sales")}</h2>
-        <ul className="divide-y divide-border">
-            {(sales.length ? sales : RECENT_SALES).map((s) => (
-              <li key={s.id}>
-                <ListRow
-                  chevron={false}
-                  left={<MaterialBadge m={s.material as Material} size={40} />}
-                  title={`${t(MATERIAL_LABEL[s.material])} · ${formatKg(s.grams)}`}
-                  subtitle={`${s.centre} · ${s.date} · ${t("Fee")}: ${t(s.fee)}`}
-                  right={<span className="font-mono tabular-nums">{formatRand(saleCents(s.grams, s.centsPerKg))}</span>}
-                />
-              </li>
-            ))}
-        </ul>
-      </section>
+      {list.length > 0 && (
+        <>
+          <section className="grid grid-cols-3 gap-2 text-center" aria-labelledby="fees">
+            <h2 id="fees" className="sr-only">{t("Service fees")}</h2>
+            <Card className="p-3"><p className="text-xs text-muted-foreground">{t("Paid")}</p><p className="text-sm font-extrabold tabular-nums">{formatRand(fees.paidCents)}</p></Card>
+            <Card className="p-3"><p className="text-xs text-muted-foreground">{t("Still owed")}</p><p className="text-sm font-extrabold tabular-nums">{formatRand(fees.owedCents)}</p></Card>
+            <Card className="p-3"><p className="text-xs text-muted-foreground">{t("Missing")}</p><p className="text-sm font-extrabold tabular-nums text-warning">{formatRand(fees.missingCents)}</p></Card>
+          </section>
 
+          <Card className="space-y-3" aria-labelledby="impact">
+            <div className="flex items-center justify-between gap-2">
+              <h2 id="impact" className="text-xl font-extrabold">{t("My impact")}</h2>
+              <Sticker>{t("Since you joined")}</Sticker>
+            </div>
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div className="rounded-2xl bg-secondary p-3"><p className="text-xs text-muted-foreground">{t("Kept from landfill")}</p><p className="text-lg font-extrabold">{formatTonnes(impact.grams)}</p></div>
+              <div className="rounded-2xl bg-secondary p-3"><p className="text-xs text-muted-foreground">{t("CO2e avoided")}</p><p className="text-lg font-extrabold">{formatCo2Grams(impact.co2Grams).replace(" CO2e", "")}</p></div>
+              <div className="rounded-2xl bg-secondary p-3"><p className="text-xs text-muted-foreground">{t("Work days paid")}</p><p className="text-lg font-extrabold">{formatHundredths(workDaysHundredths(impact.payCents))}</p></div>
+            </div>
+            <p className="text-xs text-muted-foreground">{t("CO2e from US EPA WARM v16 factors. Work days use the 2026 minimum wage of R30.23 an hour.")}</p>
+          </Card>
+
+          <section className="space-y-2" aria-labelledby="recent">
+            <h2 id="recent" className="text-xl font-extrabold">{t("Recent sales")}</h2>
+            <ul className="glass divide-y divide-border rounded-3xl px-4">
+              {list.slice(0, 20).map((s) => (
+                <li key={s.id}>
+                  <ListRow
+                    chevron={false}
+                    left={<MaterialBadge m={s.material} size={40} />}
+                    title={`${t(MATERIAL_LABEL[s.material])} · ${formatKg(s.grams)}`}
+                    subtitle={`${s.centre} · ${new Date(s.createdAt).toLocaleDateString("en-ZA", { day: "numeric", month: "short" })}${s.fee ? ` · ${t("Fee")}: ${t(s.fee.status)}` : ""}`}
+                    right={<span className="font-extrabold tabular-nums">{formatRand(s.amountCents)}</span>}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        </>
+      )}
     </AppScreen>
   );
 }

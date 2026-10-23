@@ -39,3 +39,19 @@ grep -rlE "service_role|sb_secret|SUPABASE_SERVICE" .next/static   # must print 
 curl -sI https://comecollectza.vercel.app/reclaimer                 # check the headers above
 openssl s_client -connect comecollectza.vercel.app:443 -tls1_1      # must fail
 ```
+
+## Changes with the MVP (23 Oct 2026, night)
+
+| Area | What changed |
+|---|---|
+| Who can become what | The API no longer lets anyone register as an operator or PRO analyst. Only `reclaimer` and `business` are self-service. Administrators assign the rest in the dashboard. Found by review: the first version of the profile policy allowed `operator`. |
+| New functions | `register_reclaimer`, `register_business`, `lookup_reclaimer`, `create_market_post`, `pro_overview` need a signed-in caller. `market_points` and `board_prices` are public on purpose. Each function that needs a role checks it inside. The Supabase advisor lists them as warnings. That is expected. |
+| Location privacy | Post locations are snapped to about 250 m in the database. The exact point is never returned to other people. The form says so before posting. |
+| Abuse limits | At most 20 open posts per person. Posts expire after 14 days. Text fields have length limits in the database. |
+| Browser rules | The content security policy now allows map tiles from `tile.openstreetmap.org`, and nothing else new. Camera and location are allowed on this site only. |
+| Sessions | Supabase sets the session cookie. The service key never reaches the browser. |
+| Registration race | Two registrations for the same person at the same moment could loop until a timeout. Fixed in migration 0006. The client now shares one request. |
+| iPhone | The status bar style is solid, so the header can never sit under the clock. |
+| Personal data | Name, area and an age band, with consent in plain words at sign-up. The age band feeds only the programme's youth total. Programme screens show totals, never names. |
+
+Still open: rate limits on the sales route, nonces for the content security policy, a DAST scan, and phone number verification.

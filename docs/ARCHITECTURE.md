@@ -208,32 +208,50 @@ flowchart LR
 - **QR codes.** The centre console reads reclaimer codes with the browser's BarcodeDetector where it exists and with jsQR elsewhere.
 - **Installable.** `app/manifest.ts` makes the app installable, and `public/sw.js` caches static files and the last copy of a page. It never caches `/api/` or the money screen.
 
-## Planned: pickups, marketplace and trust
+## Accounts, data and the marketplace (built)
 
 ```mermaid
-sequenceDiagram
-  autonumber
-  participant T as Tavern owner
-  participant API as Next.js API
-  participant R as Reclaimer nearby
-  participant C as Buy-back centre
-  T->>T: Scans the pile on the phone (no upload)
-  T->>API: POST /api/v1/pickups (materials, rough kg, time window)
-  API-->>R: Pickup nearby (push, SMS fallback)
-  R->>API: Claim pickup
-  R->>T: Collects, both scan each other's QR
-  T->>API: Handshake confirms the pickup
-  R->>C: Sells the sorted load as usual
-  C->>API: Weighed sale linked to the pickup
+flowchart LR
+  subgraph Phone["Phone or browser"]
+    UI["Next.js screens<br/>saved pages, offline"]
+    SC["Scanner<br/>TinyCLIP in the browser"]
+  end
+  subgraph Vercel["Vercel"]
+    API["/api/v1/centre/transactions<br/>checks session, centre, price"]
+  end
+  subgraph SB["Supabase"]
+    AU["Auth<br/>email and password"]
+    RPC["Functions<br/>board_prices, market_points,<br/>register_reclaimer, lookup_reclaimer,<br/>create_market_post, pro_overview"]
+    TB[("Tables with row level security")]
+  end
+  UI -->|session cookie| AU
+  UI -->|public key, RLS decides| RPC
+  UI -->|bearer token| API
+  API -->|service key, server only| TB
+  RPC --> TB
+  SC --> UI
 ```
 
-Trust levels, the marketplace and the revenue that pays for it are in [BUSINESS_MODEL.md](BUSINESS_MODEL.md). New tables: `businesses`, `pickups`, `pickup_claims`, `ratings`, `wanted_prices`, `lots`. Every table keeps row level security: a business sees only its own pickups, and a reclaimer sees open pickups near them without the business's private details until they claim.
+- **One data layer.** `lib/app/api.ts` is the only code that talks to Supabase. Every read keeps its last good copy on the phone, so a screen opens with no signal and says it is a saved copy.
+- **Accounts.** People sign up with email and password. The sign-up form's answers (name, area, age band, reclaimer or business) travel in the account's metadata. On first sign-in the app calls `register_reclaimer()` or `register_business()`, which create the profile and, for a reclaimer, the one unique code. Both are safe to call twice at once.
+- **Roles.** `reclaimer` and `business` are self-service. `operator` (a centre) and `pro` (a programme analyst) are assigned by an administrator, and no API call can create them.
+- **Prices.** `board_prices()` is public. Centre operators insert price rows for their own centre, and every insert becomes the new board price.
+- **Selling.** A reclaimer shows their code. The operator looks it up (`lookup_reclaimer()`, operators only) and records the weighed sale through the server route, which checks the operator's session, the centre and the board price, then calls `record_sale()` in one transaction.
+- **Marketplace.** `market_points()` returns each centre's prices and every open post. Post locations are snapped to a grid of about 250 m inside the database, so the exact spot is never sent to other people. The map groups a centre's prices under one pin. A person can have 20 open posts, and posts expire after 14 days.
+- **Programme totals.** `pro_overview()` and `pro_material_summary()` return totals for PRO analysts and nothing for anyone else.
+- **Impact.** Worked out in the browser from the person's own sales (`lib/app/summary.ts`), using South African time for days and months.
+
+## Not built yet
+
+- A way for buyers and sellers to contact each other from a post.
+- Payouts and the SAWPRS registration check.
+- Phone number sign-in (needs an SMS service).
+- An offline queue for writes.
+- Realtime updates when a centre records a sale.
 
 ## Known gaps
 
-- Demo auth users are not created yet, so role checks have not been run with real sign-ins.
-- The sales route does not store data yet.
-- Authentication and demo accounts are not created.
-- Payouts and SAWPRS registration are mocks.
-- The service worker and offline reading are built. Offline writes (a queue) and realtime updates are not.
-- Pickups, the marketplace, phone sign-in and business checks are designed, not built.
+- Sale recording works only once `SUPABASE_SERVICE_ROLE_KEY` is set on the server.
+- Centre and programme accounts are created by an administrator. See [ADMIN.md](ADMIN.md).
+- The seeded centres hold demo prices.
+- Offline reading and the scanner work with no signal. Offline writing does not.

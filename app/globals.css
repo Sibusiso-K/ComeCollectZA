@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
-/* Dark mode follows the .dark class, set by the theme script (see lib/app/prefs.tsx). */
+/* Dark mode follows the .dark class, set by the theme script (see lib/app/theme-boot.ts). */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: var(--font-display-face), system-ui, sans-serif;
-  --font-sans: var(--font-body-face), system-ui, sans-serif;
-  --font-dot: var(--font-dot-face), ui-monospace, monospace;
+  --font-display: var(--font-manrope), system-ui, sans-serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-dot: var(--font-manrope), system-ui, sans-serif;
   --radius-2xl: 1.5rem;
   --radius-3xl: 1.75rem;
   --color-background: var(--background);
@@ -37,71 +37,80 @@
   --color-m-glass: var(--m-glass);
 }
 
+/* Light: a pale leaf-green wash with frosted white glass. */
 :root {
   --radius: 1.25rem;
-  --background: oklch(0.968 0.005 117.9);
-  --foreground: oklch(0.187 0.008 145.3);
-  --card: oklch(1 0 0);
-  --secondary: oklch(0.928 0.01 119.6);
-  --muted-foreground: oklch(0.498 0.018 154.1);
-  --primary: oklch(0.512 0.116 157.9);
-  --primary-foreground: oklch(1 0 0);
-  --highlight: oklch(0.903 0.208 122.9);
-  --on-bright: oklch(0.163 0.009 152.9);
-  --purple: oklch(0.685 0.189 296.4);
-  --pink: oklch(0.711 0.203 357.7);
-  --warning: oklch(0.634 0.199 38.7);
-  --cta: oklch(0.634 0.199 38.7);
-  --cta-foreground: oklch(0.163 0.009 152.9);
-  --success: oklch(0.512 0.116 157.9);
-  --border: oklch(0.88 0.013 126.4);
-  --ring: oklch(0.512 0.116 157.9);
-  --nav: oklch(0.187 0.008 145.3);
-  --nav-foreground: oklch(0.88 0.013 126.4);
-  --nav-active: oklch(0.903 0.208 122.9);
-  --glass: oklch(1 0 0 / 0.72);
-  --glow: radial-gradient(circle at 35% 30%, oklch(0.95 0.15 122.9), oklch(0.75 0.2 122.9) 40%, oklch(0.685 0.189 296.4) 75%, oklch(0.711 0.203 357.7));
-  --shadow-soft: 0 10px 30px -14px oklch(0.187 0.008 145.3 / 0.25);
-  --m-cans: oklch(0.707 0.038 249.7);
-  --m-pet: oklch(0.685 0.189 296.4);
-  --m-hdpe: oklch(0.742 0.121 185.4);
-  --m-cardboard: oklch(0.7 0.134 61.5);
-  --m-paper: oklch(0.919 0.017 88);
-  --m-glass: oklch(0.719 0.106 210.2);
+  --background: #eaf3e4;
+  --foreground: #0f2a1b;
+  --card: rgba(255, 255, 255, 0.7);
+  --secondary: rgba(15, 74, 42, 0.09);
+  --muted-foreground: #46604f;
+  --primary: #1e7a3e;
+  --primary-foreground: #ffffff;
+  --highlight: #a6e85a;
+  --on-bright: #0b2415;
+  --purple: #8b6df0;
+  --pink: #e8639a;
+  --warning: #c8650a;
+  --cta: #f5b544;
+  --cta-foreground: #1a1205;
+  --success: #1e7a3e;
+  --border: rgba(15, 74, 42, 0.2);
+  --ring: #1e7a3e;
+  --nav: rgba(15, 42, 27, 0.9);
+  --nav-foreground: rgba(255, 255, 255, 0.78);
+  --nav-active: #a6e85a;
+  --glass: rgba(255, 255, 255, 0.62);
+  --scrim: linear-gradient(180deg, rgba(234, 243, 228, 0.55) 0%, rgba(234, 243, 228, 0.88) 45%, rgba(234, 243, 228, 0.97) 100%);
+  --shadow-soft: 0 12px 30px -16px rgba(15, 74, 42, 0.35);
+  --g1: #5fbf1f;
+  --g2: #f2c80d;
+  --g3: #e8452f;
+  --m-cans: #8da2b8;
+  --m-pet: #a58bf2;
+  --m-hdpe: #2ec4b6;
+  --m-cardboard: #d9893b;
+  --m-paper: #ddd6c4;
+  --m-glass: #3fb6c9;
   color-scheme: light;
 }
 
+/* Dark: deep forest green, the look of the Digital Agriculture mockup. */
 .dark {
-  --background: oklch(0.163 0.009 152.9);
-  --foreground: oklch(0.972 0.007 132.4);
-  --card: oklch(0.214 0.012 156.1);
-  --secondary: oklch(0.263 0.016 152.8);
-  --muted-foreground: oklch(0.711 0.017 154.3);
-  --primary: oklch(0.903 0.208 122.9);
-  --primary-foreground: oklch(0.163 0.009 152.9);
-  --highlight: oklch(0.903 0.208 122.9);
-  --warning: oklch(0.682 0.211 37.7);
-  --cta: oklch(0.682 0.211 37.7);
-  --success: oklch(0.903 0.208 122.9);
-  --border: oklch(0.31 0.016 156.2);
-  --ring: oklch(0.903 0.208 122.9);
-  --nav: oklch(0.263 0.016 152.8);
-  --nav-foreground: oklch(0.711 0.017 154.3);
-  --glass: oklch(0.214 0.012 156.1 / 0.7);
-  --shadow-soft: 0 10px 30px -14px oklch(0 0 0 / 0.6);
+  --background: #0b2415;
+  --foreground: #f3f8f1;
+  --card: rgba(255, 255, 255, 0.1);
+  --secondary: rgba(255, 255, 255, 0.12);
+  --muted-foreground: rgba(243, 248, 241, 0.74);
+  --primary: #a6e85a;
+  --primary-foreground: #0b2415;
+  --highlight: #a6e85a;
+  --warning: #f59e0b;
+  --cta: #f5b544;
+  --success: #a6e85a;
+  --border: rgba(255, 255, 255, 0.22);
+  --ring: #a6e85a;
+  --nav: rgba(8, 28, 16, 0.94);
+  --nav-foreground: rgba(255, 255, 255, 0.74);
+  --glass: rgba(255, 255, 255, 0.1);
+  --scrim: linear-gradient(180deg, rgba(8, 28, 16, 0.5) 0%, rgba(8, 28, 16, 0.82) 45%, rgba(8, 28, 16, 0.97) 100%);
+  --shadow-soft: 0 14px 34px -18px rgba(0, 0, 0, 0.7);
+  --g1: #7ed321;
+  --g2: #f5d90a;
+  --g3: #f0443a;
   color-scheme: dark;
 }
 
 @utility glass {
   background: var(--glass);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
 }
 
 @utility orb {
-  background: var(--glow);
+  background: radial-gradient(circle at 35% 30%, #e9ffc6, #a6e85a 40%, #2e9e5b 75%, #0f4a2a);
   border-radius: 9999px;
   box-shadow: 0 0 24px 4px color-mix(in oklab, var(--highlight) 45%, transparent);
   animation: orb-pulse 3.5s ease-in-out infinite;
@@ -112,8 +121,7 @@
   transform: rotate(-4deg);
   background: var(--highlight);
   color: var(--on-bright);
-  font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.875rem;
   padding: 0.25rem 0.75rem;
   border-radius: 0.5rem;
@@ -123,6 +131,12 @@
 @keyframes orb-pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.06); }
+}
+
+@keyframes scan-sweep {
+  0% { top: 4%; }
+  50% { top: 92%; }
+  100% { top: 4%; }
 }
 
 @layer base {
@@ -142,6 +156,7 @@
   }
   h1, h2, h3 {
     font-family: var(--font-display);
+    font-weight: 800;
     letter-spacing: -0.02em;
   }
   :focus-visible {
@@ -159,3 +174,6 @@
     .no-print { display: none !important; }
   }
 }
+
+/* Leaflet needs its own base styles. They are imported from the package in the map component. */
+.leaflet-container { font-family: var(--font-sans); background: var(--secondary); }

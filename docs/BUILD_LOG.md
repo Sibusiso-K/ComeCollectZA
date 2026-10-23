@@ -2,6 +2,23 @@
 
 Dated record of decisions and work. Newest entries go at the top.
 
+## 23 Oct 2026, night (hackathon day 1)
+
+New direction from the product owner: match the Digital Agriculture mockup (font and theme), a first-time tour, the scanner on the home screen and interactive, Soweto overview photos, a simple logo, a marketplace map, and a real app instead of a demo. Plus a UI mockup at the end.
+
+- **Lovable.** The one-shot prompt produced a skeleton: shell, welcome screen, logic, translations. It stopped with build errors and the free plan ran out of credits. Its source (TanStack Start) was read through the Lovable connector and the useful parts were ported into the Next.js app. It had also invented source names for the price ranges ("PETCO, Feb 2026" and others that were never in the research). Those were replaced with the real, linked sources.
+- **Restyle.** Manrope as the one typeface, frosted glass cards over Soweto photos, deep forest green in dark mode and a pale leaf wash in light mode, the red-to-green gauge from the reference, and a range bar on prices.
+- **Logo.** A "C" that cups a coin, with a leaf. One SVG makes the app icons, the favicon and the header mark.
+- **Photos.** Five overview photos of Soweto from Wikimedia Commons under open licences, compressed to 60 to 100 KB each. One had an aircraft wing in the corner and was cropped. Credits are in the app and in `public/images/soweto/CREDITS.md`.
+- **Home is the scanner.** A shutter, a viewfinder with a sweeping line, and after a scan the photo is split into four tappable parts that show what the model thought.
+- **First-time tour.** Five slides after sign-in, replayable from Settings.
+- **Real data.** Every screen reads Supabase. The demo data module was deleted. A made-up "today's score" became a real measure: the share of service fees paid.
+- **Schema, applied live** (migrations 0005 and 0006): one-call registration, age band, business role, marketplace posts, a map function, operator code lookup and programme totals. 63 database checks pass.
+- **A race found in review.** Two registrations for the same person at once could loop until a timeout, and the client could lose a good profile. Fixed in the database (0006) and the client.
+- **Marketplace.** A Leaflet map on OpenStreetMap tiles with one pin per centre, a list view that works offline, filters by area, buyers, sellers and material, and a post form with location only on request.
+- **Mockup, and what it found.** Screens were captured in a headless Chrome at 375 by 812 at 2x, with example data on signed-in screens. Reading the captures found real bugs: the impact chart drew no bars, the content security policy blocked map tiles (the wildcard does not match the bare host), the centre price inputs overlapped their labels, and a missing favicon. All fixed.
+- **Not done:** payouts, the SAWPRS check, phone sign-in, a way to contact a poster, an offline write queue. Nothing was tested on a real phone.
+
 ## 23 Oct 2026, afternoon and evening (hackathon day 1)
 
 New notes from the product owner: tell recyclables and combinations apart, serve taverns and bottle stores, add a marketplace and the chain of flow, track environmental and youth employment impact over time, use accurate prices per tonne, keep the model on the phone with no data, verify users, score against the Sonke criteria, write the business model, and review security against the SSDLC session slides.

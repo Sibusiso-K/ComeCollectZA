@@ -155,3 +155,32 @@ export function formatCo2Grams(grams: number): string {
   if (grams >= 1_000_000) return `${(grams / 1_000_000).toFixed(1)} t CO2e`;
   return `${Math.round(grams / 1000)} kg CO2e`;
 }
+
+// ---------- Database codes ----------
+/** The app's material names against the codes stored in the database. */
+export const CODE_BY_MATERIAL: Record<Material, string> = {
+  cans: "CAN_AL",
+  pet: "PET",
+  hdpe: "HDPE",
+  cardboard: "CARDBOARD",
+  paper: "PAPER_WHITE",
+  glass: "GLASS",
+};
+export const MATERIAL_BY_CODE: Record<string, Material> = Object.fromEntries(
+  (Object.entries(CODE_BY_MATERIAL) as [Material, string][]).map(([m, c]) => [c, m]),
+);
+
+/** Parse "3.50" into 350 cents with no float maths. Returns null if invalid or zero. */
+export function parseRandToCents(input: string): number | null {
+  const s = input.trim().replace(",", ".");
+  if (!/^\d{1,4}(\.\d{0,2})?$/.test(s)) return null;
+  const [whole, frac = ""] = s.split(".");
+  const cents = Number(whole) * 100 + Number(frac.padEnd(2, "0"));
+  return cents > 0 ? cents : null;
+}
+
+/** "orlando-east" becomes "Orlando East". Text that already has spaces or capitals is left alone. */
+export function prettyArea(s: string): string {
+  if (/[\s]|[A-Z]/.test(s)) return s;
+  return s.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
