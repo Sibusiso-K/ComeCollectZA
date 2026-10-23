@@ -188,6 +188,25 @@ Every request carries the Supabase session as `Authorization: Bearer <jwt>`. Ret
 | Demo | Vercel preview and Supabase project | Demo seed, reset by script before judging |
 | Production | Not yet defined | Not yet defined |
 
+## On-device scanning and install
+
+```mermaid
+flowchart LR
+  P["Phone camera or photo"] --> C["Canvas, max 448 px"]
+  C --> M["TinyCLIP int8<br/>runs in the browser"]
+  M --> E["512 numbers"]
+  E --> H["Linear head<br/>waste-head.json, 30 KB"]
+  H --> S["Suggestion and confidence"]
+  S --> T["Reclaimer taps to confirm"]
+  T --> F["Sell flow: material selected"]
+```
+
+- **Nothing is uploaded.** The model and the head run in the browser. The photo is drawn to a canvas, scored, and discarded.
+- **Download once.** The model file comes from the Hugging Face CDN the first time the scanner opens and is cached by the browser. The head is served from `/models/` and cached by the service worker.
+- **Suggest, never decide.** At 70% confidence or more the suggestion leads. Between 50% and 70% it is shown as a question. Below 50% the app asks the reclaimer to choose. Plastic always offers PET and HDPE.
+- **QR codes.** The centre console reads reclaimer codes with the browser's BarcodeDetector where it exists and with jsQR elsewhere.
+- **Installable.** `app/manifest.ts` makes the app installable, and `public/sw.js` caches static files and the last copy of a page. It never caches `/api/` or the money screen.
+
 ## Known gaps
 
 - Demo auth users are not created yet, so role checks have not been run with real sign-ins.

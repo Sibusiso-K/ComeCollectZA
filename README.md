@@ -40,6 +40,14 @@ npm run typecheck
 npm run build
 ```
 
+## Try it on a phone
+
+Open **https://comecollectza.vercel.app/reclaimer** in Chrome on Android or Safari on iPhone.
+
+- **Install it.** Android: tap the browser menu, then Install app. iPhone: tap Share, then Add to Home Screen.
+- **Scan a load.** Open Sell, tap Open camera, point it at a pile of cans, bottles, cardboard, paper or glass, and tap Scan this load. The scan runs on the phone and the photo is not uploaded. The first scan downloads about 23 MB, so use a good signal.
+- **Check the steps in [docs/PHONE_TEST.md](docs/PHONE_TEST.md).**
+
 ## Repository layout
 
 | Path | Contents |
@@ -49,7 +57,8 @@ npm run build
 | `lib/` | Contracts (zod), materials, money formatting, demo data, Supabase clients |
 | `supabase/migrations/` | Database schema, row level security and PRO aggregate function |
 | `supabase/seed.sql` | Demo centres and prices |
-| `docs/` | Plan, architecture, models, agent roles, build log, handover |
+| `tools/vision/` | Scripts that trained and checked the on-device scanner |
+| `docs/` | Plan, architecture, models, agent roles, build log, handover, phone test steps |
 
 ## Working in this repo
 
