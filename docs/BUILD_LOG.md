@@ -2,7 +2,19 @@
 
 Dated record of decisions and work. Newest entries go at the top.
 
-## 23 Oct 2026 (hackathon day 1)
+## 23 Oct 2026, afternoon and evening (hackathon day 1)
+
+New notes from the product owner: tell recyclables and combinations apart, serve taverns and bottle stores, add a marketplace and the chain of flow, track environmental and youth employment impact over time, use accurate prices per tonne, keep the model on the phone with no data, verify users, score against the Sonke criteria, write the business model, and review security against the SSDLC session slides.
+
+- **Security review** (PR #9): 0 npm audit findings, TLS 1.0 and 1.1 refused on the live site, no secrets in client bundles, no dynamic SQL in any database function, all functions pin `search_path`. Added a Content-Security-Policy and other headers, no-store and own-origin CORS on the API, a 4 KB body limit, strict body schema, idempotency key and reclaimer code patterns, rejection of foreign QR codes, CI with npm audit, and Dependabot. The first CSP broke the scanner (onnxruntime loads code from a blob: URL); found in the browser and fixed before commit.
+- **Offline scanner** (PR #10): the model (pinned, SHA-256 checked) and the 14 MB runtime are now served by the app, and the tokenizer is no longer needed. The service worker saves the reclaimer pages and their scripts at install. Found and fixed: on a first visit the page's scripts were never cached, so it would not open offline. Verified with the server stopped: the sell page opened and scanned cardboard at 100% in 714 ms, and the prices page opened. The worker now revalidates pages online so a new deploy shows at once.
+- **Mixed loads** (PR #11): five passes per scan. Built a test on 2x2 mosaics of held-out photos. The first run gave nonsense (18% on single photos) because the mosaic had an alpha channel; a sanity check caught it. Compared four rules and chose 70% and 85%: 8% false alarms, both materials found in 64% of mixed loads. Added a quarter-agreement rule: single-load accuracy 89% to 93%.
+- **Prices per tonne** (PR #12): sourced 2026 ranges (Sunday Times Sep 2026, ScanWorth Apr 2026, scrap yard rate cards Aug 2026, IdeaSpots Aug 2026, Money4Glass). PET fell from about R7/kg to R3.50/kg during 2026. HDPE and paper added to the live board. The service fee placeholder of 25c/kg replaced by the agreed 15c/kg.
+- **Impact** (PR #13): CO2e factors from EPA WARM v16 tables, extracted from the PDF, minimum wage R30.23 an hour. Checked by hand against the PRO example.
+- **Business model, impact method and scorecard** written: reclaimers never pay; revenue from PROs (R50 per verified tonne) and buyers (2% of sale value); about R220 a month per active reclaimer. Score 42 of 70.
+- **Not done:** pickup listings, marketplace, phone sign-in and business checks are designed only. Nothing was tested on a real phone. The youth share is an example figure.
+
+## 23 Oct 2026, morning (hackathon day 1)
 
 - **Live database:** migration 0004 (`record_sale`) applied to the live Supabase project and checked inside a rolled-back transaction. Pull requests #1 to #4 merged into `main`.
 - **Deployed:** the app is on Vercel, linked to the GitHub repo, at https://comecollectza.vercel.app. The public Supabase settings are set as environment variables. A rebuild after setting them shows live prices.

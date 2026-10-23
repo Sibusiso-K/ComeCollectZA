@@ -12,7 +12,7 @@ The product uses free, open-source models only. No paid model APIs are called fr
 | Anomaly flags at sale time | Rules: weight above 3 × the reclaimer's 30-day 95th percentile, duplicate photo, centre far from usual area | Own code | Server | None needed |
 | Anomaly score, batch | `IsolationForest` on weight, price, time and distance | BSD-3 (scikit-learn) | GitHub Actions, nightly | Rules only |
 | Duplicate photo | 64-bit dHash, Hamming distance of 6 or less | Own code | Server, Postgres `bit_count` | None needed |
-| Material suggestion from a photo (built) | TinyCLIP ViT-8M, int8, plus a 30 KB classifier head trained on TrashNet. Runs on the phone | MIT (model), MIT (TrashNet) | In the browser, using transformers.js | The reclaimer picks a material by hand |
+| Material suggestion from a photo, including mixed loads (built) | TinyCLIP ViT-8M, int8, plus a 30 KB classifier head trained on TrashNet. Scores the whole photo and its four quarters. Runs on the phone with no data after the first download | MIT (model), MIT (TrashNet) | In the browser, using transformers.js | The reclaimer picks a material by hand |
 | isiZulu speech to text (stretch) | `uctnlp/omniASR-CTC-300M-v2-Zulu-All-v2` | Apache-2.0 | Hugging Face ZeroGPU Gradio Space | Icons and typing |
 | English and Afrikaans speech to text (stretch) | `openai/whisper-large-v3-turbo` | MIT | Same Space | Icons and typing |
 | Assistant answers (stretch) | Gemma 4 on OpenRouter, given the recommendation as context | Open weights. Confirm the licence | OpenRouter free tier | Template answers per language |
@@ -27,9 +27,12 @@ Current code: the on-device material scanner and the QR reader run in the app. T
 
 | Part | Size | Licence |
 |---|---|---|
-| `onnx-community/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M-ONNX`, int8 | 23.2 MB, downloaded once from the Hugging Face CDN and cached | MIT |
+| `onnx-community/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M-ONNX`, int8, pinned revision | 23.2 MB, served by the app from `/models/tinyclip/` and kept by the service worker | MIT |
+| onnxruntime-web plain SIMD build | 14 MB, served from `/ort/` and kept by the service worker | MIT |
 | `public/models/waste-head.json` (the head) | 30 KB | Ours, trained on MIT data |
 | `@huggingface/transformers` 4.3.1 (runs the model) | Loaded on demand | Apache-2.0 |
+
+**Works without data.** `tools/vision/fetch-assets.mjs` runs before every build. It copies the runtime from `node_modules` and downloads the model at a pinned revision, checked by SHA-256, into `public/` (git-ignored). The app never calls a CDN. The first scan downloads about 38 MB once; after that the service worker serves everything and scans work in flight mode. The tokenizer (5 MB) is not downloaded: the model's dummy text input is hard-coded as the four CLIP token ids for "a photo", checked against the real tokenizer. Verified with the server stopped: the sell page opened and a cardboard photo scanned at 100% in 714 ms.
 
 **Evidence.** The head was trained on 80% of the 2,527 TrashNet photos and tested on the other 20% (508 photos it had never seen).
 
@@ -54,6 +57,20 @@ Speed: about 35 ms per photo on a laptop CPU in Node, and 130 to 250 ms in a des
 - The model cannot tell PET from HDPE, and plastic is its weakest group (72% on TrashNet).
 - It does not read the material code or the brand. It looks at how the load looks.
 - Photos of real loads, with consent and correct labels, are the way to improve it. See [tools/vision/README.md](../tools/vision/README.md).
+
+**Mixed loads.** The scanner scores the whole photo and its four quarters (five passes). If a quarter is at least 70% sure of one material and another quarter is at least 85% sure of a different one, the app says "Looks like a mixed load", lists each material with its share, and tells the reclaimer to sort before weighing, because centres pay each material apart. When the whole photo is unsure but three quarters strongly agree, the quarters win.
+
+Measured on 2x2 mosaics built only from held-out TrashNet photos (`tools/vision/mixed-test.mjs`, 120 single-material, 120 two-and-two and 80 three-and-one mosaics):
+
+| Check | Result |
+|---|---|
+| Single-material loads wrongly called mixed | 8% |
+| Two-and-two mixed loads: both materials found | 64% |
+| Three-and-one mixed loads: both materials found | 64% |
+| Single-material accuracy, whole photo only | 89% |
+| Single-material accuracy with three agreeing quarters | 93% |
+
+Stricter and looser rules were compared in the same run. A 70% rule for both materials found more mixes (76 to 78%) but called 17% of single loads mixed, which is too many false alarms. The mosaics line up with the quarters and real piles do not, so real results will be lower. Five passes took about 2 seconds in a desktop browser.
 
 **Reproducing it.** The training and test scripts are in `tools/vision/`.
 

@@ -15,6 +15,10 @@ ComeCollectZA gives reclaimers their own app:
 - **Proof of work:** every verified sale adds to a digital earnings record that the reclaimer can use to open an account, receive payouts or apply for credit.
 - **For centres:** faster onboarding of registered reclaimers and fewer cash disputes.
 - **For producers (PROs and brands):** more registered, active reclaimers and verified collection data by area.
+- **For taverns and bottle stores:** post a pickup for cans, one-way glass, PET and cardboard, and a nearby verified reclaimer collects it. Larger outlets can sell straight to a buyer on the marketplace.
+- **Impact over time:** kilograms kept from landfill, CO2e avoided, and pay shown as minimum-wage work days, with the youth share of active reclaimers. See [IMPACT.md](IMPACT.md).
+
+How the app makes money, the value chain and the trust levels are in [BUSINESS_MODEL.md](BUSINESS_MODEL.md).
 
 ## Users
 
@@ -22,7 +26,9 @@ ComeCollectZA gives reclaimers their own app:
 |---|---|---|
 | Reclaimer | Android phone, low data | Checks prices, sells loads, shows a code at the centre, tracks money and fees |
 | Buy-back centre operator | Tablet or phone at the yard | Scans a reclaimer code, records a weighed sale, updates the price board |
-| PRO or brand | Desktop | Views aggregate tonnage, fees paid and owed, and anomaly flags |
+| PRO or brand | Desktop | Views aggregate tonnage, fees paid and owed, anomaly flags and impact |
+| Tavern or bottle store owner | Phone | Scans a pile, posts a pickup, confirms collection with a QR handshake (planned) |
+| Business buyer (centre or aggregator) | Phone or desktop | Posts a wanted price per tonne and buys business lots (planned) |
 
 ## Scope
 
@@ -33,6 +39,13 @@ ComeCollectZA gives reclaimers their own app:
 - Anomaly rules, including duplicate photos.
 - The PRO dashboard, aggregates only.
 - Three demo accounts, one per role.
+
+**Added on 23 Oct**
+- On-device scanner that works with no data and spots mixed loads (built).
+- Prices per tonne with sourced 2026 market ranges (built).
+- Impact: CO2e, landfill diverted, work days, youth share (built).
+- Verified users: phone PIN, seen-in-person check at the centre, business checks (designed, not built).
+- Pickup listings and a marketplace for taverns, bottle stores and buyers (designed, not built).
 
 **Stretch**
 - isiZulu voice input.

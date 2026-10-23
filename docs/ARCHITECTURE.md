@@ -202,10 +202,32 @@ flowchart LR
 ```
 
 - **Nothing is uploaded.** The model and the head run in the browser. The photo is drawn to a canvas, scored, and discarded.
-- **Download once.** The model file comes from the Hugging Face CDN the first time the scanner opens and is cached by the browser. The head is served from `/models/` and cached by the service worker.
+- **Download once, then no data.** The model, the head and the runtime are served by the app (`/models/`, `/ort/`) and kept by the service worker. No CDN is called. After the first scan the scanner works in flight mode.
+- **Mixed loads.** The photo is scored whole and in four quarters. Quarters that disagree strongly mean a mixed load, and the reclaimer is asked to sort before weighing.
 - **Suggest, never decide.** At 70% confidence or more the suggestion leads. Between 50% and 70% it is shown as a question. Below 50% the app asks the reclaimer to choose. Plastic always offers PET and HDPE.
 - **QR codes.** The centre console reads reclaimer codes with the browser's BarcodeDetector where it exists and with jsQR elsewhere.
 - **Installable.** `app/manifest.ts` makes the app installable, and `public/sw.js` caches static files and the last copy of a page. It never caches `/api/` or the money screen.
+
+## Planned: pickups, marketplace and trust
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant T as Tavern owner
+  participant API as Next.js API
+  participant R as Reclaimer nearby
+  participant C as Buy-back centre
+  T->>T: Scans the pile on the phone (no upload)
+  T->>API: POST /api/v1/pickups (materials, rough kg, time window)
+  API-->>R: Pickup nearby (push, SMS fallback)
+  R->>API: Claim pickup
+  R->>T: Collects, both scan each other's QR
+  T->>API: Handshake confirms the pickup
+  R->>C: Sells the sorted load as usual
+  C->>API: Weighed sale linked to the pickup
+```
+
+Trust levels, the marketplace and the revenue that pays for it are in [BUSINESS_MODEL.md](BUSINESS_MODEL.md). New tables: `businesses`, `pickups`, `pickup_claims`, `ratings`, `wanted_prices`, `lots`. Every table keeps row level security: a business sees only its own pickups, and a reclaimer sees open pickups near them without the business's private details until they claim.
 
 ## Known gaps
 
@@ -213,4 +235,5 @@ flowchart LR
 - The sales route does not store data yet.
 - Authentication and demo accounts are not created.
 - Payouts and SAWPRS registration are mocks.
-- Offline support, the service worker and realtime updates are not built.
+- The service worker and offline reading are built. Offline writes (a queue) and realtime updates are not.
+- Pickups, the marketplace, phone sign-in and business checks are designed, not built.
