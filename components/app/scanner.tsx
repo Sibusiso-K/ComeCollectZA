@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import Link from "next/link";
 import { Camera, ImagePlus } from "lucide-react";
 import { useT } from "@/lib/app/prefs";
 import {
@@ -26,6 +27,7 @@ const GROUP_LABEL: Record<Group, string> = {
   paper: "Paper",
   plastic: "Plastic",
   trash: "Not a recyclable we buy",
+  electronics: "Electronics",
 };
 const QUARTER_NAME = ["Top left", "Top right", "Bottom left", "Bottom right"];
 
@@ -341,6 +343,20 @@ export function LoadScanner({ onPick }: { onPick: (m: Material) => void }) {
 
           {read.kind === "notBuy" && <p className="text-2xl font-extrabold">{t("Not a recyclable we buy")}</p>}
 
+          {read.kind === "electronics" && (
+            <>
+              <p className="text-2xl font-extrabold">{read.sure ? t("Looks like electronics") : t("Could be electronics")}</p>
+              <p className="text-xs text-muted-foreground">{t("{pct}% sure · {ms} ms on your phone", { pct: Math.round(read.confidence * 100), ms: result.scan.ms })}</p>
+              <p className="text-sm text-muted-foreground">
+                {t("Buy-back centres do not pay for electronics by the kilogram. You can sell it, give it away, or drop it off safely.")}
+              </p>
+              <Link href="/ewaste" className="flex min-h-14 items-center justify-center rounded-full bg-primary px-6 text-lg font-extrabold text-primary-foreground">
+                {t("What to do with electronics")}
+              </Link>
+              {!read.sure && <p className="text-sm text-muted-foreground">{t("Not electronics? Pick the material yourself.")}</p>}
+            </>
+          )}
+
           {read.kind === "unsure" && (
             <>
               <p className="text-2xl font-extrabold">{t("Not sure what this is")}</p>
@@ -348,7 +364,7 @@ export function LoadScanner({ onPick }: { onPick: (m: Material) => void }) {
             </>
           )}
 
-          {(read.kind === "unsure" || read.kind === "notBuy") && (
+          {(read.kind === "unsure" || read.kind === "notBuy" || (read.kind === "electronics" && !read.sure)) && (
             <div className="grid grid-cols-3 gap-2">
               {MATERIALS.map((m) => (
                 <button key={m} onClick={() => onPick(m)} className="glass flex flex-col items-center gap-1 rounded-2xl p-3 text-sm font-bold">

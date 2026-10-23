@@ -10,6 +10,7 @@ const CANDIDATES: Record<WasteGroup, MaterialCode[]> = {
   paper: ["PAPER_WHITE"],
   plastic: ["PET", "HDPE"],
   trash: [],
+  electronics: [],
 };
 
 const GROUP_LABEL: Record<WasteGroup, string> = {
@@ -19,6 +20,7 @@ const GROUP_LABEL: Record<WasteGroup, string> = {
   paper: "Paper",
   plastic: "Plastic",
   trash: "Not a recyclable we buy",
+  electronics: "Electronics",
 };
 
 export type Suggestion = {

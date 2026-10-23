@@ -107,6 +107,21 @@ check("scan rules: fact, question, mixed, unsure, and quarters win when the whol
   assert.equal(viaQuarters.kind, "fact");
   assert.equal(viaQuarters.viaQuarters, true);
 });
+check("scan rules: electronics point to the electronics guide and never count as a material in a mix", () => {
+  const g = (group, confidence) => ({ group, confidence });
+  const sure = logic.interpretScan({ whole: g("electronics", 0.88), quarters: [g("electronics", 0.8), g("metal", 0.9), g("electronics", 0.7), g("plastic", 0.4)], ms: 1 });
+  assert.deepEqual(sure, { kind: "electronics", confidence: 0.88, sure: true });
+  const maybe = logic.interpretScan({ whole: g("electronics", 0.55), quarters: [g("trash", 0.5), g("metal", 0.4), g("electronics", 0.6), g("plastic", 0.4)], ms: 1 });
+  assert.equal(maybe.kind, "electronics");
+  assert.equal(maybe.sure, false);
+  const quarters = logic.interpretScan({ whole: g("metal", 0.45), quarters: [g("electronics", 0.9), g("electronics", 0.8), g("electronics", 0.75), g("metal", 0.6)], ms: 1 });
+  assert.equal(quarters.kind, "electronics");
+  const cans = logic.interpretScan({ whole: g("metal", 0.8), quarters: [g("metal", 0.9), g("electronics", 0.92), g("metal", 0.8), g("metal", 0.75)], ms: 1 });
+  assert.equal(cans.kind, "fact", "a strong electronics quarter does not turn a can load into a mix");
+  const question = logic.interpretScan({ whole: g("plastic", 0.6), quarters: [g("electronics", 0.95), g("glass", 0.6), g("plastic", 0.6), g("trash", 0.4)], ms: 1 });
+  assert.deepEqual(question.options, ["plastic", "glass"]);
+  assert.deepEqual(logic.GROUP_TO_MATERIALS.electronics, []);
+});
 
 // ---- Electronics (lib/app/ewaste.ts, lib/app/areas.ts) ----
 const ew = await import(pathToFileURL(join(out, "ewaste.mjs")).href);

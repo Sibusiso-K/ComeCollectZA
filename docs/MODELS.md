@@ -12,7 +12,7 @@ The product uses free, open-source models only. No paid model APIs are called fr
 | Anomaly flags at sale time | Rules: weight above 3 × the reclaimer's 30-day 95th percentile, duplicate photo, centre far from usual area | Own code | Server | None needed |
 | Anomaly score, batch | `IsolationForest` on weight, price, time and distance | BSD-3 (scikit-learn) | GitHub Actions, nightly | Rules only |
 | Duplicate photo | 64-bit dHash, Hamming distance of 6 or less | Own code | Server, Postgres `bit_count` | None needed |
-| Material suggestion from a photo, including mixed loads (built) | TinyCLIP ViT-8M, int8, plus a 30 KB classifier head trained on TrashNet. Scores the whole photo and its four quarters. Runs on the phone with no data after the first download | MIT (model), MIT (TrashNet) | In the browser, using transformers.js | The reclaimer picks a material by hand |
+| Material suggestion from a photo, including mixed loads (built) | TinyCLIP ViT-8M, int8, plus a 30 KB classifier head trained on TrashNet, RealWaste and photos of electronics. Scores the whole photo and its four quarters. Runs on the phone with no data after the first download | MIT (model), MIT (TrashNet), CC BY 4.0 (RealWaste), CC0, public domain, CC BY and CC BY-SA (electronics photos) | In the browser, using transformers.js | The reclaimer picks a material by hand |
 | isiZulu speech to text (stretch) | `uctnlp/omniASR-CTC-300M-v2-Zulu-All-v2` | Apache-2.0 | Hugging Face ZeroGPU Gradio Space | Icons and typing |
 | English and Afrikaans speech to text (stretch) | `openai/whisper-large-v3-turbo` | MIT | Same Space | Icons and typing |
 | Assistant answers | Built as a lookup, not a model: it reads the live board, the national ranges and the person's own fees, and writes the answer from templates | Own code | In the browser | Says there are no saved prices yet |
@@ -24,7 +24,7 @@ Current code: the on-device material scanner and the QR reader run in the app. T
 
 **Why on the phone.** The photo never leaves the device, the scan works without the free-tier limits of a hosted model, and the model is small enough to cache. It runs in the browser, so one build serves Android and iPhone.
 
-**How it works.** TinyCLIP ViT-8M (a small image and text model, MIT licence) turns a photo into 512 numbers. A linear head, trained on TrashNet (MIT), turns those into one of six groups. The app maps the groups to the materials it prices. Metal becomes cans, paper becomes white paper, and plastic stays ambiguous, so the reclaimer picks PET or HDPE. The reclaimer always confirms with a tap.
+**How it works.** TinyCLIP ViT-8M (a small image and text model, MIT licence) turns a photo into 512 numbers. A linear head, trained on TrashNet (MIT), turns those into one of seven groups: cardboard, glass, metal, paper, plastic, trash and electronics. The app maps the groups to the materials it prices. Metal becomes cans, paper becomes white paper, and plastic stays ambiguous, so the reclaimer picks PET or HDPE. The reclaimer always confirms with a tap.
 
 | Part | Size | Licence |
 |---|---|---|
@@ -35,7 +35,22 @@ Current code: the on-device material scanner and the QR reader run in the app. T
 
 **Works without data.** `tools/vision/fetch-assets.mjs` runs before every build. It copies the runtime from `node_modules` and downloads the model at a pinned revision, checked by SHA-256, into `public/` (git-ignored). The app never calls a CDN. The first scan downloads about 38 MB once; after that the service worker serves everything and scans work in flight mode. The tokenizer (5 MB) is not downloaded: the model's dummy text input is hard-coded as the four CLIP token ids for "a photo", checked against the real tokenizer. Verified with the server stopped: the sell page opened and a cardboard photo scanned at 100% in 714 ms.
 
-**Evidence, version 2 (current).** The head is now trained on TrashNet and RealWaste (UCI, CC BY 4.0: 4,752 real landfill photos, mapped to the six groups; food, vegetation and textile waste count as trash). Each dataset has its own held-out 20%.
+**Evidence, version 3 (current): electronics.** The head learned a seventh group, electronics, from 1,391 openly licensed photos from Wikimedia Commons (CC0, public domain, CC BY and CC BY-SA; every author and licence is in [ELECTRONICS_PHOTO_CREDITS.md](ELECTRONICS_PHOTO_CREDITS.md)). When the scanner sees electronics it does not ask for a material. It says electronics are not paid for by the kilogram and links to the electronics guide. Electronics never count as a material in a mixed load.
+
+The photos came from searches for 29 kinds of item (phones, laptops, keyboards, circuit boards, TVs, printers, chargers, cables, batteries, kettles, microwaves and more). A contact sheet check found that the "pile of e-waste" searches returned cityscapes, fields and bins, so that whole group (144 photos) was dropped. About one photo in twenty in the rest is probably still off-topic, which was not counted.
+
+| Held-out check | Version 2 | Version 3 |
+|---|---|---|
+| TrashNet test (508) | 78.9% | 78.0% |
+| RealWaste test (952, real photos) | 81.7% | 81.4% |
+| Electronics test (282 photos, 20% of each kind held out) | not a group | **98.2% found** |
+| Recyclables wrongly called electronics (TrashNet, RealWaste) | not a group | 0.2%, 0.1% |
+
+A harder check holds out whole kinds of item, so the model never saw them in training: toaster, hair dryer, remote control, radio, DVD player, tangle of cables, hard disk drive, lithium battery pack, feature phone and laser printer (466 photos). It still found **97.0%**, and recyclables wrongly called electronics stayed at 0.2%. When it was at least 70% sure it answered 94% of electronics photos and was right 99% of the time.
+
+**Read these numbers with care.** The electronics photos are clean Commons pictures and the recyclable photos come from other sources, so part of what the head learned may be the style of the picture and not the object. A phone on a messy table, a bag of old chargers or a fridge in a yard have not been tested. The Commons photos are mostly small devices, so big appliances such as fridges and washing machines are barely covered. Treat 97% as an upper bound and test on real photos from the target phones.
+
+**Evidence, version 2.** The head is now trained on TrashNet and RealWaste (UCI, CC BY 4.0: 4,752 real landfill photos, mapped to the six groups; food, vegetation and textile waste count as trash). Each dataset has its own held-out 20%.
 
 | Head | TrashNet test (508) | RealWaste test (952, real photos) |
 |---|---|---|
@@ -69,6 +84,7 @@ Speed: about 35 ms per photo on a laptop CPU in Node, and 130 to 250 ms in a des
 - A rough check on 36 web photos of recycling scenes gave 33% grouped accuracy for the head and 17% zero-shot. That set was mostly mislabelled, so treat it as a warning and not as a measurement.
 - The model cannot tell PET from HDPE, and plastic is its weakest group (72% on TrashNet).
 - It does not read the material code or the brand. It looks at how the load looks.
+- Electronics is the weakest-tested group: see the care note under version 3.
 - Photos of real loads, with consent and correct labels, are the way to improve it. See [tools/vision/README.md](../tools/vision/README.md).
 
 **Mixed loads.** The scanner scores the whole photo and its four quarters (five passes). If a quarter is at least 70% sure of one material and another quarter is at least 85% sure of a different one, the app says "Looks like a mixed load", lists each material with its share, and tells the reclaimer to sort before weighing, because centres pay each material apart. When the whole photo is unsure but three quarters strongly agree, the quarters win.

@@ -3,10 +3,11 @@
 // Model: TinyCLIP ViT-8M (MIT licence), int8, about 23 MB. Served by this app from /models/tinyclip/ and
 // the runtime from /ort/ (see tools/vision/fetch-assets.mjs). The service worker keeps both, so after the
 // first download the scanner works with no data at all.
-// Head: a small linear classifier trained on TrashNet image features (public/models/waste-head.json).
+// Head: a small linear classifier on TinyCLIP image features (public/models/waste-head.json), trained on TrashNet,
+// RealWaste and openly licensed photos of electronics. See docs/MODELS.md.
 // Browser only. Import this from client components, and call loadClassifier() on demand.
 
-export type WasteGroup = "cardboard" | "glass" | "metal" | "paper" | "plastic" | "trash";
+export type WasteGroup = "cardboard" | "glass" | "metal" | "paper" | "plastic" | "trash" | "electronics";
 
 export type Prediction = {
   group: WasteGroup;

@@ -2,7 +2,7 @@
 // All money is whole cents, all weight is whole grams.
 
 export type Material = "cans" | "pet" | "hdpe" | "cardboard" | "paper" | "glass";
-export type Group = "cardboard" | "glass" | "metal" | "paper" | "plastic" | "trash";
+export type Group = "cardboard" | "glass" | "metal" | "paper" | "plastic" | "trash" | "electronics";
 
 export const MATERIALS: Material[] = ["cans", "pet", "hdpe", "cardboard", "paper", "glass"];
 
@@ -22,7 +22,11 @@ export const GROUP_TO_MATERIALS: Record<Group, Material[]> = {
   paper: ["paper"],
   glass: ["glass"],
   trash: [],
+  electronics: [],
 };
+
+/** Groups that are not sold by the kilogram at a buy-back centre. They never count towards a mixed load. */
+const NOT_A_MATERIAL: Group[] = ["trash", "electronics"];
 
 /** kg CO2e avoided per kg, in hundredths (US EPA WARM v16, see docs/IMPACT.md). */
 export const CO2_HUNDREDTHS: Record<Material, number> = {
@@ -99,6 +103,7 @@ export type Interpretation =
   | { kind: "question"; options: Group[]; confidence: number }
   | { kind: "mixed"; parts: { group: Group; share: number }[] }
   | { kind: "notBuy"; confidence: number }
+  | { kind: "electronics"; confidence: number; sure: boolean }
   | { kind: "unsure" };
 
 export const FACT_AT = 0.7;
@@ -106,7 +111,7 @@ export const QUESTION_AT = 0.5;
 export const SECOND_MATERIAL_AT = 0.85;
 
 export function interpretScan(r: ScanResult): Interpretation {
-  const counting = r.quarters.filter((q) => q.confidence >= FACT_AT && q.group !== "trash");
+  const counting = r.quarters.filter((q) => q.confidence >= FACT_AT && !NOT_A_MATERIAL.includes(q.group));
   const byGroup = new Map<Group, { count: number; max: number }>();
   for (const q of counting) {
     const g = byGroup.get(q.group) ?? { count: 0, max: 0 };
@@ -137,13 +142,17 @@ export function interpretScan(r: ScanResult): Interpretation {
     }
   }
 
+  // Electronics are not weighed and sold at a centre. Point the person to the electronics guide instead.
+  if (group === "electronics" && confidence >= QUESTION_AT) {
+    return { kind: "electronics", confidence, sure: confidence >= FACT_AT };
+  }
   if (confidence >= FACT_AT) {
     if (group === "trash") return { kind: "notBuy", confidence };
     return { kind: "fact", group, confidence, viaQuarters };
   }
   if (confidence >= QUESTION_AT && group !== "trash") {
     const second =
-      [...r.quarters].filter((q) => q.group !== group && q.group !== "trash").sort((a, b) => b.confidence - a.confidence)[0]
+      [...r.quarters].filter((q) => q.group !== group && !NOT_A_MATERIAL.includes(q.group)).sort((a, b) => b.confidence - a.confidence)[0]
         ?.group ?? (group === "cardboard" ? "paper" : "cardboard");
     return { kind: "question", options: [group, second], confidence };
   }

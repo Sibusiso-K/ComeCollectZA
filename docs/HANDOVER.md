@@ -11,7 +11,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Area | State | Notes |
 |---|---|---|
 | Live app | https://comecollectza.vercel.app | Deployed from `main` on every merge |
-| Scanner | Built, tested in a browser | On-device TinyCLIP, works with no data after one 38 MB download, spots mixed loads, tap a part of the photo to see what it thought. Head v2 is 82% on held-out real photos. Not tested on a real phone. See [MODELS.md](MODELS.md) |
+| Scanner | Built, tested in a browser | On-device TinyCLIP, works with no data after one 38 MB download, spots mixed loads, tap a part of the photo to see what it thought. Head v3 is 81% on held-out real photos and also recognises electronics. Not tested on a real phone. See [MODELS.md](MODELS.md) |
 | Accounts | Built, not yet used by real people | Email and password through Supabase Auth. Reclaimer and business sign-up. One call creates the profile and the reclaimer's code |
 | Prices | Live from the database | Public ranges for 2026 with sources. Seeded centres are demo centres until real ones post prices |
 | Sell flow | Built | Choose centre, weigh, show a QR code |
@@ -25,7 +25,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Payouts and SAWPRS | Not started | The `payouts` table exists. Nothing writes to it |
 | Phone number sign-in | Not started | Needs an SMS service |
 | Offline write queue | Not started | Reading works offline. Writing needs a signal |
-| Tests | 71 database checks, 13 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
+| Tests | 71 database checks, 14 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
 
 ## Set up on a new machine
 
