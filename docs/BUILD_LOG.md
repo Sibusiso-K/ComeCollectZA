@@ -2,6 +2,16 @@
 
 Dated record of decisions and work. Newest entries go at the top.
 
+## 23 Oct 2026, late (hackathon day 1)
+
+The product owner has old electronics and does not know where to sell them or take them. The app now covers that too.
+
+- **Research.** South Africa has had extended producer responsibility rules for electrical and electronic equipment since November 2021. eWASA and the E-Waste Recycling Authority are the producer bodies. Makro and Pick n Pay run drop-off bins, Desco and EWaste Africa are certified recyclers, and Pikitup started an e-waste programme with reclaimers at Marie Louise in Soweto in December 2024. Most sources are 2024 and 2025 news pages, so no address or opening hour could be confirmed.
+- **Honest data.** Eight places are seeded, each with a source link, a check date and a confidence of confirmed, listed or unsure. The app says "Check first" on weak ones and tells people to phone before they travel. A scrap price of "R20 to R200 per kg for mixed e-waste" from earlier notes could not be traced to a source, so it was left out. The guide gives no Rand figures it cannot source.
+- **Schema, applied live** (migrations 0006 and 0007): the registration race fix, `ewaste_points`, `ewaste_posts`, `ewaste_listings()` and `ewaste_contact()`. 71 database checks pass.
+- **App.** A new Electronics screen with three tabs: what to do, drop-off, and sell or give. The guide orders reuse, then repair, then recycling, with care notes for data, batteries, screens and lamps. Phone trade-in offers link to Cell C, iStore and Cellucity. The board shows a safety note, and the poster's number is shown only to signed-in people, as a call or WhatsApp link.
+- **Not done:** listings on the map, a report button, translations of the advice texts (headings and labels are drafted in Afrikaans, isiZulu and isiXhosa), and any visit to the seeded places.
+
 ## 23 Oct 2026, night (hackathon day 1)
 
 New direction from the product owner: match the Digital Agriculture mockup (font and theme), a first-time tour, the scanner on the home screen and interactive, Soweto overview photos, a simple logo, a marketplace map, and a real app instead of a demo. Plus a UI mockup at the end.

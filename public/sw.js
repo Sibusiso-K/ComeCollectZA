@@ -5,7 +5,7 @@
 // - Never cached: API calls and the personal money screen.
 // - The reclaimer's main pages are saved at install, so the app opens with no signal.
 
-const VERSION = "v5";
+const VERSION = "v6";
 const STATIC_CACHE = "ccza-static-" + VERSION;
 const PAGE_CACHE = "ccza-pages-" + VERSION;
 
@@ -16,7 +16,7 @@ const OFFLINE_PAGE =
   "<h1>You are offline</h1><p>Prices need a signal. Open the app again when you are back online.</p></body></html>";
 
 // Small pages only. The 38 MB scanner is saved the first time someone uses it, not at install, to spare data.
-const CORE_PAGES = ["/", "/home", "/sell", "/prices", "/market"];
+const CORE_PAGES = ["/", "/home", "/sell", "/prices", "/market", "/ewaste"];
 
 // Saves a page and the scripts and styles it needs. On a first visit the page loads before this worker
 // controls it, so its files never pass through the fetch handler below.

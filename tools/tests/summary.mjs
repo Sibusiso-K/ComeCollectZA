@@ -20,6 +20,8 @@ const compile = (file, fix) => {
   writeFileSync(join(out, `${file}.mjs`), js);
 };
 compile("logic", (s) => s);
+compile("ewaste", (s) => s);
+compile("areas", (s) => s);
 compile("summary", (s) => s.replace(/import type \{ MySale \} from "\.\/api";/, "").replace(/from "\.\/logic"/g, 'from "./logic.mjs"'));
 const { monthTotals, feeTotals, feeRecoveryPercent, impactSeries } = await import(pathToFileURL(join(out, "summary.mjs")).href);
 const logic = await import(pathToFileURL(join(out, "logic.mjs")).href);
@@ -104,6 +106,78 @@ check("scan rules: fact, question, mixed, unsure, and quarters win when the whol
   const viaQuarters = logic.interpretScan({ whole: g("paper", 0.6), quarters: [g("paper", 0.8), g("paper", 0.75), g("paper", 0.72), g("glass", 0.3)], ms: 1 });
   assert.equal(viaQuarters.kind, "fact");
   assert.equal(viaQuarters.viaQuarters, true);
+});
+
+// ---- Electronics (lib/app/ewaste.ts, lib/app/areas.ts) ----
+const ew = await import(pathToFileURL(join(out, "ewaste.mjs")).href);
+const areas = await import(pathToFileURL(join(out, "areas.mjs")).href);
+
+check("every item and state has advice, and none of it uses an em dash", () => {
+  for (const c of ew.EWASTE_CATEGORIES) {
+    assert.ok(ew.CATEGORY_LABEL[c], `label for ${c}`);
+    for (const cond of ew.CONDITIONS) {
+      const a = ew.adviceFor(c, cond);
+      assert.ok(a.headline.length > 5 && a.steps.length >= 1 && a.care.length >= 1, `${c}/${cond}`);
+      const text = [a.headline, ...a.steps.flatMap((s) => [s.title, s.body]), ...a.care].join(" ");
+      assert.ok(!text.includes("—"), `${c}/${cond} has an em dash`);
+      assert.equal(new Set(a.steps.map((s) => s.title)).size, a.steps.length, `${c}/${cond} repeats a step`);
+    }
+  }
+  assert.ok(!JSON.stringify(ew.NATIONAL_OPTIONS).includes("—"));
+});
+check("advice puts reuse before recycling, and batteries never go in the bin", () => {
+  const working = ew.adviceFor("phone", "works");
+  assert.equal(working.steps[0].action, "sell");
+  assert.ok(working.steps.some((s) => s.action === "tradein"));
+  assert.equal(ew.adviceFor("phone", "parts").steps.at(-1).action, "find");
+  const battery = ew.adviceFor("battery", "works");
+  assert.equal(battery.steps[0].action, "batteries");
+  assert.ok(/tape/i.test(battery.care.join(" ")));
+  assert.ok(/mercury/i.test(ew.adviceFor("lighting", "works").headline + ew.adviceFor("lighting", "works").care.join(" ")));
+});
+check("national options each have an https source and a check date", () => {
+  for (const o of ew.NATIONAL_OPTIONS) {
+    assert.match(o.url, /^https:\/\//);
+    assert.match(o.checkedOn, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(o.for.length > 0 && o.source);
+  }
+  assert.ok(ew.optionsFor("battery").some((o) => o.id === "retail-batteries"));
+  assert.ok(ew.optionsFor("phone", "tradein").every((o) => o.id.startsWith("tradein")));
+});
+check("distance, sorting and age of a listing", () => {
+  const crownMines = { lat: -26.21614, lng: 28.00974 };
+  const woodmead = { lat: -26.05934, lng: 28.09224 };
+  const km = ew.distanceKm(crownMines, woodmead);
+  assert.ok(km > 18.5 && km < 20.5, `got ${km}`);
+  assert.equal(ew.distanceKm(crownMines, crownMines), 0);
+  assert.equal(ew.formatKm(0.4), "under 1 km");
+  assert.equal(ew.formatKm(3.26), "3.3 km");
+  assert.equal(ew.formatKm(19.3), "19 km");
+  const near = ew.sortPlaces([{ name: "B", ...woodmead }, { name: "A", ...crownMines }], { lat: -26.2206, lng: 27.9147 });
+  assert.equal(near[0].name, "A");
+  assert.ok(near[0].km < near[1].km);
+  assert.deepEqual(ew.sortPlaces([{ name: "B", ...woodmead }, { name: "A", ...crownMines }], null).map((p) => p.name), ["A", "B"]);
+  assert.equal(ew.daysSince("2026-10-23", new Date("2026-10-23T10:00:00Z")), 0);
+  assert.equal(ew.daysSince("2026-10-13", new Date("2026-10-23T10:00:00Z")), 10);
+});
+check("South African numbers become call and WhatsApp links", () => {
+  for (const raw of ["082 555 0101", "0825550101", "+27 82 555 0101", "27825550101", "(082) 555-0101"]) {
+    assert.equal(ew.internationalDigits(raw), "27825550101", raw);
+  }
+  assert.equal(ew.internationalDigits("12345"), null);
+  assert.equal(ew.internationalDigits("+1 202 555 0101"), null);
+  const l = ew.contactLinks("082 555 0101", "Hi & hello");
+  assert.equal(l.call, "tel:+27825550101");
+  assert.equal(l.whatsapp, "https://wa.me/27825550101?text=Hi%20%26%20hello");
+  assert.equal(ew.contactLinks("+1 202 555 0101", "x").whatsapp, null);
+  assert.ok(ew.isValidContact("082 555 0101") && !ew.isValidContact("call me") && !ew.isValidContact("12345"));
+});
+check("areas sit inside Gauteng and match what people type", () => {
+  for (const a of areas.AREAS) assert.ok(a.lat < -25.9 && a.lat > -26.4 && a.lng > 27.7 && a.lng < 28.2, a.label);
+  assert.equal(areas.areaFor("Orlando West, Soweto").label, "Orlando West");
+  assert.equal(areas.areaFor("kliptown").label, "Kliptown");
+  assert.equal(areas.areaFor(""), null);
+  assert.equal(areas.areaFor("Cape Town"), null);
 });
 
 console.log(`\n${passed} passed, 0 failed.`);

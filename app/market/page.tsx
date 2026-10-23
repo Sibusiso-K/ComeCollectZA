@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ExternalLink, LocateFixed, MapPin, Plus, Store } from "lucide-react";
+import { ChevronRight, ExternalLink, LocateFixed, MapPin, Plus, Smartphone, Store } from "lucide-react";
 import { AppScreen, PageTitle } from "@/components/app/shell";
 import { Card, EmptyState, MaterialBadge, PillButton, SavedNote, Segmented, inputClass } from "@/components/app/bits";
 import { useT, usePrefs } from "@/lib/app/prefs";
@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/app/auth";
 import { closeMyPost, createMarketPost, getMarketPoints, getMyPosts, type Fetched, type MapPoint, type MyPost } from "@/lib/app/api";
 import { MATERIALS, MATERIAL_LABEL, formatPerKg, formatPerTonne, parseRandToCents, prettyArea, type Material } from "@/lib/app/logic";
 import { PLACES, PLACE_ORDER } from "@/lib/app/photos";
+import { TONE } from "@/lib/app/map-pins";
 import { cn } from "@/lib/utils";
 
 const MarketMap = dynamic(() => import("@/components/app/market-map"), {
@@ -78,7 +79,7 @@ export default function Market() {
     [points, kind, material, areaKey],
   );
   const groups = useMemo(() => groupPoints(visible), [visible]);
-  const pins = useMemo(() => groups.map((g) => ({ ...g.rows[0], id: g.id })), [groups]);
+  const pins = useMemo(() => groups.map((g) => ({ id: g.id, name: g.name, lat: g.lat, lng: g.lng, tone: g.kind === "buy" ? TONE.buy : TONE.sell, solid: g.source === "centre" })), [groups]);
   const listed = useMemo(() => [...groups].sort((x, y) => (x.kind === y.kind ? x.name.localeCompare(y.name) : x.kind === "buy" ? -1 : 1)), [groups]);
   const selected = groups.find((g) => g.id === selectedId) ?? null;
   const canPost = !!user && !!profile && ["reclaimer", "operator", "business"].includes(profile.role);
@@ -96,6 +97,12 @@ export default function Market() {
       <p className="text-sm text-muted-foreground">
         {t("Buy-back centres, buyers and businesses with material to sell. Green pins buy. Amber pins sell.")}
       </p>
+
+      <Link href="/ewaste?tab=board" className="glass flex min-h-14 items-center gap-3 rounded-2xl px-4 font-bold">
+        <Smartphone size={22} aria-hidden className="shrink-0 text-primary" />
+        <span className="flex-1">{t("Selling a phone, laptop or fridge? Electronics have their own board.")}</span>
+        <ChevronRight size={20} aria-hidden className="shrink-0" />
+      </Link>
 
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
         <button onClick={() => setArea(null)} aria-pressed={!area} className={cn("min-h-12 shrink-0 rounded-full px-4 font-bold", !area ? "bg-foreground text-background" : "glass")}>

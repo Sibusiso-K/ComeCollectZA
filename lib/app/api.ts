@@ -2,6 +2,7 @@
 // may read or write. The last good result is kept on the phone, so screens still open with no signal.
 import { createClient } from "@/lib/supabase/client";
 import { CODE_BY_MATERIAL, MATERIAL_BY_CODE, type Material } from "./logic";
+import { EWASTE_CATEGORIES, type Condition, type Confidence, type EwasteCategory, type PlaceKind } from "./ewaste";
 
 const db = () => createClient();
 
@@ -302,4 +303,190 @@ export async function getOpenAnomalies(): Promise<{ id: string; reasons: string[
   const { data, error } = await db().from("anomalies").select("id, reasons, created_at").eq("status", "open").order("created_at", { ascending: false }).limit(20);
   if (error) throw error;
   return ((data ?? []) as { id: string; reasons: string[]; created_at: string }[]).map((r) => ({ id: r.id, reasons: r.reasons, createdAt: r.created_at }));
+}
+
+// ---------- Electronics: places that take it, and the sell / give / want board ----------
+export type EwastePlace = {
+  id: string;
+  name: string;
+  kind: PlaceKind;
+  accepts: EwasteCategory[];
+  areaLabel: string;
+  address: string | null;
+  lat: number;
+  lng: number;
+  pin: "site" | "area";
+  phone: string | null;
+  website: string | null;
+  hours: string | null;
+  free: boolean;
+  note: string | null;
+  confidence: Confidence;
+  sourceUrl: string;
+  checkedOn: string;
+};
+type PlaceRow = {
+  id: string;
+  name: string;
+  kind: PlaceKind;
+  accepts: string[];
+  area_label: string;
+  address: string | null;
+  lat: number;
+  lng: number;
+  pin: "site" | "area";
+  phone: string | null;
+  website: string | null;
+  hours: string | null;
+  free: boolean;
+  note: string | null;
+  confidence: Confidence;
+  source_url: string;
+  checked_on: string;
+};
+
+const isCategory = (c: string): c is EwasteCategory => (EWASTE_CATEGORIES as readonly string[]).includes(c);
+
+export function getEwastePlaces(): Promise<Fetched<EwastePlace[]>> {
+  return cached<EwastePlace[]>("ccza.ewaste.places.v1", [], async () => {
+    const { data, error } = await db()
+      .from("ewaste_points")
+      .select("id, name, kind, accepts, area_label, address, lat, lng, pin, phone, website, hours, free, note, confidence, source_url, checked_on")
+      .order("name");
+    if (error) throw error;
+    return ((data ?? []) as unknown as PlaceRow[]).map(placeFromRow);
+  });
+}
+
+function placeFromRow(r: PlaceRow): EwastePlace {
+  return {
+    id: r.id,
+    name: r.name,
+    kind: r.kind,
+    accepts: r.accepts.filter(isCategory),
+    areaLabel: r.area_label,
+    address: r.address,
+    lat: Number(r.lat),
+    lng: Number(r.lng),
+    pin: r.pin,
+    phone: r.phone,
+    website: r.website,
+    hours: r.hours,
+    free: r.free,
+    note: r.note,
+    confidence: r.confidence,
+    sourceUrl: r.source_url,
+    checkedOn: r.checked_on,
+  };
+}
+
+export type EwasteKind = "sell" | "give" | "want";
+export type EwasteListing = {
+  id: string;
+  kind: EwasteKind;
+  category: EwasteCategory;
+  title: string;
+  condition: Condition;
+  priceCents: number | null;
+  seller: string;
+  areaLabel: string;
+  lat: number;
+  lng: number;
+  note: string | null;
+  createdAt: string;
+};
+type ListingRow = {
+  id: string;
+  kind: EwasteKind;
+  category: string;
+  title: string;
+  condition: Condition;
+  price_cents: number | null;
+  seller: string;
+  area_label: string;
+  lat: number;
+  lng: number;
+  note: string | null;
+  created_at: string;
+};
+
+export function getEwasteListings(): Promise<Fetched<EwasteListing[]>> {
+  return cached<EwasteListing[]>("ccza.ewaste.listings.v1", [], async () => {
+    const { data, error } = await db().rpc("ewaste_listings");
+    if (error) throw error;
+    return ((data ?? []) as ListingRow[]).flatMap((r) =>
+      isCategory(r.category)
+        ? [{ id: r.id, kind: r.kind, category: r.category, title: r.title, condition: r.condition, priceCents: r.price_cents, seller: r.seller, areaLabel: r.area_label, lat: Number(r.lat), lng: Number(r.lng), note: r.note, createdAt: r.created_at }]
+        : [],
+    );
+  });
+}
+
+export type NewEwastePost = {
+  kind: EwasteKind;
+  category: EwasteCategory;
+  title: string;
+  condition: Condition;
+  priceCents: number | null;
+  seller: string;
+  contact: string;
+  areaLabel: string;
+  lat: number;
+  lng: number;
+  note: string;
+};
+
+export async function createEwastePost(p: NewEwastePost): Promise<string | null> {
+  const { error } = await db().rpc("create_ewaste_post", {
+    p_kind: p.kind,
+    p_category: p.category,
+    p_title: p.title,
+    p_condition: p.condition,
+    p_price_cents: p.priceCents,
+    p_seller: p.seller,
+    p_contact: p.contact,
+    p_area_label: p.areaLabel,
+    p_lat: p.lat,
+    p_lng: p.lng,
+    p_note: p.note || null,
+  });
+  if (!error) return null;
+  const m = error.message;
+  if (m.includes("TOO_MANY_POSTS")) return "You already have 10 open listings. Close one first.";
+  if (m.includes("BAD_LOCATION")) return "That place is outside South Africa.";
+  if (m.includes("BAD_CONTACT")) return "Enter a phone number we can use, like 082 555 0101.";
+  if (m.includes("GIVE_IS_FREE")) return "A giveaway has no price.";
+  if (m.includes("ROLE_NOT_ALLOWED") || m.includes("NOT_SIGNED_IN")) return "Sign in with a reclaimer or business account to post.";
+  return "The listing did not save. Check the details and try again.";
+}
+
+export type MyEwastePost = { id: string; kind: EwasteKind; title: string; status: "open" | "closed"; priceCents: number | null; createdAt: string };
+
+export async function getMyEwastePosts(): Promise<MyEwastePost[]> {
+  const { data, error } = await db()
+    .from("ewaste_posts")
+    .select("id, kind, title, status, price_cents, created_at")
+    .order("created_at", { ascending: false })
+    .limit(50);
+  if (error) throw error;
+  return ((data ?? []) as unknown as { id: string; kind: EwasteKind; title: string; status: "open" | "closed"; price_cents: number | null; created_at: string }[]).map((r) => ({
+    id: r.id,
+    kind: r.kind,
+    title: r.title,
+    status: r.status,
+    priceCents: r.price_cents,
+    createdAt: r.created_at,
+  }));
+}
+
+export async function closeMyEwastePost(id: string): Promise<boolean> {
+  const { error } = await db().from("ewaste_posts").update({ status: "closed" }).eq("id", id);
+  return !error;
+}
+
+/** The poster's number. Only signed-in people get one. */
+export async function getEwasteContact(id: string): Promise<string | null> {
+  const { data, error } = await db().rpc("ewaste_contact", { p_id: id });
+  if (error || typeof data !== "string") return null;
+  return data;
 }
