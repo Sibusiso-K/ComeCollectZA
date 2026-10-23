@@ -5,7 +5,7 @@
 // - Never cached: API calls and the personal money screen.
 // - The reclaimer's main pages are saved at install, so the app opens with no signal.
 
-const VERSION = "v2";
+const VERSION = "v3";
 const STATIC_CACHE = "ccza-static-" + VERSION;
 const PAGE_CACHE = "ccza-pages-" + VERSION;
 
@@ -61,7 +61,8 @@ async function cacheFirst(request) {
 async function networkFirst(request) {
   const cache = await caches.open(PAGE_CACHE);
   try {
-    const response = await fetch(request);
+    // no-cache asks the server whether the page changed (a small 304 if not), so a new deploy shows at once.
+    const response = await fetch(new Request(request, { cache: "no-cache" }));
     if (response.ok) cache.put(request, response.clone());
     return response;
   } catch {
