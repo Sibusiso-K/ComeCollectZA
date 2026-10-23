@@ -6,7 +6,9 @@
     "node": ">=20.9.0"
   },
   "scripts": {
+    "predev": "node tools/vision/fetch-assets.mjs",
     "dev": "next dev",
+    "prebuild": "node tools/vision/fetch-assets.mjs",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",

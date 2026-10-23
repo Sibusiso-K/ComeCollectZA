@@ -9,3 +9,7 @@ next-env.d.ts
 .DS_Store
 .claude/
 public/dev-samples/
+
+# Scanner model and runtime, fetched by tools/vision/fetch-assets.mjs before each build
+public/models/tinyclip/
+public/ort/
