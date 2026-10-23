@@ -14,11 +14,11 @@ on conflict (code) do nothing;
 
 insert into centres (id, name, area_id, location, hours) values
   ('11111111-1111-4111-8111-111111111111', 'Demo Centre Orlando East', 'orlando-east',
-   st_setsrid(st_makepoint(27.9100, -26.2485), 4326)::geography, 'Mon to Sat 07:00 to 17:00'),
+   extensions.st_setsrid(extensions.st_makepoint(27.9100, -26.2485), 4326)::extensions.geography, 'Mon to Sat 07:00 to 17:00'),
   ('22222222-2222-4222-8222-222222222222', 'Demo Centre Klipspruit', 'klipspruit',
-   st_setsrid(st_makepoint(27.8650, -26.2700), 4326)::geography, 'Mon to Sat 07:30 to 16:30'),
+   extensions.st_setsrid(extensions.st_makepoint(27.8650, -26.2700), 4326)::extensions.geography, 'Mon to Sat 07:30 to 16:30'),
   ('33333333-3333-4333-8333-333333333333', 'Demo Centre Alexandra', 'alexandra',
-   st_setsrid(st_makepoint(28.0930, -26.1040), 4326)::geography, 'Mon to Fri 08:00 to 16:00')
+   extensions.st_setsrid(extensions.st_makepoint(28.0930, -26.1040), 4326)::extensions.geography, 'Mon to Fri 08:00 to 16:00')
 on conflict (id) do nothing;
 
 -- Prices in cents per kg. Anchored on the 2026 reports: PET about R3.80, cans about R10.20.

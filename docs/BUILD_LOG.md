@@ -4,6 +4,19 @@ Dated record of decisions and work. Newest entries go at the top.
 
 ## 21 Oct 2026
 
+- **Supabase project created:** `comecollectza` (ref `roiwontybdbhkuitffll`) in Sibusiso-K's Org, region eu-west-2, at $0 a month. Connected through the Supabase MCP.
+- **Migration 0001 applied** through the MCP. The applied version also contained table grants that the repo file did not have, so 0002 repeats them.
+- **Seed applied:** 3 demo centres, 12 prices, 7 materials.
+- **Security advisors found** one ERROR (RLS off on PostGIS's `spatial_ref_sys`), warnings for PostGIS in `public`, and helper functions callable through the API by `anon`.
+- **Migration 0002 applied:** PostGIS moved to the `extensions` schema, which needed a drop and recreate because PostGIS cannot change schema in place. Centre coordinates were preserved. Policy helpers moved to a private schema, and only `authenticated` can run them. Advisors now show one INFO (`audit_log` has no policies, which is intended) and one WARN (`pro_material_summary` is callable by signed-in users, which is intended because it checks the PRO role inside).
+- **Local test found a real bug:** the PRO summary still called the helper by its old name after the move. Fixed in 0002 before the live apply.
+- **Live role checks passed**, inside a transaction that was rolled back. Anon sees nothing, a reclaimer sees only their own sales, an operator sees only their centre, a PRO sees aggregates and anomalies but no individual sales, and a forged sale is refused. No test rows remain.
+- **Local config:** `.env.local` holds the project URL and the publishable key. The service role key is not stored anywhere.
+- **Not done:** the stokup and stoko projects were not deleted. The connected Supabase tools can pause projects but cannot delete them, and deletion must be done in the dashboard after confirmation.
+
+- **`feature/supabase-schema` started.** Added `supabase/tests/rls.test.mjs` (`npm run test:db`). It applies the migration and seed to PostgreSQL 17 with PostGIS (PGlite) and stubs Supabase's auth schema. It checks row level security for anon, reclaimer, operator and PRO, plus the table constraints. All 40 checks pass.
+- **Negative check:** with transactions readable by everyone, 3 checks fail, so the suite detects a broken policy.
+- **Not done:** the migration has not been applied to a real Supabase project. That needs the product owner's account or access.
 - Connected the local project to `Sibusiso-K/ComeCollectZA` (private). The remote `main` held only a README with the title. Local history was attached on top of it, and the README was replaced.
 - The SSH key for GitHub is not set up on this machine. The remote uses HTTPS through the GitHub CLI credential helper.
 - Set a repo-local git identity for this project only.
