@@ -1,5 +1,5 @@
 import { ShellNotice } from "@/components/shell-notice";
-import { Button } from "@/components/ui/button";
+import { ReclaimerCodeField } from "@/components/reclaimer-code-field";
 import { DEMO_SALES } from "@/lib/demo";
 import { MATERIALS } from "@/lib/materials";
 import { formatRand } from "@/lib/money";
@@ -13,17 +13,7 @@ export default function CentrePage() {
 
       <section className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-5">
         <h2 className="font-display text-lg font-bold">Scan a reclaimer</h2>
-        <label className="flex flex-col gap-2 text-sm font-bold">
-          Reclaimer code
-          <input
-            name="reclaimer_qr"
-            placeholder="ccza_r_..."
-            className="min-h-14 rounded-xl border-2 border-line bg-canvas px-4 font-mono text-base text-ink focus-visible:outline-3 focus-visible:outline-gold"
-          />
-        </label>
-        <Button variant="secondary" className="w-full" disabled>
-          Find reclaimer
-        </Button>
+        <ReclaimerCodeField />
       </section>
 
       <section className="flex flex-col gap-3">
