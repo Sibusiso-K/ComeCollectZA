@@ -17,9 +17,44 @@ export type Prediction = {
 
 export type ClassifierInput = Blob | HTMLCanvasElement;
 
+// A load is scored as a whole and as four quarters, so a mixed pile shows up as quarters that disagree.
+export type LoadPrediction = {
+  whole: Prediction;
+  quarters: Prediction[];
+  ms: number;
+};
+
 export type Classifier = {
   classify: (input: ClassifierInput) => Promise<Prediction>;
+  classifyLoad: (input: ClassifierInput) => Promise<LoadPrediction>;
 };
+
+const MAX_SIDE = 448;
+
+// Draws a photo or frame onto a canvas no bigger than MAX_SIDE, so five passes stay quick on a cheap phone.
+async function toCanvas(input: ClassifierInput): Promise<HTMLCanvasElement> {
+  if (input instanceof HTMLCanvasElement) return input;
+  const bitmap = await createImageBitmap(input);
+  const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d")?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  return canvas;
+}
+
+function quartersOf(canvas: HTMLCanvasElement): HTMLCanvasElement[] {
+  const w = Math.floor(canvas.width / 2);
+  const h = Math.floor(canvas.height / 2);
+  return [0, 1, 2, 3].map((i) => {
+    const part = document.createElement("canvas");
+    part.width = w;
+    part.height = h;
+    part.getContext("2d")?.drawImage(canvas, (i % 2) * w, Math.floor(i / 2) * h, w, h, 0, 0, w, h);
+    return part;
+  });
+}
 
 type Head = {
   classes: WasteGroup[];
@@ -83,15 +118,25 @@ async function build(onProgress?: (fraction: number) => void): Promise<Classifie
     attention_mask: new Tensor("int64", new BigInt64Array(ids.length).fill(BigInt(1)), [1, ids.length]),
   };
 
+  async function classify(input: ClassifierInput): Promise<Prediction> {
+    const started = performance.now();
+    const image = input instanceof Blob ? await RawImage.fromBlob(input) : await RawImage.fromCanvas(input);
+    const pixels = await processor(image);
+    const output = await model({ ...dummyText, ...pixels });
+    const scores = scoreEmbedding(output.image_embeds.data as Float32Array, head);
+    const best = head.classes.reduce((a, c) => (scores[c] > scores[a] ? c : a), head.classes[0]);
+    return { group: best, confidence: scores[best], scores, ms: Math.round(performance.now() - started) };
+  }
+
   return {
-    async classify(input) {
+    classify,
+    async classifyLoad(input) {
       const started = performance.now();
-      const image = input instanceof Blob ? await RawImage.fromBlob(input) : await RawImage.fromCanvas(input);
-      const pixels = await processor(image);
-      const output = await model({ ...dummyText, ...pixels });
-      const scores = scoreEmbedding(output.image_embeds.data as Float32Array, head);
-      const best = head.classes.reduce((a, c) => (scores[c] > scores[a] ? c : a), head.classes[0]);
-      return { group: best, confidence: scores[best], scores, ms: Math.round(performance.now() - started) };
+      const canvas = await toCanvas(input);
+      const whole = await classify(canvas);
+      const quarters: Prediction[] = [];
+      for (const part of quartersOf(canvas)) quarters.push(await classify(part));
+      return { whole, quarters, ms: Math.round(performance.now() - started) };
     },
   };
 }
