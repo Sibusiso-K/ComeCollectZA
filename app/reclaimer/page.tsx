@@ -1,16 +1,23 @@
 import Link from "next/link";
 import { Avatar } from "@/components/avatar";
-import { ShellNotice } from "@/components/shell-notice";
-import { BOARD, DEMO_BEST, DEMO_RECLAIMER } from "@/lib/demo";
-import { MATERIALS } from "@/lib/materials";
+import { BoardNotice } from "@/components/board-notice";
+import { bestRowByMaterial, getBoard } from "@/lib/board";
+import { DEMO_RECLAIMER } from "@/lib/demo";
+import { MATERIALS, type MaterialCode } from "@/lib/materials";
 import { formatPricePerKg } from "@/lib/money";
 
-export default function ReclaimerHome() {
-  const materialLabel = MATERIALS[DEMO_BEST.material as Exclude<typeof DEMO_BEST.material, "OTHER">].label;
+export const revalidate = 300;
+
+const FEATURED: MaterialCode[] = ["PET", "CAN_AL", "CARDBOARD"];
+
+export default async function ReclaimerHome() {
+  const board = await getBoard();
+  const best = bestRowByMaterial(board.rows);
+  const cans = best.CAN_AL;
 
   return (
     <>
-      <ShellNotice />
+      <BoardNotice source={board.source} />
 
       <header className="flex items-center justify-between">
         <div>
@@ -21,14 +28,15 @@ export default function ReclaimerHome() {
       </header>
 
       <section className="flex flex-col gap-2 rounded-2xl bg-board p-5 text-chalk">
-        <p className="font-mono text-xs uppercase tracking-wider text-chalk-dim">Best for your {materialLabel.toLowerCase()} today</p>
-        <p className="font-mono text-4xl tabular-nums">{formatPricePerKg(DEMO_BEST.cents_per_kg)}</p>
-        <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
-          <span>
-            {DEMO_BEST.centre} · {DEMO_BEST.distance_km} km
-          </span>
-          <span className="rounded-full bg-green px-3 py-1 font-bold text-on-green">Sell now</span>
-        </div>
+        <p className="font-mono text-xs uppercase tracking-wider text-chalk-dim">Best price for cans today</p>
+        {cans ? (
+          <>
+            <p className="font-mono text-4xl tabular-nums">{formatPricePerKg(cans.cents_per_kg)}</p>
+            <p className="text-sm">{cans.centre_name}</p>
+          </>
+        ) : (
+          <p className="text-sm">No price for cans yet.</p>
+        )}
       </section>
 
       <section className="flex flex-col gap-2">
@@ -39,12 +47,15 @@ export default function ReclaimerHome() {
           </Link>
         </div>
         <ul className="grid gap-2">
-          {BOARD.slice(0, 3).map((row) => (
-            <li key={row.code} className="flex items-center justify-between rounded-xl border border-line bg-surface px-4 py-3">
-              <span className="font-bold">{MATERIALS[row.code as Exclude<typeof row.code, "OTHER">].label}</span>
-              <span className="font-mono tabular-nums">{formatPricePerKg(row.cents_per_kg)}</span>
-            </li>
-          ))}
+          {FEATURED.map((code) => {
+            const row = best[code];
+            return (
+              <li key={code} className="flex items-center justify-between rounded-xl border border-line bg-surface px-4 py-3">
+                <span className="font-bold">{MATERIALS[code as Exclude<MaterialCode, "OTHER">].label}</span>
+                <span className="font-mono tabular-nums">{row ? formatPricePerKg(row.cents_per_kg) : "No price"}</span>
+              </li>
+            );
+          })}
         </ul>
       </section>
     </>

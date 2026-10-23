@@ -2,24 +2,30 @@
 
 import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { BOARD, DEMO_QR_TOKEN } from "@/lib/demo";
+import { DEMO_QR_TOKEN } from "@/lib/demo";
 import { MATERIALS, type MaterialCode } from "@/lib/materials";
 import { formatRand, formatPricePerKg } from "@/lib/money";
 import { Button } from "@/components/ui/button";
 import { MaterialTile } from "@/components/material-tile";
-import { ShellNotice } from "@/components/shell-notice";
+import { BoardNotice } from "@/components/board-notice";
 
 const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "back"];
 const MAX_DIGITS = 6; // grams, so up to 999.999 kg
 
 // Sell flow: pick a material, enter the weight and show your code at the centre.
 // The centre's scale sets the final weight; this estimate is only a guide.
-export function SellFlow() {
+export function SellFlow({
+  prices,
+  source,
+}: {
+  prices: Partial<Record<MaterialCode, number>>;
+  source: "live" | "demo";
+}) {
   const [material, setMaterial] = useState<MaterialCode | null>(null);
   const [grams, setGrams] = useState("");
   const [showQr, setShowQr] = useState(false);
 
-  const price = BOARD.find((b) => b.code === material)?.cents_per_kg ?? 0;
+  const price = material ? (prices[material] ?? 0) : 0;
   const kg = grams === "" ? 0 : Number(grams) / 1000;
   const estimate = Math.round((Number(grams) * price) / 1000);
 
@@ -31,7 +37,7 @@ export function SellFlow() {
 
   return (
     <div className="flex flex-col gap-5">
-      <ShellNotice />
+      <BoardNotice source={source} />
       <h1 className="font-display text-2xl font-extrabold">Sell a load</h1>
 
       <section aria-labelledby="pick-material" className="flex flex-col gap-3">

@@ -10,7 +10,8 @@ ComeCollectZA is a reclaimer-side app for South Africa's informal recyclers, bui
 
 | Area | State | Notes |
 |---|---|---|
-| Screens (reclaimer, centre, PRO) | Done as shells | Run on demo data, labelled as such |
+| Reclaimer home, prices and sell estimate | Live board prices | Read through `board_prices()`. Sample prices are shown, and labelled, if the database cannot be reached |
+| Centre and PRO screens | Done as shells | Run on demo data, labelled as such |
 | Sell flow | Works in the browser | Estimate, keypad, code and QR. Does not save a sale |
 | Money moment | Works | Count-up ends on the real amount |
 | Design tokens and components | Done | Light and dark themes |
@@ -65,7 +66,7 @@ Then start the built app with `npm run start` and check the routes. Check the sc
 Work each item on its own branch. See the branch convention in the README.
 
 1. **`feature/supabase-schema`** (nearly done): migrations and seed are live, and the local and live role checks pass. Still to do: create demo auth users and repeat the role checks with real sign-ins.
-2. **`feature/reclaimer-prices`:** connect the home screen and the prices screen to the `prices` table.
+2. **`feature/reclaimer-prices`** (done, not yet merged): the home, prices and sell screens read live board prices. Still to do: the centre console should write prices through the API once the sales route is built.
 3. **`feature/centre-sales-api`:** store sales in `POST /api/v1/centre/transactions`, with the idempotency key, the service fee and the audit row.
 4. **`feature/sell-flow-save`:** save the sale from the reclaimer side and show the receipt.
 5. **`feature/demo-accounts`:** create the three demo accounts and link them to their roles.

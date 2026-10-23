@@ -122,6 +122,8 @@ Helper functions:
 
 Sales are written only by the server using the service role, after it checks the session and the operator's centre.
 
+Board prices are public information, so the reclaimer screens read them through `board_prices()`, which is granted to `anon` and `authenticated`. The function is security definer and returns only the centre name, area, material, price and time. The `prices` table itself still needs sign-in, and an anonymous client cannot read it directly.
+
 ## API contracts
 
 Every request carries the Supabase session as `Authorization: Bearer <jwt>`. Retried writes carry an `Idempotency-Key`. Errors use one shape:
@@ -146,6 +148,7 @@ Every request carries the Supabase session as `Authorization: Bearer <jwt>`. Ret
 | Method | Path | State |
 |---|---|---|
 | GET | `/api/health` | Returns `ok`. Database check planned |
+| RPC | `board_prices()` | Latest price per centre and material. Readable without signing in. Returns the centre name and area only, never the operator id |
 | POST | `/api/v1/centre/transactions` | Validates the body and idempotency key. Returns 501 until storage is connected |
 
 ### Planned
