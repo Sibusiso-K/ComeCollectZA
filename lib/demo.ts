@@ -44,6 +44,9 @@ export const DEMO_SALES = [
 
 export const PRO_SUMMARY = {
   active_reclaimers: 1240,
+  // Reclaimers aged 18 to 34. Needs an age band at registration, which is not collected yet.
+  youth_reclaimers: 610,
+  paid_to_reclaimers_cents: 19480000,
   tonnes_total: 38.6,
   fees_paid_cents: 1842000,
   fees_owed_cents: 412000,

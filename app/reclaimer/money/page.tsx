@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { ImpactCard } from "@/components/impact-card";
+import { impactOf } from "@/lib/impact";
 import { MoneyMoment } from "@/components/money-moment";
 import { ReceiptNotice } from "@/components/receipt-notice";
 import { feeTotals, getReceipts } from "@/lib/receipts";
@@ -9,6 +11,7 @@ export default async function MoneyPage() {
   const { source, receipts } = await getReceipts();
   const latest = receipts[0];
   const totals = feeTotals(receipts);
+  const impact = impactOf(receipts);
 
   return (
     <>
@@ -37,6 +40,12 @@ export default async function MoneyPage() {
           <dd className="text-right font-mono tabular-nums text-bad">{formatRand(totals.missing)}</dd>
         </dl>
       </section>
+
+      <ImpactCard
+        impact={impact}
+        title="My impact"
+        note="For the sales shown. Work days compare your pay with the R30.23 an hour minimum wage."
+      />
 
       <section className="flex flex-col gap-2">
         <h2 className="font-display text-lg font-bold">Recent sales</h2>
