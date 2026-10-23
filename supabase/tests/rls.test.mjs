@@ -512,6 +512,106 @@ async function runTests() {
     await assert.rejects(db.query("select * from pro_overview()"));
   });
 
+  // ---- Registration race (migration 0006) and electronics (migration 0007) ----
+  const E1 = "80000000-0000-4000-8000-000000000001"; // has a profile but no reclaimers row yet (the half-finished registration)
+  const E2 = "80000000-0000-4000-8000-000000000002"; // second seller
+  await db.exec("reset role");
+  await db.exec(`insert into auth.users (id) values ('${E1}'), ('${E2}')`);
+  await db.exec(`insert into profiles (id, role, display_name) values ('${E1}', 'reclaimer', 'Half done'), ('${E2}', 'reclaimer', 'Seller Two')`);
+
+  await check("register_reclaimer finishes a half-made registration instead of looping", async () => {
+    await as("authenticated", E1);
+    const [first] = await rows("select public.register_reclaimer('Half done', 'Meadowlands', '25-34') as token");
+    assert.match(first.token, /^ccza_r_[A-Z0-9]{8}$/);
+    const [again] = await rows("select public.register_reclaimer('Half done', 'Meadowlands', null) as token");
+    assert.equal(again.token, first.token);
+    assert.equal(await count("select 1 from reclaimers where profile_id = '" + E1 + "'"), 1);
+  });
+
+  await check("e-waste places are public to read and closed to every writer", async () => {
+    await as("anon");
+    const places = await rows("select id, confidence, source_url, checked_on from ewaste_points");
+    assert.equal(places.length, 8);
+    assert.ok(places.every((p) => p.source_url.startsWith("https://") && p.checked_on));
+    await assert.rejects(db.query("insert into ewaste_points (id, name, kind, area_label, lat, lng, source_url, checked_on) values ('fake-place', 'Fake', 'buyer', 'Soweto', -26.2, 27.9, 'https://example.com', now())"));
+    await as("authenticated", B1);
+    await assert.rejects(db.query("insert into ewaste_points (id, name, kind, area_label, lat, lng, source_url, checked_on) values ('fake-place', 'Fake', 'buyer', 'Soweto', -26.2, 27.9, 'https://example.com', now())"));
+    await db.query("update ewaste_points set name = 'Hacked'");
+    await db.query("delete from ewaste_points");
+    await db.exec("reset role");
+    assert.equal(await count("select 1 from ewaste_points where name = 'Hacked'"), 0);
+    assert.equal(await count("select 1 from ewaste_points"), 8);
+  });
+  await check("e-waste places keep inactive rows hidden and reject bad categories", async () => {
+    await db.exec("reset role");
+    await db.exec("update ewaste_points set active = false where id = 'pnp-fourways'");
+    await as("anon");
+    assert.equal(await count("select 1 from ewaste_points"), 7);
+    await db.exec("reset role");
+    await db.exec("update ewaste_points set active = true where id = 'pnp-fourways'");
+    await assert.rejects(db.query("update ewaste_points set accepts = array['nuclear'] where id = 'pnp-fourways'"));
+  });
+
+  let phoneId;
+  await check("a signed-in person can list a phone for sale, and the public list hides the number and snaps the place", async () => {
+    await as("authenticated", E2);
+    const [post] = await rows(
+      "select public.create_ewaste_post('sell', 'phone', 'Samsung A12, cracked screen', 'repair', 15000, 'Seller Two', '082 555 0101', 'Diepkloof', -26.24671, 27.93234, 'Charger included') as id",
+    );
+    phoneId = post.id;
+    await as("anon");
+    const list = await rows("select * from ewaste_listings()");
+    assert.equal(list.length, 1);
+    assert.equal(list[0].title, "Samsung A12, cracked screen");
+    assert.equal(list[0].price_cents, 15000);
+    assert.ok(!("contact" in list[0]), "contact is not in the public list");
+    assert.notEqual(Number(list[0].lat), -26.24671, "latitude is snapped");
+    assert.ok(Math.abs(Number(list[0].lat) - -26.24671) <= 0.0025);
+  });
+  await check("the poster's number is shown to signed-in people only", async () => {
+    await as("authenticated", R1);
+    const [c] = await rows("select public.ewaste_contact($1) as contact", [phoneId]);
+    assert.equal(c.contact, "082 555 0101");
+    await as("anon");
+    await assert.rejects(db.query("select public.ewaste_contact($1)", [phoneId]));
+    await as("authenticated", R1);
+    assert.equal(await count("select 1 from ewaste_posts"), 0, "other people cannot read the table");
+  });
+  await check("e-waste listings refuse bad numbers, free items with a price, and non-owners' edits", async () => {
+    await as("authenticated", E2);
+    await assert.rejects(db.query("select public.create_ewaste_post('sell', 'tv', 'TV', 'works', 100000, 'S', 'not a number', 'Diepkloof', -26.2, 27.9)"), /BAD_CONTACT/);
+    await assert.rejects(db.query("select public.create_ewaste_post('give', 'tv', 'TV', 'works', 5000, 'S', '082 555 0101', 'Diepkloof', -26.2, 27.9)"), /GIVE_IS_FREE/);
+    await assert.rejects(db.query("select public.create_ewaste_post('sell', 'tv', 'TV', 'works', 100000, 'S', '082 555 0101', 'Diepkloof', 10.0, 10.0)"), /BAD_LOCATION/);
+    await assert.rejects(db.query("select public.create_ewaste_post('sell', 'toaster-oven', 'TV', 'works', 100000, 'S', '082 555 0101', 'Diepkloof', -26.2, 27.9)"));
+    await as("authenticated", R1);
+    await db.query("update ewaste_posts set status = 'closed'");
+    await as("authenticated", E2);
+    assert.equal((await rows("select status from ewaste_posts"))[0].status, "open");
+  });
+  await check("giving away stores a zero price, and closing a listing removes it from the list", async () => {
+    await as("authenticated", E2);
+    await db.query("select public.create_ewaste_post('give', 'cables', 'Box of phone chargers', 'works', null, 'Seller Two', '082 555 0101', 'Diepkloof', -26.2, 27.9)");
+    await as("anon");
+    assert.equal((await rows("select price_cents from ewaste_listings() where kind = 'give'"))[0].price_cents, 0);
+    await as("authenticated", E2);
+    await db.query("update ewaste_posts set status = 'closed'");
+    await as("anon");
+    assert.equal(await count("select 1 from ewaste_listings()"), 0);
+    await as("authenticated", E2);
+    assert.equal((await rows("select public.ewaste_contact($1) as contact", [phoneId]))[0].contact, null);
+  });
+  await check("electronics listings are limited to 10 open per person, and need a role that may post", async () => {
+    await as("authenticated", E2);
+    for (let i = 0; i < 10; i++) {
+      await db.query("select public.create_ewaste_post('sell', 'other', 'Item', 'parts', 1000, 'S', '082 555 0101', 'Diepkloof', -26.2, 27.9)");
+    }
+    await assert.rejects(db.query("select public.create_ewaste_post('sell', 'other', 'Item', 'parts', 1000, 'S', '082 555 0101', 'Diepkloof', -26.2, 27.9)"), /TOO_MANY_POSTS/);
+    await as("authenticated", P1);
+    await assert.rejects(db.query("select public.create_ewaste_post('sell', 'other', 'Item', 'parts', 1000, 'S', '082 555 0101', 'Diepkloof', -26.2, 27.9)"), /ROLE_NOT_ALLOWED/);
+    await as("anon");
+    await assert.rejects(db.query("select public.create_ewaste_post('sell', 'other', 'Item', 'parts', 1000, 'S', '082 555 0101', 'Diepkloof', -26.2, 27.9)"));
+  });
+
   await db.exec("reset role");
 
   await check("dHash duplicate check: identical hashes are at distance 0, opposite hashes at 64", async () => {
