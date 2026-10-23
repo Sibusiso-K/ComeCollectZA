@@ -17,7 +17,7 @@ jobs:
       # Without this, npm ci downloads a large GPU package from NuGet and can time out.
       ONNXRUNTIME_NODE_INSTALL: skip
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 24
