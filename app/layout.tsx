@@ -4,6 +4,7 @@ import {
   Atkinson_Hyperlegible_Next,
   Bricolage_Grotesque,
 } from "next/font/google";
+import { PwaRegister } from "@/components/pwa-register";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -33,18 +34,28 @@ const mono = Atkinson_Hyperlegible_Mono({
 export const metadata: Metadata = {
   title: "ComeCollectZA",
   description: "Get paid fairly for every kilogram you collect.",
+  applicationName: "ComeCollectZA",
+  appleWebApp: { capable: true, title: "ComeCollectZA", statusBarStyle: "default" },
+  icons: {
+    icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#0E7A4C",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={display.variable + " " + body.variable + " " + mono.variable}>
-      <body className="min-h-dvh antialiased">{children}</body>
+      <body className="min-h-dvh antialiased">
+        {children}
+        <PwaRegister />
+      </body>
     </html>
   );
 }
