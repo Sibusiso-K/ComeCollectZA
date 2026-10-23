@@ -7,3 +7,9 @@ export function formatRand(cents: number): string {
 export function formatPricePerKg(centsPerKg: number): string {
   return formatRand(centsPerKg) + "/kg";
 }
+
+// Cents per kg times 1000 kg, shown in whole rands: 1020 c/kg is R10 200/t.
+export function formatPricePerTonne(centsPerKg: number): string {
+  const rands = Math.round((centsPerKg * 1000) / 100);
+  return "R" + rands.toLocaleString("en-ZA").replace(/,/g, " ") + "/t";
+}

@@ -21,7 +21,7 @@ insert into centres (id, name, area_id, location, hours) values
    extensions.st_setsrid(extensions.st_makepoint(28.0930, -26.1040), 4326)::extensions.geography, 'Mon to Fri 08:00 to 16:00')
 on conflict (id) do nothing;
 
--- Prices in cents per kg. Anchored on the 2026 reports: PET about R3.80, cans about R10.20.
+-- Prices in cents per kg, inside the 2026 market ranges in lib/market-prices.ts (checked 23 Oct 2026).
 insert into prices (centre_id, material, cents_per_kg) values
   ('11111111-1111-4111-8111-111111111111', 'PET', 380),
   ('11111111-1111-4111-8111-111111111111', 'CAN_AL', 1020),
@@ -34,6 +34,12 @@ insert into prices (centre_id, material, cents_per_kg) values
   ('33333333-3333-4333-8333-333333333333', 'PET', 365),
   ('33333333-3333-4333-8333-333333333333', 'CAN_AL', 990),
   ('33333333-3333-4333-8333-333333333333', 'CARDBOARD', 95),
-  ('33333333-3333-4333-8333-333333333333', 'GLASS', 35);
+  ('33333333-3333-4333-8333-333333333333', 'GLASS', 35),
+  ('11111111-1111-4111-8111-111111111111', 'HDPE', 300),
+  ('22222222-2222-4222-8222-222222222222', 'HDPE', 280),
+  ('33333333-3333-4333-8333-333333333333', 'HDPE', 320),
+  ('11111111-1111-4111-8111-111111111111', 'PAPER_WHITE', 70),
+  ('22222222-2222-4222-8222-222222222222', 'PAPER_WHITE', 60),
+  ('33333333-3333-4333-8333-333333333333', 'PAPER_WHITE', 75);
 
 -- Run once. Re-running adds duplicate price rows; delete from prices first if you need to reseed.

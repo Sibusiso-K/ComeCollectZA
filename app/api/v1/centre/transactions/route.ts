@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { CentreTransactionRequest } from "@/lib/contracts";
 import { IDEMPOTENCY_KEY } from "@/lib/reclaimer-code";
+import { SERVICE_FEE_CENTS_PER_KG } from "@/lib/market-prices";
 
-// Demo service fee rate: 25 cents per kilogram. Set per programme once the real rate is confirmed.
-const SERVICE_FEE_CENTS_PER_KG = 25;
 // A sale body is under 400 bytes. Anything far larger is refused before parsing.
 const MAX_BODY_BYTES = 4096;
 

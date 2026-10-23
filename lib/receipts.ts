@@ -1,9 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { DEMO_SALES } from "./demo";
+import { SERVICE_FEE_CENTS_PER_KG as FEE_CENTS_PER_KG } from "./market-prices";
 import type { MaterialCode } from "./materials";
-
-// Demo service fee rate, matching the sales route. 25 cents per kilogram.
-const FEE_CENTS_PER_KG = 25;
 
 export type FeeStatus = "owed" | "paid" | "missing";
 
