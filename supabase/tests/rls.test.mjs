@@ -129,8 +129,8 @@ async function runTests() {
   await check("seed: three demo centres", async () => {
     assert.equal(await count("select id from centres"), 3);
   });
-  await check("seed: twelve demo prices", async () => {
-    assert.equal(await count("select id from prices"), 12);
+  await check("seed: eighteen demo prices", async () => {
+    assert.equal(await count("select id from prices"), 18);
   });
   await check("seed: seven materials", async () => {
     assert.equal(await count("select code from materials"), 7);
@@ -160,7 +160,7 @@ async function runTests() {
     await as("authenticated", R1);
     assert.equal(await count("select id from centres"), 3);
     assert.equal(await count("select code from materials"), 7);
-    assert.equal(await count("select id from prices"), 12);
+    assert.equal(await count("select id from prices"), 18);
   });
   await check("reclaimer sees only their own transactions", async () => {
     await as("authenticated", R1);
@@ -291,7 +291,7 @@ async function runTests() {
   await check("anon can read board prices through the function", async () => {
     await as("anon");
     const board = await rows("select * from board_prices()");
-    assert.equal(board.length, 12);
+    assert.equal(board.length, 18);
     assert.equal(await count("select id from prices"), 0);
   });
   await check("board prices never include the operator id", async () => {
