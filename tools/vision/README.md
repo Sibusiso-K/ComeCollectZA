@@ -35,3 +35,12 @@ The head was trained on TrashNet, which has clean photos of single items. Real l
 3. Retrain, check accuracy on a held-out set of real photos, and export a new `waste-head.json`.
 
 Bump `version` in the exported file when you change it.
+
+## Version 2: add real photos (RealWaste)
+
+1. Download RealWaste from https://archive.ics.uci.edu/dataset/908/realwaste (CC BY 4.0) and unzip it. The class folders are under `realwaste-main/RealWaste/`.
+2. `node embed-realwaste.mjs <path to RealWaste folder> emb_realwaste.json` embeds every photo with the app's model. About 5 minutes on a laptop CPU.
+3. `node train2.mjs C` compares four heads on held-out photos and writes `head-v2.json` for the combined head.
+4. `node export-v2.mjs ../public/models/waste-head.json` writes the head the app loads. Bump `version` when you change it.
+
+A Kaggle dataset works the same way: unzip it so each class has its own folder, map its class names to the six groups in `embed-realwaste.mjs`, then run steps 2 to 4.

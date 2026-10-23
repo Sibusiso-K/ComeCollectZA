@@ -34,7 +34,19 @@ Current code: the on-device material scanner and the QR reader run in the app. T
 
 **Works without data.** `tools/vision/fetch-assets.mjs` runs before every build. It copies the runtime from `node_modules` and downloads the model at a pinned revision, checked by SHA-256, into `public/` (git-ignored). The app never calls a CDN. The first scan downloads about 38 MB once; after that the service worker serves everything and scans work in flight mode. The tokenizer (5 MB) is not downloaded: the model's dummy text input is hard-coded as the four CLIP token ids for "a photo", checked against the real tokenizer. Verified with the server stopped: the sell page opened and a cardboard photo scanned at 100% in 714 ms.
 
-**Evidence.** The head was trained on 80% of the 2,527 TrashNet photos and tested on the other 20% (508 photos it had never seen).
+**Evidence, version 2 (current).** The head is now trained on TrashNet and RealWaste (UCI, CC BY 4.0: 4,752 real landfill photos, mapped to the six groups; food, vegetation and textile waste count as trash). Each dataset has its own held-out 20%.
+
+| Head | TrashNet test (508) | RealWaste test (952, real photos) |
+|---|---|---|
+| Version 1, the head in the app before (TrashNet only) | 82% | 34% |
+| Version 2, TrashNet plus RealWaste (shipped) | 79% | **82%** |
+| RealWaste only | 47% | 83% |
+
+Version 1 looked good on clean photos and failed on real ones. Version 2 keeps most of the clean-photo accuracy and makes real photos usable. On real photos, when version 2 is at least 70% sure, it answers 69% of photos and is right 91% of the time. Per class on real photos: cardboard 81%, glass 81%, metal 80%, paper 73%, plastic 72%, trash 91%.
+
+Not used: a Kaggle dataset. Kaggle downloads need a personal API token, which is not set up on the build machine. The same pipeline accepts any folder of class-named photos, so a Kaggle set can be added later. The CLIP network itself is not fine-tuned, only the head on top of it. Full fine-tuning needs a GPU and a training stack that is not set up here.
+
+**Evidence, version 1 (before).** The head was trained on 80% of the 2,527 TrashNet photos and tested on the other 20% (508 photos it had never seen).
 
 | Method | Held-out TrashNet photos |
 |---|---|
