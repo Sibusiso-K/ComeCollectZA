@@ -20,6 +20,11 @@ Scaffold. The screens run on demo data. The database schema and seed are applied
 | [docs/AGENTS.md](docs/AGENTS.md) | Roles of people and AI agents in the build |
 | [docs/BUILD_LOG.md](docs/BUILD_LOG.md) | Dated record of decisions and work |
 | [docs/HANDOVER.md](docs/HANDOVER.md) | How to pick the project up, open tasks, known issues |
+| [docs/BUSINESS_MODEL.md](docs/BUSINESS_MODEL.md) | Revenue, value chain, taverns and bottle stores, trust levels, Lean Canvas |
+| [docs/IMPACT.md](docs/IMPACT.md) | How CO2e, landfill diverted, work days and youth share are counted |
+| [docs/SCORECARD.md](docs/SCORECARD.md) | Score against the seven judging criteria, with history |
+| [docs/SECURITY.md](docs/SECURITY.md) | Security review against SCA, DAST, Penbot and SQL injection findings |
+| [docs/PHONE_TEST.md](docs/PHONE_TEST.md) | Steps to test the app on a real phone |
 
 ## Quick start
 
@@ -45,7 +50,8 @@ npm run build
 Open **https://comecollectza.vercel.app/reclaimer** in Chrome on Android or Safari on iPhone.
 
 - **Install it.** Android: tap the browser menu, then Install app. iPhone: tap Share, then Add to Home Screen.
-- **Scan a load.** Open Sell, tap Open camera, point it at a pile of cans, bottles, cardboard, paper or glass, and tap Scan this load. The scan runs on the phone and the photo is not uploaded. The first scan downloads about 23 MB, so use a good signal.
+- **Scan a load.** Open Sell, tap Open camera, point it at a pile of cans, bottles, cardboard, paper or glass, and tap Scan this load. The scan runs on the phone and the photo is not uploaded. A mixed pile is called out so you can sort it first.
+- **No data needed after the first scan.** The first scan downloads about 38 MB once, so use Wi-Fi. After that the scanner, the sell page and the prices page work in flight mode.
 - **Check the steps in [docs/PHONE_TEST.md](docs/PHONE_TEST.md).**
 
 ## Repository layout
