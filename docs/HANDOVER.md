@@ -22,7 +22,11 @@ ComeCollectZA is a reclaimer-side app for South Africa's informal recyclers, bui
 | Health route | Done | Does not check the database yet |
 | Authentication | Not started | Demo accounts not created |
 | Payouts and SAWPRS | Not started | Adapters are planned as mocks |
-| AI models | Not started | See [MODELS.md](MODELS.md) |
+| On-device material scanner | Built and deployed | Camera or photo, suggestion with confidence, tap to confirm. 82% on held-out TrashNet photos. Not yet tested on a real phone camera or real loads. See [MODELS.md](MODELS.md) |
+| Installable app (PWA) | Built and deployed | Manifest, icons and service worker. Checked in a desktop browser. Install on a phone is untested, see [PHONE_TEST.md](PHONE_TEST.md) |
+| QR scan at the centre | Built and deployed | Fills the reclaimer code field. Looking up the reclaimer is not wired to the sales route yet |
+| Forecasts, speech and assistant models | Not started | See [MODELS.md](MODELS.md) |
+| Live site | https://comecollectza.vercel.app | Deployed from `main` on every merge |
 | Deployment | Not started | Vercel project not created |
 | Tests | Not started | Only typecheck and build run |
 | CI | Not started | No automated checks on pull requests |
@@ -81,6 +85,11 @@ Work each item on its own branch. See the branch convention in the README.
 13. **Stretch:** isiZulu voice input, the assistant, offline queue, PDF statement.
 
 ## Known issues
+
+- **First scan needs a signal.** The first time the scanner opens, the phone downloads about 23 MB of model, plus the model runtime, and caches them. After that it works from the cache. Test on the venue network before demoing, and open the scanner once while online.
+- **The scanner is trained on clean photos.** Real loads will score lower than the 82% measured on TrashNet. The app asks for a tap every time, so a wrong guess costs one tap, not a wrong sale.
+- **Camera access needs HTTPS and a tap on Allow.** It works on the live site. It will not work from a plain `http://` address other than localhost.
+- **Reclaimer lookup from a scanned code is not wired up.** The code lands in the field, and the Find reclaimer button is still disabled.
 
 - The GitHub SSH key is not configured on the current machine. Use HTTPS, or add a key before pushing over SSH.
 - `npm run build` prints two warnings that Next has no fallback metrics for the Atkinson Hyperlegible fonts. They are harmless.

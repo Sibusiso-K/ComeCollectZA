@@ -2,6 +2,18 @@
 
 Dated record of decisions and work. Newest entries go at the top.
 
+## 23 Oct 2026 (hackathon day 1)
+
+- **Live database:** migration 0004 (`record_sale`) applied to the live Supabase project and checked inside a rolled-back transaction. Pull requests #1 to #4 merged into `main`.
+- **Deployed:** the app is on Vercel, linked to the GitHub repo, at https://comecollectza.vercel.app. The public Supabase settings are set as environment variables. A rebuild after setting them shows live prices.
+- **Vision model chosen:** surveyed small image models for waste. Dropped MobileCLIP (Apple research-use weights) and hobby fine-tunes with no evidence. Chose TinyCLIP ViT-8M (MIT, 23 MB int8). Plain zero-shot matching gave 49% on held-out TrashNet photos. A 30 KB head trained on TrashNet features gave 82%, and 91% when 70% or more sure.
+- **Test set problem found:** the first test set, from web searches, was mostly mislabelled. A contact sheet showed cars, trees and the same cardboard photos filed under other materials. Its numbers were set aside.
+- **Scanner built** (`feature/vision-scan`, PR #6): camera or photo, on-device classification, suggestion with confidence, tap to confirm. Checked in the browser: five sample photos gave the expected suggestions in 130 to 250 ms, and confirming selects the material in the sell flow.
+- **Installable app built** (`feature/pwa-install`, PR #5): manifest, generated icons, service worker. Checked: manifest valid, icons 200, service worker active, static cache created.
+- **QR scanning built** (`feature/qr-scan`, PR #7): BarcodeDetector with a jsQR fallback. 18 of 18 decoder checks pass after fixing a bug in the test, which had painted white modules black. With the camera blocked, the scanner shows a clear message.
+- **Merged and verified:** `main` passes a clean install, typecheck, build and 54 database checks. The live site shows live prices, the scanner, the scan button, the manifest and the icons.
+- **Not tested:** a real phone camera, install on a phone, and the scanner on real loads.
+
 ## 21 Oct 2026
 
 - **`feature/sell-receipts` (from the centre sales branch):** the reclaimer money screen reads the signed-in reclaimer's last ten sales and their service fees, using the same row level security the database tests cover. Without a signed-in user it shows labelled sample receipts. Typecheck and build pass. The page renders the samples and settles the money count-up on the right amount at phone width. The signed-in path is untested until reclaimer accounts exist.

@@ -12,12 +12,54 @@ The product uses free, open-source models only. No paid model APIs are called fr
 | Anomaly flags at sale time | Rules: weight above 3 × the reclaimer's 30-day 95th percentile, duplicate photo, centre far from usual area | Own code | Server | None needed |
 | Anomaly score, batch | `IsolationForest` on weight, price, time and distance | BSD-3 (scikit-learn) | GitHub Actions, nightly | Rules only |
 | Duplicate photo | 64-bit dHash, Hamming distance of 6 or less | Own code | Server, Postgres `bit_count` | None needed |
-| Material suggestion from a photo | `google/gemma-4-26b-a4b-it:free` on OpenRouter, strict JSON output | Open weights. Confirm the licence on the model card before submission | OpenRouter free tier | `nvidia/nemotron-3.5-super-vl:free`, then the user taps a material |
+| Material suggestion from a photo (built) | TinyCLIP ViT-8M, int8, plus a 30 KB classifier head trained on TrashNet. Runs on the phone | MIT (model), MIT (TrashNet) | In the browser, using transformers.js | The reclaimer picks a material by hand |
 | isiZulu speech to text (stretch) | `uctnlp/omniASR-CTC-300M-v2-Zulu-All-v2` | Apache-2.0 | Hugging Face ZeroGPU Gradio Space | Icons and typing |
 | English and Afrikaans speech to text (stretch) | `openai/whisper-large-v3-turbo` | MIT | Same Space | Icons and typing |
 | Assistant answers (stretch) | Gemma 4 on OpenRouter, given the recommendation as context | Open weights. Confirm the licence | OpenRouter free tier | Template answers per language |
 
-Current code: none of these models is called yet. The product screens use demo data.
+Current code: the on-device material scanner and the QR reader run in the app. The server-side models in this table, such as the forecast and the speech models, are not called yet.
+
+## The on-device material scanner
+
+**Why on the phone.** The photo never leaves the device, the scan works without the free-tier limits of a hosted model, and the model is small enough to cache. It runs in the browser, so one build serves Android and iPhone.
+
+**How it works.** TinyCLIP ViT-8M (a small image and text model, MIT licence) turns a photo into 512 numbers. A linear head, trained on TrashNet (MIT), turns those into one of six groups. The app maps the groups to the materials it prices. Metal becomes cans, paper becomes white paper, and plastic stays ambiguous, so the reclaimer picks PET or HDPE. The reclaimer always confirms with a tap.
+
+| Part | Size | Licence |
+|---|---|---|
+| `onnx-community/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M-ONNX`, int8 | 23.2 MB, downloaded once from the Hugging Face CDN and cached | MIT |
+| `public/models/waste-head.json` (the head) | 30 KB | Ours, trained on MIT data |
+| `@huggingface/transformers` 4.3.1 (runs the model) | Loaded on demand | Apache-2.0 |
+
+**Evidence.** The head was trained on 80% of the 2,527 TrashNet photos and tested on the other 20% (508 photos it had never seen).
+
+| Method | Held-out TrashNet photos |
+|---|---|
+| Zero-shot TinyCLIP, matching the photo to text prompts | 49% |
+| TinyCLIP plus the trained head | **82%** |
+
+Accuracy depends on how sure the head is. This is why the app shows a suggestion as a question below 70%.
+
+| When the head is at least | It answers | And is right |
+|---|---|---|
+| 50% sure | 93% of photos | 85% of the time |
+| 70% sure | 75% of photos | 91% of the time |
+| 90% sure | 51% of photos | 97% of the time |
+
+Speed: about 35 ms per photo on a laptop CPU in Node, and 130 to 250 ms in a desktop browser. It has not yet been timed on a phone.
+
+**Limits to say out loud.**
+- TrashNet photos are clean pictures of single items on a plain background. Real loads are piles and bags, so real accuracy will be lower.
+- A rough check on 36 web photos of recycling scenes gave 33% grouped accuracy for the head and 17% zero-shot. That set was mostly mislabelled, so treat it as a warning and not as a measurement.
+- The model cannot tell PET from HDPE, and plastic is its weakest group (72% on TrashNet).
+- It does not read the material code or the brand. It looks at how the load looks.
+- Photos of real loads, with consent and correct labels, are the way to improve it. See [tools/vision/README.md](../tools/vision/README.md).
+
+**Reproducing it.** The training and test scripts are in `tools/vision/`.
+
+**QR codes.** The centre console reads reclaimer codes with the browser's built-in BarcodeDetector where it exists, and with jsQR (Apache-2.0) elsewhere, such as on iPhone. 18 of 18 QR images decode in the decoder check.
+
+**Optional bigger model.** The vision prompt below, for a hosted vision model on OpenRouter, is kept as a design option. It is not used, because the on-device scanner replaces it.
 
 ## Models we left out on purpose
 
