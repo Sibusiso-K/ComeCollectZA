@@ -3,8 +3,9 @@ import { MATERIAL_CODES } from "./materials";
 
 export const MaterialCodeSchema = z.enum(MATERIAL_CODES);
 
-// Body of POST /api/v1/centre/transactions. The Idempotency-Key header is checked separately.
+// Body of POST /api/v1/centre/transactions. The Idempotency-Key header and the operator session are checked separately.
 export const CentreTransactionRequest = z.object({
+  centre_id: z.uuid(),
   reclaimer_qr: z.string().min(4).max(64),
   material: MaterialCodeSchema,
   weight_g: z.number().int().min(1).max(500000),
