@@ -1,10 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Atkinson_Hyperlegible_Mono,
-  Atkinson_Hyperlegible_Next,
-  Bricolage_Grotesque,
-} from "next/font/google";
+import { Atkinson_Hyperlegible_Next, Bricolage_Grotesque, Silkscreen } from "next/font/google";
 import { PwaRegister } from "@/components/pwa-register";
+import { Providers } from "@/components/app/providers";
+import { THEME_BOOT } from "@/lib/app/theme-boot";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -14,7 +12,7 @@ const display = Bricolage_Grotesque({
   display: "swap",
 });
 
-// Next has no metric data for these faces, so it skips the generated fallback. The CSS stacks in globals.css already fall back to system fonts.
+// Next has no metric data for these faces, so it skips the generated fallback. The CSS stacks already fall back to system fonts.
 const body = Atkinson_Hyperlegible_Next({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
@@ -23,10 +21,10 @@ const body = Atkinson_Hyperlegible_Next({
   adjustFontFallback: false,
 });
 
-const mono = Atkinson_Hyperlegible_Mono({
+const dot = Silkscreen({
   subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-mono-face",
+  weight: ["400"],
+  variable: "--font-dot-face",
   display: "swap",
   adjustFontFallback: false,
 });
@@ -46,14 +44,17 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0E7A4C",
+  themeColor: "#0B0F0C",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={display.variable + " " + body.variable + " " + mono.variable}>
+    <html lang="en" suppressHydrationWarning className={display.variable + " " + body.variable + " " + dot.variable}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
+      </head>
       <body className="min-h-dvh antialiased">
-        {children}
+        <Providers>{children}</Providers>
         <PwaRegister />
       </body>
     </html>
