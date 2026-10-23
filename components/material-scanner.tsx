@@ -21,6 +21,7 @@ export function MaterialScanner({ onPick }: { onPick: (material: MaterialCode) =
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
   const [ms, setMs] = useState(0);
   const [message, setMessage] = useState("");
+  const [saved, setSaved] = useState(false);
 
   function stopCamera() {
     streamRef.current?.getTracks().forEach((track) => track.stop());
@@ -28,6 +29,15 @@ export function MaterialScanner({ onPick }: { onPick: (material: MaterialCode) =
   }
 
   useEffect(() => stopCamera, []);
+
+  // The service worker keeps the model after the first scan. Say so, so nobody waits for Wi-Fi they do not need.
+  useEffect(() => {
+    if (!("caches" in window)) return;
+    caches
+      .match("/models/tinyclip/onnx/model_int8.onnx")
+      .then((hit) => setSaved(Boolean(hit)))
+      .catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     if (phase === "camera" && videoRef.current && streamRef.current) {
@@ -113,6 +123,11 @@ export function MaterialScanner({ onPick }: { onPick: (material: MaterialCode) =
         <h3 className="font-display text-base font-bold">Scan the load</h3>
         <span className="text-xs text-muted">Stays on your phone</span>
       </div>
+      <p className="text-xs text-muted">
+        {modelReady || saved
+          ? "Saved on this phone. Scans work with no data."
+          : "First scan downloads about 38 MB once, best on Wi-Fi. After that it works with no data."}
+      </p>
 
       {phase === "idle" && (
         <div className="grid gap-2">

@@ -1,10 +1,11 @@
 // ComeCollectZA service worker.
-// - Static files (app code, icons, the classifier head): cache first, so the app opens fast and works offline.
+// - Static files (app code, icons, the scanner model, head and runtime): cache first, so the app opens fast and
+//   the scanner works with no data after its first download.
 // - Pages: network first, falling back to the last copy, then to a small offline page.
 // - Never cached: API calls and the personal money screen.
-// The vision model and its runtime are cached separately, by the browser and the model library.
+// - The reclaimer's main pages are saved at install, so the app opens with no signal.
 
-const VERSION = "v1";
+const VERSION = "v2";
 const STATIC_CACHE = "ccza-static-" + VERSION;
 const PAGE_CACHE = "ccza-pages-" + VERSION;
 
@@ -14,8 +15,28 @@ const OFFLINE_PAGE =
   '<body style="font-family:system-ui,sans-serif;padding:24px;max-width:28rem;margin:auto">' +
   "<h1>You are offline</h1><p>Prices need a signal. Open the app again when you are back online.</p></body></html>";
 
-self.addEventListener("install", () => {
-  self.skipWaiting();
+// Small pages only. The 38 MB scanner is saved the first time someone uses it, not at install, to spare data.
+const CORE_PAGES = ["/reclaimer", "/reclaimer/sell", "/reclaimer/prices"];
+
+// Saves a page and the scripts and styles it needs. On a first visit the page loads before this worker
+// controls it, so its files never pass through the fetch handler below.
+async function savePage(page) {
+  const response = await fetch(page);
+  if (!response.ok) return;
+  const html = await response.clone().text();
+  await (await caches.open(PAGE_CACHE)).put(page, response);
+  const assets = new Set(html.match(/\/_next\/static\/[\w./~-]+/g) || []);
+  const staticCache = await caches.open(STATIC_CACHE);
+  await Promise.all([...assets].map((asset) => staticCache.add(asset).catch(() => undefined)));
+}
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    (async () => {
+      await Promise.all(CORE_PAGES.map((page) => savePage(page).catch(() => undefined)));
+      await self.skipWaiting();
+    })(),
+  );
 });
 
 self.addEventListener("activate", (event) => {
@@ -60,7 +81,8 @@ self.addEventListener("fetch", (event) => {
   if (
     url.pathname.startsWith("/_next/static/") ||
     url.pathname.startsWith("/icons/") ||
-    url.pathname.startsWith("/models/")
+    url.pathname.startsWith("/models/") ||
+    url.pathname.startsWith("/ort/")
   ) {
     event.respondWith(cacheFirst(request));
     return;
