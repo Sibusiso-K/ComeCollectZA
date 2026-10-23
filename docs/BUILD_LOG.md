@@ -2,6 +2,14 @@
 
 Dated record of decisions and work. Newest entries go at the top.
 
+## 23 Oct 2026, late night (hackathon day 1)
+
+- **Admin steps.** Supabase Site URL changed from localhost to the live site, with a redirect URL, so confirmation emails stop landing on a dead page. The first real account was promoted to centre operator and linked to the Orlando East demo centre. The Vercel server key is set and the sales route now checks logins.
+- **Scanner version 3.** The head learned a seventh group, electronics, from 1,391 openly licensed Wikimedia Commons photos. A contact sheet check showed the "pile of e-waste" searches returned cityscapes, fields and bins, so those 144 photos were dropped. Results are in [MODELS.md](MODELS.md): 98.2% of held-out electronics photos found, 97.0% when whole kinds of item were held out, 0.2% of recyclables wrongly called electronics, and no loss on the recycling groups (81.4% on real photos, was 81.7%). The clean Commons style may flatter these numbers, and big appliances are barely covered.
+- **In the app.** When the scanner sees electronics it says they are not paid for by the kilogram and links to the electronics guide. Electronics never count towards a mixed load. Checked in headless Chrome on four electronics photos and one cardboard photo.
+- **Credits.** Every training photo's author, licence and page is in [ELECTRONICS_PHOTO_CREDITS.md](ELECTRONICS_PHOTO_CREDITS.md).
+- **Re-scored** to 48 of 70.
+
 ## 23 Oct 2026, late (hackathon day 1)
 
 The product owner has old electronics and does not know where to sell them or take them. The app now covers that too.
