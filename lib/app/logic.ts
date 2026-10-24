@@ -179,6 +179,9 @@ export const MATERIAL_BY_CODE: Record<string, Material> = Object.fromEntries(
   (Object.entries(CODE_BY_MATERIAL) as [Material, string][]).map(([m, c]) => [c, m]),
 );
 
+/** The highest price a centre can put on its board, R1,000 a kg. The database refuses anything above it. */
+export const MAX_BOARD_CENTS_PER_KG = 100_000;
+
 /** Parse "3.50" into 350 cents with no float maths. Returns null if invalid or zero. */
 export function parseRandToCents(input: string): number | null {
   const s = input.trim().replace(",", ".");

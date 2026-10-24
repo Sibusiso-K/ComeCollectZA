@@ -73,3 +73,20 @@ openssl s_client -connect comecollectza.vercel.app:443 -tls1_1      # must fail
 | Wording | The operator screen says it records what the reclaimer shows and does not check the registry. |
 
 Still open: rate limits on the sales route, nonces for the content security policy, a DAST scan, and phone number verification.
+
+## Column writes (migration 0010, 24 Oct 2026)
+
+Found in a full test pass. Row level security kept each person to their own rows, but Supabase's default table grants let a signed-in person rewrite any column of those rows straight through the API, around the checks inside the post and sign-up functions.
+
+| What someone could have done | Why it mattered | Now |
+|---|---|---|
+| Set a market or electronics post's `expires_at` to 2099, or its `created_at` to next year | The post never expires and stays at the top of the public list | Owners can change only `status` (close or reopen). New posts go through the functions |
+| Move a post's `location` outside South Africa | Skips the `BAD_LOCATION` check, and the pin shows on the public map | Same |
+| Change their own `qr_token` or `consent_at` | The code a centre scans to pay them, and their consent record | Reclaimers can change only `area_id` and `age_band` |
+| As an operator, add a price dated 2099 | `board_prices()` and the sales route both take the latest price, so it would stay the board price, and the price every sale is checked against, for good | Operators can insert only `centre_id`, `material` and `cents_per_kg`, so the date is always now. Prices are capped at R1,000 a kg |
+| As an operator, move their centre's pin | A wrong place on the public map | Operators can change only `name` and `hours` |
+| As an analyst, rewrite a flag's reasons | The system's record of why a sale was flagged | Analysts can change only `status` |
+
+Nothing had been misused: on 24 Oct the live data had no future-dated prices or posts with stretched dates, and the highest price was R10.20 a kg.
+
+The database tests also had a blind spot: they granted table access after running the migrations, which would have hidden any `revoke`. They now set Supabase's default grants first, like a real project, and four new checks try each of the writes above (78 checks in all).
