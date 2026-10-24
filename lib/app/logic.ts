@@ -159,6 +159,28 @@ export function interpretScan(r: ScanResult): Interpretation {
   return { kind: "unsure" };
 }
 
+/**
+ * True when a photo is too uniform or too dark to read, such as a covered lens or a dark room. The model would
+ * still guess, and with false confidence (an all-black photo read as "Plastic"). Takes RGBA pixels and samples every
+ * 16th one. The limits are tight because real photos come close: a close-up of plain cardboard is almost as flat, and
+ * a lamp on a black table almost as dark. None of 10,653 real test photos is refused.
+ */
+export function isBlankPhoto(rgba: ArrayLike<number>): boolean {
+  let n = 0;
+  let sum = 0;
+  let squares = 0;
+  for (let i = 0; i + 2 < rgba.length; i += 4 * 16) {
+    const y = 0.299 * rgba[i] + 0.587 * rgba[i + 1] + 0.114 * rgba[i + 2];
+    n += 1;
+    sum += y;
+    squares += y * y;
+  }
+  if (n === 0) return true;
+  const mean = sum / n;
+  const spread = Math.sqrt(Math.max(0, squares / n - mean * mean));
+  return spread < 2 || (mean < 6 && spread < 6);
+}
+
 /** CO2e in grams, shown as kg below a tonne and as tonnes above. */
 export function formatCo2Grams(grams: number): string {
   if (grams >= 1_000_000) return `${(grams / 1_000_000).toFixed(1)} t CO2e`;
@@ -178,6 +200,9 @@ export const CODE_BY_MATERIAL: Record<Material, string> = {
 export const MATERIAL_BY_CODE: Record<string, Material> = Object.fromEntries(
   (Object.entries(CODE_BY_MATERIAL) as [Material, string][]).map(([m, c]) => [c, m]),
 );
+
+/** The highest price a centre can put on its board, R1,000 a kg. The database refuses anything above it. */
+export const MAX_BOARD_CENTS_PER_KG = 100_000;
 
 /** Parse "3.50" into 350 cents with no float maths. Returns null if invalid or zero. */
 export function parseRandToCents(input: string): number | null {

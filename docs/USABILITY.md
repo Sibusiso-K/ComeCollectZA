@@ -25,6 +25,9 @@ Sonke asks: "Is the app easy to use? Is there clarity, simplicity and an intuiti
 | 3 | The logo link was 40 px tall and "Look around first" on the welcome screen was 24 px | Too small to tap reliably with a thumb | Both now at least 44 px and 48 px tall | Fixed |
 | 4 | Source links on Prices, Electronics and the photo credits were 17 to 19 px tall | Hard to tap, and lists of them sit close together | Padded to 32 to 36 px | Fixed |
 | 5 | Map pins were 30 px and the zoom buttons 30 px | Hard to hit on a phone | Pins 40 px (46 px when selected), zoom buttons 44 px | Fixed |
+| 6 | A scan froze the screen until it finished (found in the afternoon test pass) | Seconds of a dead screen on a cheap phone, and the sweep animation stops | The scanner lets the screen respond between its five passes | Fixed |
+| 7 | No Cancel while the scanner downloads or works | On a slow connection the first download can take minutes, with no way out but leaving the screen | A Cancel button. The person can then pick the material by hand | Fixed |
+| 8 | A black photo read "Looks like Plastic" | A confident wrong answer is worse than a question | "The photo is too dark or blank. Try again with more light." | Fixed |
 
 ## Left as they are, and why
 

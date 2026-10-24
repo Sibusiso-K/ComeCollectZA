@@ -143,6 +143,8 @@ Stricter and looser rules were compared in the same run. A 70% rule for both mat
 
 **Reproducing it.** The training and test scripts are in `tools/vision/`.
 
+**Checked inside the app (24 Oct).** The head is trained on embeddings made in Node, while the app runs the model in the browser with a different runtime and its own image resizing. On 120 held-out photos the two agree (cosine 0.99), and the top guess is right 74.2% of the time in the app against 75.0% in training, also with photos enlarged to phone-camera size. So the app does not lose accuracy on the way. Two things changed in how the app runs the model: the screen stays responsive between the five passes, and a black or blank photo is refused before the model guesses. Details and the "Looks like" threshold trade-off are in [STRESS_TEST.md](STRESS_TEST.md).
+
 **QR codes.** The centre console reads reclaimer codes with the browser's built-in BarcodeDetector where it exists, and with jsQR (Apache-2.0) elsewhere, such as on iPhone. 18 of 18 QR images decode in the decoder check.
 
 **Optional bigger model.** The vision prompt below, for a hosted vision model on OpenRouter, is kept as a design option. It is not used, because the on-device scanner replaces it.

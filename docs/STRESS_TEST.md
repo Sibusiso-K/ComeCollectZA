@@ -1,8 +1,59 @@
 # Pre-production and stress test, 24 Oct 2026
 
-Run on the code in `main` at commit `cc1a4ac` (before the later documentation merges). The scripts are in `tools/stress/` and can be run again.
+Two passes. The morning pass ran on the code in `main` at commit `cc1a4ac`. The afternoon pass, first below, tested every feature, ran photos through the scanner inside the real app, and checked the live database against what the app expects. The scripts are in `tools/stress/` and can be run again.
 
-## Result
+## Afternoon pass: every feature, the scanner in the real app, and the database
+
+### What was found and fixed
+
+| # | Found | How | Fixed |
+|---|---|---|---|
+| 1 | **Signed-in people could rewrite columns of their own rows that the app never writes**: a post's expiry, date and place (outside South Africa), a reclaimer's payment code and consent time, a price's date (a price dated 2099 would stay the board price and the sale check for good), a centre's place, a flag's reasons | Compared every grant and policy on the live database with every call the app makes | Migration 0010 lets each role write only the columns the app writes, and caps prices at R1,000 a kg. Four new database checks try each write. Applied to the live project on 24 Oct with the owner's go-ahead, then checked there: each role can write only those columns, anonymous visitors none, and the public lists still load. Details in [SECURITY.md](SECURITY.md) |
+| 2 | **The database tests could not see a revoke**: they granted table access after running the migrations | Reading the test setup while writing the checks for #1 | The tests now set Supabase's default grants first, like a real project (78 checks) |
+| 3 | **A scan froze the screen for its whole length**, about 1.2 s on a laptop (median, up to 2.1 s), so several seconds on a cheap phone. The five passes of the model ran as one task | Measured the longest task per scan in the browser | The scanner gives the screen a turn between passes. Longest freeze: median 115 ms, worst 840 ms |
+| 4 | **No way out while the scanner downloads or works.** On a slow connection the first scan downloads about 38 MB with no Cancel | Reading the scanner while testing | A Cancel button while it works. A cancelled scan's late result is ignored, and scans queue so two never share the model. Tested: cancelled mid-scan, the screen stayed put, the next photo got its own result |
+| 5 | **An all-black photo read "Looks like Plastic"**, with confidence (a covered lens, a dark room) | Odd files fed to the scanner | Photos that are almost uniform, or near-black with no detail, now get "The photo is too dark or blank. Try again with more light." None of 10,653 real test photos is refused by the check |
+| 6 | Prices over R1,000 a kg were accepted on the price board | Part of #1 | The form says "Prices go up to R1,000 a kg" before saving, and the database refuses it too |
+
+### The scanner in the real app
+
+144 photos, one after another, in one browser session on the `/home` screen, with `tools/stress/scan-app.mjs`: 55 held-out household and street photos (TrashBusters test split), 40 electronics (30 from the Kaggle test split, 10 from Commons), 36 real-world photos, and 13 odd files.
+
+| Check | Result |
+|---|---|
+| Crashes, stuck scans, console errors | None from the app. The first run's 13 "file not found" errors came from the test folder's path being too long for Windows, and those files were rerun from a short path |
+| Memory over 144 scans | Flat (renderer 330 to 370 MB after warm-up, JavaScript heap 8 MB) |
+| Speed | First scan 2 to 3 s (loads the model). After that 0.5 to 2 s on this laptop, with no slowdown over the session |
+| Electronics | 90% "Looks like electronics", 3% asked, 5% not sure, 3% wrong |
+| Odd files | WebP, GIF, BMP, grey, see-through PNG and an 8,000 by 6,000 photo all scan. Broken, empty, text, SVG, 1 by 1 and 3-pixel-thin files get "Pick the material yourself". Black and blank photos get the new message. The next real photo always worked |
+
+**Recycling photos are the weak spot, and it is the model, not the app.** Of the 91 recycling and "other" photos, 41% got a confident right answer, 22% a confident wrong one, 18% a question or a mixed-load answer, and 20% "Not sure". To check the app was not the cause, 120 held-out photos were embedded in a real browser the way the app does it and compared with the training pipeline:
+
+| Path | Top guess right | 70%+ sure and right | 70%+ sure and wrong |
+|---|---|---|---|
+| Training pipeline (Node) | 75.0% | 64.2% | 12.5% |
+| The app's own path (browser, original photos) | 74.2% | 60.8% | 12.5% |
+| The app's own path, photos enlarged to 4,000 px like a phone camera | 72.5% | 60.8% | 12.5% |
+
+The two runtimes agree (cosine 0.99), so the head sees in the app what it was trained on. Smoother resizing ("high" canvas quality) made no consistent difference and was not added.
+
+**A choice for the team:** the scanner says "Looks like X" at 70% sure. On the 8,433 held-out photos that answer is wrong 16.6% of the time. At 85% it would be wrong 11.6% of the time, but it would ask the person to tap the material for 35% of photos instead of 19%. Not changed: it trades trust against taps, and v6 (PR 37) may move both numbers.
+
+### Every screen and backend function
+
+- **Screens:** 36 screenshots across welcome, tour, sign-up, home, scanner, sell, prices, market, posting, money, impact, settings, assistant, centre console, programme dashboard, the three electronics tabs and light mode, with example signed-in data. No page errors.
+- **App to database:** every table, column and function the app calls exists live with matching argument names (13 functions, 58 columns).
+- **Database functions:** all 13 run in the 78 database checks against the real migrations.
+- **Pre-production probes:** 81 of 82 pass, as in the morning. The one miss is HSTS on a local build, which Vercel adds.
+- **Load:** no errors at any stage, including a 200-user spike, and instant recovery. Throughput was about 300 pages a second, against 1,400 in the morning, because the laptop was on battery: even the one-line health route fell by the same amount. The pages are still served as static files.
+- **Lint:** the repo has no linter set up. A one-off run of the Next.js rules found 11 notes and no bugs: 9 are React performance hints (setting state inside an effect), and the other 2 are patterns that only matter with the React Compiler, which is off.
+
+### Not done in this pass
+
+- No real phone. The freeze fix is measured on a laptop. A cheap phone will be slower per pass, but it can now respond between passes.
+- The model itself was not changed. See [MODELS.md](MODELS.md) and PR 37.
+
+## Morning pass: result
 
 **No blocking problem found.** 81 of 82 probe checks pass, and the one that does not is the local HSTS header, which Vercel adds in production (it was seen live as `max-age=63072000; includeSubDomains; preload`). The app served 1,400 pages a second on one laptop with no errors, and a sudden jump to 200 users at once raised response times but caused no failures and recovered at once.
 

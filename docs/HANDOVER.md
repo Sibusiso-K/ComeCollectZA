@@ -38,7 +38,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 
 ## Supabase
 
-Project `comecollectza` (ref `roiwontybdbhkuitffll`, region eu-west-2). All six migrations are applied, in this order:
+Project `comecollectza` (ref `roiwontybdbhkuitffll`, region eu-west-2). Migrations run in this order. All ten are applied live (0010 on 24 Oct, see the note at the end of [SECURITY.md](SECURITY.md)).
 
 1. `0001_init.sql`
 2. `0002_harden_helpers.sql`
@@ -46,6 +46,10 @@ Project `comecollectza` (ref `roiwontybdbhkuitffll`, region eu-west-2). All six 
 4. `0004_record_sale.sql`
 5. `0005_mvp.sql` (registration, marketplace posts, map function, lookup, PRO totals)
 6. `0006_register_race.sql` (a fix to registration)
+7. `0007_ewaste.sql` (electronics places, listings and contact)
+8. `0008_payouts.sql` (demo payouts and SAWPRS status)
+9. `0009_guard_search_path.sql` (pins the search path of the SAWPRS guard)
+10. `0010_column_writes.sql` (signed-in people can write only the columns the app writes)
 
 Seed (`supabase/seed.sql`) is applied. Do not run it again, it adds duplicate prices. For a fresh project, run the migrations in order, then the seed.
 

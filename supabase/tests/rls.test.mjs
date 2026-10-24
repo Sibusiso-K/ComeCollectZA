@@ -77,16 +77,17 @@ async function setup() {
     $$;
   `);
 
+  // Supabase grants table access to these roles by default, as each table is made, so a migration can take some
+  // of it back. Granting after the migrations instead would hide every revoke. RLS decides what each role sees.
+  await db.exec(`
+    grant usage on schema public to anon, authenticated, service_role;
+    alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
+    alter default privileges in schema public grant all on sequences to anon, authenticated, service_role;
+  `);
+
   for (const sql of migrations) {
     await db.exec(sql);
   }
-
-  // Supabase grants table access to these roles by default. RLS decides what each one sees.
-  await db.exec(`
-    grant usage on schema public to anon, authenticated, service_role;
-    grant all on all tables in schema public to anon, authenticated, service_role;
-    grant all on all sequences in schema public to anon, authenticated, service_role;
-  `);
 
   await db.exec(seed);
 
@@ -208,8 +209,7 @@ async function runTests() {
   });
   await check("reclaimer cannot take over a centre", async () => {
     await as("authenticated", R1);
-    const res = await db.query("update centres set operator_id = $1 where id = $2", [R1, ORLANDO]);
-    assert.equal(res.affectedRows, 0);
+    await assert.rejects(db.query("update centres set operator_id = $1 where id = $2", [R1, ORLANDO]), /permission denied/);
   });
   await check("reclaimer cannot promote their own role", async () => {
     await as("authenticated", R1);
@@ -381,7 +381,7 @@ async function runTests() {
     assert.deepEqual({ s: reset.sawprs_status, r: reset.sawprs_ref }, { s: "unknown", r: null });
     await as("authenticated", R1);
     await assert.rejects(db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'registered', 'X')"), /ROLE_NOT_ALLOWED/);
-    await assert.rejects(db.query("update reclaimers set sawprs_status = 'registered', sawprs_ref = 'X' where profile_id = '" + R1 + "'"), /SAWPRS_LOCKED/);
+    await assert.rejects(db.query("update reclaimers set sawprs_status = 'registered', sawprs_ref = 'X' where profile_id = '" + R1 + "'"), /permission denied|SAWPRS_LOCKED/);
     await db.query("update reclaimers set age_band = '35+' where profile_id = '" + R1 + "'");
     await as("anon");
     await assert.rejects(db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'registered', 'X')"));
@@ -654,6 +654,56 @@ async function runTests() {
     await assert.rejects(db.query("select public.create_ewaste_post('sell', 'other', 'Item', 'parts', 1000, 'S', '082 555 0101', 'Diepkloof', -26.2, 27.9)"), /ROLE_NOT_ALLOWED/);
     await as("anon");
     await assert.rejects(db.query("select public.create_ewaste_post('sell', 'other', 'Item', 'parts', 1000, 'S', '082 555 0101', 'Diepkloof', -26.2, 27.9)"));
+  });
+
+  // Direct writes. Row level security keeps people to their own rows, and these checks keep them to the columns the
+  // app writes, so nobody can go around the checks in the post and sign-up functions. "where false" checks the
+  // permission without changing any row.
+  const OUTSIDE_SA = "extensions.st_setsrid(extensions.st_makepoint(0, 0), 4326)::extensions.geography";
+  await check("a post owner can only open or close a post directly, not move it, date it or create one", async () => {
+    await as("authenticated", B1);
+    await db.query("update market_posts set status = 'closed' where false");
+    await assert.rejects(db.query("update market_posts set expires_at = '2099-01-01' where false"), /permission denied/);
+    await assert.rejects(db.query("update market_posts set created_at = now() + interval '1 year' where false"), /permission denied/);
+    await assert.rejects(db.query(`update market_posts set location = ${OUTSIDE_SA} where false`), /permission denied/);
+    await assert.rejects(
+      db.query(`insert into market_posts (owner_id, kind, org_name, material, kg, area_label, location) select '${B1}', 'sell', 'X', 'PET', 5, 'Nowhere', ${OUTSIDE_SA} where false`),
+      /permission denied/,
+    );
+    await as("authenticated", E2);
+    await db.query("update ewaste_posts set status = 'closed' where false");
+    await assert.rejects(db.query("update ewaste_posts set expires_at = '2099-01-01' where false"), /permission denied/);
+    await assert.rejects(db.query(`update ewaste_posts set location = ${OUTSIDE_SA} where false`), /permission denied/);
+    await assert.rejects(
+      db.query(`insert into ewaste_posts (owner_id, kind, category, title, condition, seller, contact, area_label, location) select '${E2}', 'sell', 'tv', 'TV', 'works', 'S', '082 555 0101', 'Nowhere', ${OUTSIDE_SA} where false`),
+      /permission denied/,
+    );
+  });
+  await check("a reclaimer cannot change their payment code or consent record, or make their own rows", async () => {
+    await as("authenticated", R1);
+    await db.query("update reclaimers set area_id = area_id, age_band = age_band where false");
+    await assert.rejects(db.query("update reclaimers set qr_token = 'ccza_r_CHOSEN' where false"), /permission denied/);
+    await assert.rejects(db.query("update reclaimers set consent_at = null where false"), /permission denied/);
+    await assert.rejects(db.query(`insert into reclaimers (profile_id, area_id, qr_token) select '${R1}', 'orlando-east', 'x' where false`), /permission denied/);
+    await db.query("update profiles set display_name = display_name, language = language where false");
+    await assert.rejects(db.query("update profiles set created_at = now() where false"), /permission denied/);
+    await assert.rejects(db.query(`insert into profiles (id, role, display_name) select '${R1}', 'reclaimer', 'X' where false`), /permission denied/);
+  });
+  await check("an operator cannot date a price, set an absurd one, or move their centre", async () => {
+    await as("authenticated", O1);
+    // A price dated 2099 would stay the board price, and the price every sale is checked against, for good.
+    await assert.rejects(
+      db.query(`insert into prices (centre_id, material, cents_per_kg, effective_at) select '${ORLANDO}', 'PET', 395, '2099-01-01' where false`),
+      /permission denied/,
+    );
+    await assert.rejects(db.query("insert into prices (centre_id, material, cents_per_kg) values ($1, 'PET', 100001)", [ORLANDO]));
+    await db.query("update centres set name = name, hours = hours where false");
+    await assert.rejects(db.query(`update centres set location = ${OUTSIDE_SA} where false`), /permission denied/);
+  });
+  await check("an analyst can set the status of a flag but not rewrite its reasons", async () => {
+    await as("authenticated", P1);
+    await db.query("update anomalies set status = status where false");
+    await assert.rejects(db.query("update anomalies set reasons = array['edited'] where false"), /permission denied/);
   });
 
   await db.exec("reset role");

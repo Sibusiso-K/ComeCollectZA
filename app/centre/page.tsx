@@ -20,7 +20,7 @@ import {
   type SaleResult,
   type SawprsStatus,
 } from "@/lib/app/api";
-import { MATERIALS, MATERIAL_LABEL, formatPerKg, formatRand, parseKgToGrams, parseRandToCents, prettyArea, saleCents, type Material } from "@/lib/app/logic";
+import { MATERIALS, MATERIAL_LABEL, MAX_BOARD_CENTS_PER_KG, formatPerKg, formatRand, parseKgToGrams, parseRandToCents, prettyArea, saleCents, type Material } from "@/lib/app/logic";
 import { isReclaimerCode } from "@/lib/reclaimer-code";
 import { cn } from "@/lib/utils";
 
@@ -217,6 +217,7 @@ function PriceBoard({ centreId, centrePrices, onSaved }: { centreId: string; cen
   const save = async (m: Material) => {
     const cents = parseRandToCents(draft[m] ?? "");
     if (cents === null) return setError(t("Type a price in Rand, for example 3.50."));
+    if (cents > MAX_BOARD_CENTS_PER_KG) return setError(t("Prices go up to R1,000 a kg. Check the amount."));
     setSaving(m);
     setError(null);
     const ok = await setBoardPrice(centreId, m, cents);
