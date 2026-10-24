@@ -11,7 +11,7 @@ function pinIcon(p: MapPin, selected: boolean) {
   const colour = p.tone;
   const ring = selected ? "#ffffff" : "rgba(0,0,0,0.35)";
   const inner = p.solid ? "#ffffff" : "#0b2415";
-  const size = selected ? 38 : 30;
+  const size = selected ? 46 : 40;
   // Only fixed strings go in here. Names and notes never enter the HTML.
   return L.divIcon({
     className: "",

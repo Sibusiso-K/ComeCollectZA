@@ -123,6 +123,10 @@ export const DICT: Record<string, Tr> = {
   "demo": { af: "demo", zu: "idemo", xh: "idemo" },
   "Save status": { af: "Stoor status", zu: "Gcina isimo", xh: "Gcina imeko" },
   "Pending": { af: "Hangend", zu: "Kuyalindelwa", xh: "Kuyalindelwa" },
+  // Screen titles.
+  "Welcome tour": { af: "Verwelkomingstoer", zu: "Uhambo lokwamukela", xh: "Uhambo lokwamkela" },
+  "Sign in or create an account": { af: "Teken in of skep 'n rekening", zu: "Ngena noma udale i-akhawunti", xh: "Ngena okanye wenze iakhawunti" },
+  "Programme dashboard": { af: "Programdashboard", zu: "Ideshibhodi yohlelo", xh: "Ideshibhodi yenkqubo" },
 };
 
 export function translate(lang: LangCode, key: string, vars?: Record<string, string | number>): string {

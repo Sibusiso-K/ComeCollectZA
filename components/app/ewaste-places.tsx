@@ -163,7 +163,7 @@ export default function EwastePlaces({ category, setCategory }: { category: Ewas
 
                 <p className="text-xs text-muted-foreground">
                   {t("Source")}:{" "}
-                  <a href={p.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{new URL(p.sourceUrl).hostname.replace(/^www\./, "")}</a>
+                  <a href={p.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-block py-2 underline underline-offset-2">{new URL(p.sourceUrl).hostname.replace(/^www\./, "")}</a>
                   {" · "}
                   {age === 0 ? t("checked today") : t("checked {n} days ago", { n: age })}
                   {" · "}
