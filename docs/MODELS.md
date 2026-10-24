@@ -35,7 +35,22 @@ Current code: the on-device material scanner and the QR reader run in the app. T
 
 **Works without data.** `tools/vision/fetch-assets.mjs` runs before every build. It copies the runtime from `node_modules` and downloads the model at a pinned revision, checked by SHA-256, into `public/` (git-ignored). The app never calls a CDN. The first scan downloads about 38 MB once; after that the service worker serves everything and scans work in flight mode. The tokenizer (5 MB) is not downloaded: the model's dummy text input is hard-coded as the four CLIP token ids for "a photo", checked against the real tokenizer. Verified with the server stopped: the sell page opened and a cardboard photo scanned at 100% in 714 ms.
 
-**Evidence, version 3 (current): electronics.** The head learned a seventh group, electronics, from 1,391 openly licensed photos from Wikimedia Commons (CC0, public domain, CC BY and CC BY-SA; every author and licence is in [ELECTRONICS_PHOTO_CREDITS.md](ELECTRONICS_PHOTO_CREDITS.md)). When the scanner sees electronics it does not ask for a material. It says electronics are not paid for by the kilogram and links to the electronics guide. Electronics never count as a material in a mixed load.
+**Evidence, version 4 (current): lamps and appliances added.** Round 2 added 435 more Commons photos: refrigerators, washing machines, stoves, dishwashers and other large appliances (171 photos), and fluorescent tubes, energy-saving and LED bulbs (107 photos), plus some photos of electronics in everyday scenes. Training now uses 1,826 electronics photos.
+
+The scenes group was tested and left out. A contact sheet showed about a third of it was off-topic (power pylons, historic photos, a whale), and training with it was slightly worse on real recycling photos (81.2% against 81.6%) and on unseen appliances (94.7% against 95.3%).
+
+| Held-out check | Version 3 | Version 4 |
+|---|---|---|
+| TrashNet test (508) | 78.0% | 78.1% |
+| RealWaste test (952, real photos) | 81.4% | 81.6% |
+| Electronics test (370 photos, 20% of each kind held out) | 98.2% | **98.6%** |
+| Recyclables wrongly called electronics (TrashNet, RealWaste) | 0.2%, 0.1% | 0.4%, 0.2% |
+| Lamps found (version 3 never saw lamps, version 4 held out 20%) | 83.2% | 100% |
+| Large appliances never seen in training | 95.3% | 95.3% |
+
+**What this round did and did not do.** Version 3 already recognised fridges and washing machines it had never trained on (95.3%), so adding appliances did not improve that. The real gain is lamps, which matter because the electronics guide has advice for tubes and bulbs. The cost is a small rise in recyclables wrongly called electronics, from 0.2% to 0.4% on TrashNet.
+
+**Evidence, version 3: electronics.** The head learned a seventh group, electronics, from 1,391 openly licensed photos from Wikimedia Commons (CC0, public domain, CC BY and CC BY-SA; every author and licence is in [ELECTRONICS_PHOTO_CREDITS.md](ELECTRONICS_PHOTO_CREDITS.md)). When the scanner sees electronics it does not ask for a material. It says electronics are not paid for by the kilogram and links to the electronics guide. Electronics never count as a material in a mixed load.
 
 The photos came from searches for 29 kinds of item (phones, laptops, keyboards, circuit boards, TVs, printers, chargers, cables, batteries, kettles, microwaves and more). A contact sheet check found that the "pile of e-waste" searches returned cityscapes, fields and bins, so that whole group (144 photos) was dropped. About one photo in twenty in the rest is probably still off-topic, which was not counted.
 
