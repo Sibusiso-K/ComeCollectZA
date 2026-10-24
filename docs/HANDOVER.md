@@ -11,7 +11,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Area | State | Notes |
 |---|---|---|
 | Live app | https://comecollectza.vercel.app | Deployed from `main` on every merge |
-| Scanner | Built, tested in a browser | On-device TinyCLIP, works with no data after one 38 MB download, spots mixed loads, tap a part of the photo to see what it thought. Head v4 is 82% on held-out real photos and also recognises electronics, appliances and lamps. Not tested on a real phone. See [MODELS.md](MODELS.md) |
+| Scanner | Built, tested in a browser | On-device TinyCLIP, works with no data after one 38 MB download, spots mixed loads, tap a part of the photo to see what it thought. Head v5 is 82% on held-out real landfill photos, 71% on mixed household photos (62% real-world), and recognises electronics. Not tested on a real phone. See [MODELS.md](MODELS.md) |
 | Accounts | Built, not yet used by real people | Email and password through Supabase Auth. Reclaimer and business sign-up. One call creates the profile and the reclaimer's code |
 | Prices | Live from the database | Public ranges for 2026 with sources. Seeded centres are demo centres until real ones post prices |
 | Sell flow | Built | Choose centre, weigh, show a QR code |
