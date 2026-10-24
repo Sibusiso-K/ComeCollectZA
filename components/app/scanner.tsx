@@ -14,7 +14,7 @@ import {
   type Material,
   type ScanResult,
 } from "@/lib/app/logic";
-import { loadClassifier, type ClassifierInput, type LoadPrediction } from "@/lib/vision/waste-classifier";
+import { BLANK_PHOTO, loadClassifier, type ClassifierInput, type LoadPrediction } from "@/lib/vision/waste-classifier";
 import { MaterialBadge, PillButton } from "./bits";
 import { cn } from "@/lib/utils";
 
@@ -79,6 +79,7 @@ export function LoadScanner({ onPick }: { onPick: (m: Material) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const urlRef = useRef<string | null>(null);
+  const scanRef = useRef(0);
   const [phase, setPhase] = useState<Phase>("idle");
   const [ready, setReady] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -148,16 +149,24 @@ export function LoadScanner({ onPick }: { onPick: (m: Material) => void }) {
   };
 
   const analyse = async (input: ClassifierInput) => {
+    const scanId = ++scanRef.current;
     setPhase("thinking");
     try {
       const classifier = await loadClassifier(setProgress);
       const load: LoadPrediction = await classifier.classifyLoad(input);
+      // Cancelled, or a newer scan started: this result is no longer wanted.
+      if (scanId !== scanRef.current) return;
       const scan: ScanResult = { whole: load.whole, quarters: load.quarters, ms: load.ms };
       setResult({ scan, read: interpretScan(scan) });
       setReady(true);
       setPhase("result");
-    } catch {
-      setMessage(t("The scan did not work. Pick the material yourself."));
+    } catch (error) {
+      if (scanId !== scanRef.current) return;
+      setMessage(
+        error instanceof Error && error.message === BLANK_PHOTO
+          ? t("The photo is too dark or blank. Try again with more light.")
+          : t("The scan did not work. Pick the material yourself."),
+      );
       setPhase("idle");
     }
   };
@@ -190,6 +199,7 @@ export function LoadScanner({ onPick }: { onPick: (m: Material) => void }) {
   };
 
   const reset = () => {
+    scanRef.current++;
     stopCamera();
     setResult(null);
     setFocus(null);
@@ -260,6 +270,8 @@ export function LoadScanner({ onPick }: { onPick: (m: Material) => void }) {
           <p className="text-center text-sm text-muted-foreground">
             {ready ? t("Looking at your load…") : t("Getting the scanner ready {percent}%. The first time takes a moment.", { percent })}
           </p>
+          {/* On a slow connection the first download can take minutes. Cancel lets the person pick the material instead. */}
+          <PillButton variant="ghost" onClick={reset}>{t("Cancel")}</PillButton>
         </div>
       )}
 

@@ -7,7 +7,12 @@
 // RealWaste and openly licensed photos of electronics. See docs/MODELS.md.
 // Browser only. Import this from client components, and call loadClassifier() on demand.
 
+import { isBlankPhoto } from "@/lib/app/logic";
+
 export type WasteGroup = "cardboard" | "glass" | "metal" | "paper" | "plastic" | "trash" | "electronics";
+
+/** The error a scan throws when the photo is too dark or blank to read. */
+export const BLANK_PHOTO = "BLANK_PHOTO";
 
 export type Prediction = {
   group: WasteGroup;
@@ -44,6 +49,9 @@ async function toCanvas(input: ClassifierInput): Promise<HTMLCanvasElement> {
   bitmap.close();
   return canvas;
 }
+
+// Lets the browser paint and handle taps before the next pass.
+const yieldToPage = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
 function quartersOf(canvas: HTMLCanvasElement): HTMLCanvasElement[] {
   const w = Math.floor(canvas.width / 2);
@@ -129,15 +137,32 @@ async function build(onProgress?: (fraction: number) => void): Promise<Classifie
     return { group: best, confidence: scores[best], scores, ms: Math.round(performance.now() - started) };
   }
 
+  // One load at a time. A scan that was cancelled keeps running to the end, so a new photo waits for it rather than
+  // sharing the model with it.
+  let queue: Promise<unknown> = Promise.resolve();
+  async function scoreLoad(input: ClassifierInput): Promise<LoadPrediction> {
+    const started = performance.now();
+    const canvas = await toCanvas(input);
+    const ctx = canvas.getContext("2d");
+    if (ctx && isBlankPhoto(ctx.getImageData(0, 0, canvas.width, canvas.height).data)) throw new Error(BLANK_PHOTO);
+    await yieldToPage();
+    const whole = await classify(canvas);
+    const quarters: Prediction[] = [];
+    for (const part of quartersOf(canvas)) {
+      // The model runs on the page's own thread. Without a break between passes, all five run as one task and the
+      // screen cannot respond (not even to Cancel) until the scan ends, which takes seconds on a cheap phone.
+      await yieldToPage();
+      quarters.push(await classify(part));
+    }
+    return { whole, quarters, ms: Math.round(performance.now() - started) };
+  }
+
   return {
     classify,
-    async classifyLoad(input) {
-      const started = performance.now();
-      const canvas = await toCanvas(input);
-      const whole = await classify(canvas);
-      const quarters: Prediction[] = [];
-      for (const part of quartersOf(canvas)) quarters.push(await classify(part));
-      return { whole, quarters, ms: Math.round(performance.now() - started) };
+    classifyLoad(input) {
+      const run = queue.then(() => scoreLoad(input));
+      queue = run.catch(() => undefined);
+      return run;
     },
   };
 }

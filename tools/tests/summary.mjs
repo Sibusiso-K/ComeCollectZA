@@ -194,5 +194,18 @@ check("areas sit inside Gauteng and match what people type", () => {
   assert.equal(areas.areaFor(""), null);
   assert.equal(areas.areaFor("Cape Town"), null);
 });
+check("a black or blank photo is refused, a dark or plain real one is not", () => {
+  const photo = (colour) => {
+    const a = new Uint8ClampedArray(20000 * 4);
+    for (let i = 0; i < 20000; i++) a.set([...colour(i), 255], i * 4);
+    return a;
+  };
+  assert.ok(logic.isBlankPhoto(photo(() => [0, 0, 0])), "all black");
+  assert.ok(logic.isBlankPhoto(photo(() => [200, 200, 200])), "a blank wall");
+  assert.ok(logic.isBlankPhoto(photo((i) => [3 + (i % 5), 3 + (i % 5), 3 + (i % 5)])), "covered lens with sensor noise");
+  assert.ok(logic.isBlankPhoto([]), "no pixels");
+  assert.ok(!logic.isBlankPhoto(photo((i) => (i % 37 < 3 ? [180, 170, 150] : [2, 2, 2]))), "a lamp on a black table");
+  assert.ok(!logic.isBlankPhoto(photo((i) => [134 + (i % 13), 114 + (i % 13), 90])), "plain cardboard, close up");
+});
 
 console.log(`\n${passed} passed, 0 failed.`);
