@@ -13,9 +13,12 @@ import {
   lookupReclaimer,
   recordSale,
   setBoardPrice,
+  setSawprsStatus,
   type BoardPrice,
+  type LookedUp,
   type MyCentre,
   type SaleResult,
+  type SawprsStatus,
 } from "@/lib/app/api";
 import { MATERIALS, MATERIAL_LABEL, formatPerKg, formatRand, parseKgToGrams, parseRandToCents, prettyArea, saleCents, type Material } from "@/lib/app/logic";
 import { isReclaimerCode } from "@/lib/reclaimer-code";
@@ -94,7 +97,7 @@ function SaleForm({ centreId, centrePrices }: { centreId: string; centrePrices: 
   const t = useT();
   const [code, setCode] = useState("");
   const [scanning, setScanning] = useState(false);
-  const [who, setWho] = useState<{ name: string; area: string } | null | "none">(null);
+  const [who, setWho] = useState<LookedUp | null | "none">(null);
   const [material, setMaterial] = useState<Material>("cans");
   const [kg, setKg] = useState("");
   const [busy, setBusy] = useState(false);
@@ -162,6 +165,7 @@ function SaleForm({ centreId, centrePrices }: { centreId: string; centrePrices: 
           {!codeOk ? t("Codes look like ccza_r_7Q2KX9.") : who === null ? t("Looking up…") : who === "none" ? t("No reclaimer has that code.") : t("Found: {name}", { name: who.name })}
         </p>
       )}
+      {codeOk && who !== null && who !== "none" && <SawprsBox code={code} who={who} onChange={(next) => setWho(next)} />}
 
       <div className="grid grid-cols-3 gap-2">
         {MATERIALS.map((m) => (
@@ -190,6 +194,12 @@ function SaleForm({ centreId, centrePrices }: { centreId: string; centrePrices: 
           <p className="font-bold">{done.replayed ? t("Already recorded") : t("Sale recorded")}</p>
           <p className="text-3xl font-extrabold tabular-nums">{formatRand(done.amountCents)}</p>
           <p className="text-sm">{t("Service fee")}: {formatRand(done.feeCents)}</p>
+          {done.payout && (
+            <p className="text-sm" data-testid="payout-line">
+              {t("Payout")}: {t(done.payout.status)}
+              {done.payout.demo ? ` (${t("demo, no money moved")})` : ""} · {done.payout.reference}
+            </p>
+          )}
           {done.flags.length > 0 && <p className="text-sm text-muted-foreground">{t("Flagged for review")}: {done.flags.join(", ")}</p>}
           <button onClick={() => window.print()} className="no-print mt-2 min-h-12 rounded-full bg-foreground px-5 font-bold text-background">{t("Print receipt")}</button>
         </div>
@@ -248,5 +258,63 @@ function PriceBoard({ centreId, centrePrices, onSaved }: { centreId: string; cen
       {error && <p role="alert" className="font-bold text-warning">{error}</p>}
       <p className="text-xs text-muted-foreground">{t("Area")}: {prettyArea(centrePrices[0]?.areaId ?? "")}</p>
     </Card>
+  );
+}
+
+const SAWPRS_OPTIONS: { value: SawprsStatus; label: string }[] = [
+  { value: "unknown", label: "Not recorded" },
+  { value: "pending", label: "Pending" },
+  { value: "registered", label: "Registered" },
+];
+
+/** The operator records whether this reclaimer is registered with SAWPRS. It is a record, not a live registry lookup. */
+function SawprsBox({ code, who, onChange }: { code: string; who: LookedUp; onChange: (next: LookedUp) => void }) {
+  const t = useT();
+  const [status, setStatus] = useState<SawprsStatus>(who.sawprs);
+  const [ref, setRef] = useState(who.sawprsRef ?? "");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    setStatus(who.sawprs);
+    setRef(who.sawprsRef ?? "");
+    setMsg(null);
+  }, [who.sawprs, who.sawprsRef, code]);
+
+  const needsRef = status === "registered" && ref.trim() === "";
+  const changed = status !== who.sawprs || (status !== "unknown" && ref.trim() !== (who.sawprsRef ?? ""));
+
+  const save = async () => {
+    setBusy(true);
+    setMsg(null);
+    const err = await setSawprsStatus(code, status, status === "unknown" ? null : ref.trim() || null);
+    setBusy(false);
+    if (err) setMsg(err);
+    else {
+      onChange({ ...who, sawprs: status, sawprsRef: status === "unknown" ? null : ref.trim() || null });
+      setMsg("Saved.");
+    }
+  };
+
+  return (
+    <fieldset className="space-y-2 rounded-2xl bg-secondary p-3">
+      <legend className="px-1 font-bold">{t("SAWPRS registration")}</legend>
+      <div className="grid grid-cols-3 gap-2">
+        {SAWPRS_OPTIONS.map((o) => (
+          <button key={o.value} type="button" onClick={() => setStatus(o.value)} aria-pressed={status === o.value} className={cn("min-h-12 rounded-xl px-2 text-sm font-bold", status === o.value ? "bg-highlight text-on-bright" : "glass")}>
+            {t(o.label)}
+          </button>
+        ))}
+      </div>
+      {status !== "unknown" && (
+        <label className="flex flex-col gap-1 text-sm font-bold">
+          {t("SAWPRS reference number")}
+          <input value={ref} onChange={(e) => setRef(e.target.value)} maxLength={40} className={inputClass} />
+        </label>
+      )}
+      <p className="text-xs text-muted-foreground">{t("You are recording what the reclaimer tells you or shows you. This does not check the registry.")}</p>
+      <PillButton variant="ghost" disabled={busy || !changed || needsRef} onClick={save}>{busy ? t("Saving…") : t("Save status")}</PillButton>
+      {msg && <p role="status" className="text-sm font-bold">{t(msg)}</p>}
+    </fieldset>
   );
 }

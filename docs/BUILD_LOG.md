@@ -2,6 +2,12 @@
 
 Dated record of decisions and work. Newest entries go at the top.
 
+## 24 Oct 2026 (hackathon day 2)
+
+- **Payouts and SAWPRS, as a demo.** Every recorded sale now queues a payout for the full amount on a mock rail. It is marked sent and no money moves, and the app says so on every screen that shows it. Operators can record a reclaimer's SAWPRS status by hand, and the programme dashboard counts the registered ones. Migration 0008, applied live. 74 database checks pass.
+- **A hole found by writing the test.** A reclaimer can update their own row, so they could have marked themselves SAWPRS-registered. A trigger now rejects that, and a test tries it.
+- **Not done:** a real payout rail and a live SAWPRS check. Both need outside access: a payment partner with credentials, and the registry's data.
+
 ## 23 Oct 2026, late night (hackathon day 1)
 
 - **Admin steps.** Supabase Site URL changed from localhost to the live site, with a redirect URL, so confirmation emails stop landing on a dead page. The first real account was promoted to centre operator and linked to the Orlando East demo centre. The Vercel server key is set and the sales route now checks logins.

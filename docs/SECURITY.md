@@ -64,4 +64,12 @@ openssl s_client -connect comecollectza.vercel.app:443 -tls1_1      # must fail
 | Location | Snapped to about 250 m in the database. The screens show only the area name. |
 | Meeting people | The board shows a safety note: public place, daylight, test before paying, never share a PIN or one-time code. |
 
+## Payouts and SAWPRS (migration 0008)
+
+| Area | What changed |
+|---|---|
+| Demo payouts | The only channel is `ewallet_mock`. It marks a payout as sent and moves no money. The app labels it as a demo everywhere. Reclaimers can read only their own payouts, and cannot change them. |
+| SAWPRS fields | Only `set_sawprs_status()` changes them, and only for centre operators. A trigger rejects any change made as a signed-in reclaimer, found by a test that tried it. A "registered" status needs a reference number. |
+| Wording | The operator screen says it records what the reclaimer shows and does not check the registry. |
+
 Still open: rate limits on the sales route, nonces for the content security policy, a DAST scan, and phone number verification.

@@ -36,6 +36,8 @@ function useCountUp(target: number) {
   return value;
 }
 
+const SAWPRS_LABEL = { unknown: "Not recorded", pending: "Registration pending", registered: "Registered" } as const;
+
 export default function Money() {
   const t = useT();
   const { ready, user, profile } = useAuth();
@@ -79,6 +81,7 @@ export default function Money() {
   }
 
   const fees = feeTotals(list);
+  const payoutCents = list.reduce((sum, x) => (x.payout && (x.payout.status === "sent" || x.payout.status === "paid") ? sum + x.amountCents : sum), 0);
   const month = monthTotals(list);
   const impact = allTimeImpact(list);
 
@@ -99,6 +102,27 @@ export default function Money() {
           <Link href="/home" className="flex min-h-14 items-center justify-center rounded-full bg-primary px-6 text-lg font-extrabold text-primary-foreground">{t("Scan a load")}</Link>
         </EmptyState>
       )}
+
+      {list.length > 0 && (
+        <Card className="space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-xl font-extrabold">{t("Payouts")}</h2>
+            <Sticker>{t("Demo payouts")}</Sticker>
+          </div>
+          <p className="text-3xl font-extrabold tabular-nums">{formatRand(payoutCents)}</p>
+          <p className="text-sm text-muted-foreground">
+            {t("Marked as sent after each sale. No money moves yet: payouts go live when a payment partner is connected.")}
+          </p>
+        </Card>
+      )}
+
+      <Card className="space-y-1">
+        <p className="text-sm text-muted-foreground">{t("SAWPRS registration")}</p>
+        <p className="text-lg font-extrabold">{t(SAWPRS_LABEL[profile?.sawprs ?? "unknown"])}</p>
+        {(profile?.sawprs ?? "unknown") !== "registered" && (
+          <p className="text-sm text-muted-foreground">{t("Ask the centre to record your SAWPRS registration number when you sell.")}</p>
+        )}
+      </Card>
 
       {profile?.qrToken &&
         (showCode ? (
@@ -142,7 +166,7 @@ export default function Money() {
                     chevron={false}
                     left={<MaterialBadge m={s.material} size={40} />}
                     title={`${t(MATERIAL_LABEL[s.material])} · ${formatKg(s.grams)}`}
-                    subtitle={`${s.centre} · ${new Date(s.createdAt).toLocaleDateString("en-ZA", { day: "numeric", month: "short" })}${s.fee ? ` · ${t("Fee")}: ${t(s.fee.status)}` : ""}`}
+                    subtitle={`${s.centre} · ${new Date(s.createdAt).toLocaleDateString("en-ZA", { day: "numeric", month: "short" })}${s.fee ? ` · ${t("Fee")}: ${t(s.fee.status)}` : ""}${s.payout ? ` · ${t("Payout")}: ${t(s.payout.status)}${s.payout.demo ? ` (${t("demo")})` : ""}` : ""}`}
                     right={<span className="font-extrabold tabular-nums">{formatRand(s.amountCents)}</span>}
                   />
                 </li>
