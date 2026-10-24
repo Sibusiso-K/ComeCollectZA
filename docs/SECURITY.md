@@ -89,4 +89,6 @@ Found in a full test pass. Row level security kept each person to their own rows
 
 Nothing had been misused: on 24 Oct the live data had no future-dated prices or posts with stretched dates, and the highest price was R10.20 a kg.
 
+Applied to the live project on 24 Oct. Checked there afterwards: signed-in people can write only the columns in the table above, anonymous visitors can write nothing (an attempt to change a post's expiry gets "insufficient privilege"), the R1,000 cap is in place, and prices, the map and the electronics lists still load. Supabase's security advisor shows the same intended items as before, plus leaked-password protection, which is an Auth setting for the owner to switch on.
+
 The database tests also had a blind spot: they granted table access after running the migrations, which would have hidden any `revoke`. They now set Supabase's default grants first, like a real project, and four new checks try each of the writes above (78 checks in all).

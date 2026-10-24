@@ -8,7 +8,7 @@ Two passes. The morning pass ran on the code in `main` at commit `cc1a4ac`. The 
 
 | # | Found | How | Fixed |
 |---|---|---|---|
-| 1 | **Signed-in people could rewrite columns of their own rows that the app never writes**: a post's expiry, date and place (outside South Africa), a reclaimer's payment code and consent time, a price's date (a price dated 2099 would stay the board price and the sale check for good), a centre's place, a flag's reasons | Compared every grant and policy on the live database with every call the app makes | Migration 0010 lets each role write only the columns the app writes, and caps prices at R1,000 a kg. Four new database checks try each write. **Not yet applied to the live project** (it needs the owner's go-ahead). Details in [SECURITY.md](SECURITY.md) |
+| 1 | **Signed-in people could rewrite columns of their own rows that the app never writes**: a post's expiry, date and place (outside South Africa), a reclaimer's payment code and consent time, a price's date (a price dated 2099 would stay the board price and the sale check for good), a centre's place, a flag's reasons | Compared every grant and policy on the live database with every call the app makes | Migration 0010 lets each role write only the columns the app writes, and caps prices at R1,000 a kg. Four new database checks try each write. Applied to the live project on 24 Oct with the owner's go-ahead, then checked there: each role can write only those columns, anonymous visitors none, and the public lists still load. Details in [SECURITY.md](SECURITY.md) |
 | 2 | **The database tests could not see a revoke**: they granted table access after running the migrations | Reading the test setup while writing the checks for #1 | The tests now set Supabase's default grants first, like a real project (78 checks) |
 | 3 | **A scan froze the screen for its whole length**, about 1.2 s on a laptop (median, up to 2.1 s), so several seconds on a cheap phone. The five passes of the model ran as one task | Measured the longest task per scan in the browser | The scanner gives the screen a turn between passes. Longest freeze: median 115 ms, worst 840 ms |
 | 4 | **No way out while the scanner downloads or works.** On a slow connection the first scan downloads about 38 MB with no Cancel | Reading the scanner while testing | A Cancel button while it works. A cancelled scan's late result is ignored, and scans queue so two never share the model. Tested: cancelled mid-scan, the screen stayed put, the next photo got its own result |
@@ -50,7 +50,6 @@ The two runtimes agree (cosine 0.99), so the head sees in the app what it was tr
 
 ### Not done in this pass
 
-- Migration 0010 is in the repo and tested, but not applied to the live database.
 - No real phone. The freeze fix is measured on a laptop. A cheap phone will be slower per pass, but it can now respond between passes.
 - The model itself was not changed. See [MODELS.md](MODELS.md) and PR 37.
 

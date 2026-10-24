@@ -38,7 +38,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 
 ## Supabase
 
-Project `comecollectza` (ref `roiwontybdbhkuitffll`, region eu-west-2). Migrations run in this order. 0001 to 0009 are applied live. 0010 is waiting for the owner's go-ahead to apply (see the note at the end of [SECURITY.md](SECURITY.md)).
+Project `comecollectza` (ref `roiwontybdbhkuitffll`, region eu-west-2). Migrations run in this order. All ten are applied live (0010 on 24 Oct, see the note at the end of [SECURITY.md](SECURITY.md)).
 
 1. `0001_init.sql`
 2. `0002_harden_helpers.sql`
