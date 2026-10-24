@@ -1,6 +1,6 @@
 # Electronics photo credits
 
-The scanner head (version 3) learned the electronics group from these 1391 photos from Wikimedia Commons. Every file is CC0, public domain, CC BY or CC BY-SA. The photos are not shipped in the app. Only the 30 KB head, which holds numbers learned from them, is. CC BY and CC BY-SA ask for credit, so the author, licence and page of each photo are listed here.
+The scanner head (version 4) learned the electronics group from these 1826 photos from Wikimedia Commons: devices, large and small appliances, and lamps. Every file is CC0, public domain, CC BY or CC BY-SA. The photos are not shipped in the app. Only the 30 KB head, which holds numbers learned from them, is. CC BY and CC BY-SA ask for credit, so the author, licence and page of each photo are listed here.
 
 | File | Author | Licence | Page |
 |---|---|---|---|
@@ -1395,3 +1395,438 @@ The scanner head (version 3) learned the electronics group from these 1391 photo
 | ROBUSTE DINA-2007 DVD PLAYER.jpg | Mystrixo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:ROBUSTE_DINA-2007_DVD_PLAYER.jpg |
 | Toshibo-Nuon-SD-2300-DVD-Player-Back.jpg | Evan-Amos | Public domain | https://commons.wikimedia.org/wiki/File:Toshibo-Nuon-SD-2300-DVD-Player-Back.jpg |
 | AKIRA DVD Player Model PD-K6638HD (Singapore).jpg | EverrrHong | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:AKIRA_DVD_Player_Model_PD-K6638HD_(Singapore).jpg |
+| Sofia the SuicideGirl opens the refrigerator.jpg | SuicideGirls from Los Angeles, CA, USA | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Sofia_the_SuicideGirl_opens_the_refrigerator.jpg |
+| Gfp-fridge-contents.jpg | Yinan Chen | Public Domain | https://commons.wikimedia.org/wiki/File:Gfp-fridge-contents.jpg |
+| Open refrigerator with food at night.jpg | W.carter | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Open_refrigerator_with_food_at_night.jpg |
+| Vestel, IFA 2018, Berlin (P1070201).jpg | Matti Blume | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Vestel,_IFA_2018,_Berlin_(P1070201).jpg |
+| Hisense, IFA 2018, Berlin (P1070179).jpg | Matti Blume | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Hisense,_IFA_2018,_Berlin_(P1070179).jpg |
+| US Domestic Refrigerator - Frigidaire.jpg | Infrogmation of New Orleans | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:US_Domestic_Refrigerator_-_Frigidaire.jpg |
+| US Domestic Refrigerator GE.jpg | Infrogmation of New Orleans | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:US_Domestic_Refrigerator_GE.jpg |
+| Fridge on a Bike - Moving Day!.jpg | ABLyndon | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Fridge_on_a_Bike_-_Moving_Day!.jpg |
+| Refridgirator.jpg | Alvin kipchumba | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Refridgirator.jpg |
+| Community Fridge Fredric Douglas Housing New York City - Side View.jpg | Middleground1 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Community_Fridge_Fredric_Douglas_Housing_New_York_City_-_Side_View.jpg |
+| Samsung fridge ice build up.jpg | Eugene Smith | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Samsung_fridge_ice_build_up.jpg |
+| Temperator refrigerator (1920s).jpg | Helsingin kaupunginmuseo | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Temperator_refrigerator_(1920s).jpg |
+| Fly tipping white goods in Parco Alto Milanese - Legnano (MI), Lombardy, Italy - 2021-09-18.jpg | Mænsard vokser | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Fly_tipping_white_goods_in_Parco_Alto_Milanese_-_Legnano_(MI),_Lombardy,_Italy_-_2021-09-18.jpg |
+| Refridgerator.jpg | Srini297 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Refridgerator.jpg |
+| Refrigerator using in Microbiology.jpg | Ajay Kumar Chaurasiya | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Refrigerator_using_in_Microbiology.jpg |
+| New fridge being moved into a convenience store in Japan.jpg | Syced | CC0 | https://commons.wikimedia.org/wiki/File:New_fridge_being_moved_into_a_convenience_store_in_Japan.jpg |
+| Mother serving children from a refrigerator.jpg | Alice Bradley | Public domain | https://commons.wikimedia.org/wiki/File:Mother_serving_children_from_a_refrigerator.jpg |
+| Prestcold packaway refrigerator.jpg | Frankie Roberto | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Prestcold_packaway_refrigerator.jpg |
+| Sanyo Refrigerator SR-14T (edited and cropped).jpg | Mr.ちゅらさん | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Sanyo_Refrigerator_SR-14T_(edited_and_cropped).jpg |
+| 'Silent Knight' refrigerator brand badge.jpg | TrimmerinWiki | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:%27Silent_Knight%27_refrigerator_brand_badge.jpg |
+| Bruny Island, Tasmania - Old refrigerators (Left - 'Kelvinator', Right - Hallstrom 'Silent Knight') used as unattended bread sales point (March 2023).jpg | TrimmerinWiki | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bruny_Island,_Tasmania_-_Old_refrigerators_(Left_-_%27Kelvinator%27,_Right_-_Hallstrom_%27Silent_Knight%27)_used_as_unattended_bread_sales_point_(March_2023).jpg |
+| Hallstrom 'Silent Knight' refrigerator advertisement (The Rugby League news, Vol. 27 No. 14, 29 June 1946, Page 2).jpg | Unknown illustrator. Published in The Rugby League news.Vol. 27 No. 14 (29 June 1946), on page 2. | Public domain | https://commons.wikimedia.org/wiki/File:Hallstrom_%27Silent_Knight%27_refrigerator_advertisement_(The_Rugby_League_news,_Vol._27_No._14,_29_June_1946,_Page_2).jpg |
+| Hallstrom refrigerator advertisement (The Australasian, 12 Oct 1935, page 55).jpg | Unknown illustrator and typesetter. Published in The Australasian (Melbourne) 12 October 1935, Page 55 | Public domain | https://commons.wikimedia.org/wiki/File:Hallstrom_refrigerator_advertisement_(The_Australasian,_12_Oct_1935,_page_55).jpg |
+| Hallstrom 'Silent Knight' kerosene-powered refrigerator (from manual).jpg | Unknown photographer. Image is taken from a copy of the Silent Knight refrigerator manual held in the National Library o | Public domain | https://commons.wikimedia.org/wiki/File:Hallstrom_%27Silent_Knight%27_kerosene-powered_refrigerator_(from_manual).jpg |
+| Hallstrom refrigerators - 'Silent Kinght' advertisement (Canberra Times, 10 Dec.1970, p.22).jpg | Unknown commercial artist and typesetter. Published in Canberra Times 10 December 1970, on page 22. | Public domain | https://commons.wikimedia.org/wiki/File:Hallstrom_refrigerators_-_%27Silent_Kinght%27_advertisement_(Canberra_Times,_10_Dec.1970,_p.22).jpg |
+| Panasonic HOME REFRIGERATOR NR-C320WP-N SPEC TAG.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_HOME_REFRIGERATOR_NR-C320WP-N_SPEC_TAG.jpg |
+| Panasonic HOME REFRIGERATOR NR-C320WP-N.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_HOME_REFRIGERATOR_NR-C320WP-N.jpg |
+| SAMSUNG REFRIGERATOR RF60J9030WZ.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:SAMSUNG_REFRIGERATOR_RF60J9030WZ.jpg |
+| Old fridge garden.jpg | TheBrick | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Old_fridge_garden.jpg |
+| A cold glass of water - GE Refrigerator - August 7, 2007.jpg | Dave Matos | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:A_cold_glass_of_water_-_GE_Refrigerator_-_August_7,_2007.jpg |
+| Two milk gallons in refrigerator door.agr.jpg | ArnoldReinhold | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Two_milk_gallons_in_refrigerator_door.agr.jpg |
+| Inside the refrigerator.jpg | Satirdan kahraman | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Inside_the_refrigerator.jpg |
+| Fridge in porch with cat.jpg | ChippyTimeCom | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Fridge_in_porch_with_cat.jpg |
+| Indian Election Symbol Refrigerator.jpg | Election Commission of India | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Indian_Election_Symbol_Refrigerator.jpg |
+| Galisteo Community Center fridge.jpg | Arlo Barnes | CC0 | https://commons.wikimedia.org/wiki/File:Galisteo_Community_Center_fridge.jpg |
+| Fridge stalagmite-Ice spike.JPG | No machine-readable author provided. Autoshade~commonswiki assumed (based on copyright claims). | Public domain | https://commons.wikimedia.org/wiki/File:Fridge_stalagmite-Ice_spike.JPG |
+| Fridge Rosenfeld.jpg | Laura Kina | Public domain | https://commons.wikimedia.org/wiki/File:Fridge_Rosenfeld.jpg |
+| Bosch Electronic no frost fridge freezer (2019) 02.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons.(Want to use this image?) | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bosch_Electronic_no_frost_fridge_freezer_(2019)_02.jpg |
+| Bosch Electronic no frost fridge freezer (2019) 03.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons.(Want to use this image?) | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bosch_Electronic_no_frost_fridge_freezer_(2019)_03.jpg |
+| Bosch Electronic no frost fridge freezer (2019) 01.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons.(Want to use this image?) | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bosch_Electronic_no_frost_fridge_freezer_(2019)_01.jpg |
+| Bosch Electronic no frost fridge freezer (2019) 05.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons.(Want to use this image?) | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bosch_Electronic_no_frost_fridge_freezer_(2019)_05.jpg |
+| Bosch Electronic no frost fridge freezer (2019) 04.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons.(Want to use this image?) | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bosch_Electronic_no_frost_fridge_freezer_(2019)_04.jpg |
+| Bosch Electronic no frost fridge freezer (2019) 06.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons.(Want to use this image?) | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bosch_Electronic_no_frost_fridge_freezer_(2019)_06.jpg |
+| Mein liebster Kuehli.jpg | Fbernstein | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Mein_liebster_Kuehli.jpg |
+| Double-door Fridge.jpg | Fanti Salms | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Double-door_Fridge.jpg |
+| Head in freezer 241543903.jpg | Tom Kiss | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Head_in_freezer_241543903.jpg |
+| Buzdolabınını içii.jpg | Satirdan kahraman | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Buzdolab%C4%B1n%C4%B1n%C4%B1_i%C3%A7ii.jpg |
+| Buzdolabınını içii (87934).jpg | Satirdan kahraman | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Buzdolab%C4%B1n%C4%B1n%C4%B1_i%C3%A7ii_(87934).jpg |
+| Buzdolabınını içii (98421).jpg | Satirdan kahraman | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Buzdolab%C4%B1n%C4%B1n%C4%B1_i%C3%A7ii_(98421).jpg |
+| Buzdolabınını içii (22401).jpg | Satirdan kahraman | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Buzdolab%C4%B1n%C4%B1n%C4%B1_i%C3%A7ii_(22401).jpg |
+| Buzdolabınını içii (67224).jpg | Satirdan kahraman | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Buzdolab%C4%B1n%C4%B1n%C4%B1_i%C3%A7ii_(67224).jpg |
+| Buzdolabınını içii (72634).jpg | Satirdan kahraman | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Buzdolab%C4%B1n%C4%B1n%C4%B1_i%C3%A7ii_(72634).jpg |
+| Cooking For the Freezer by Myra Waldo.jpg | Photo by Bill Hughes | Public domain | https://commons.wikimedia.org/wiki/File:Cooking_For_the_Freezer_by_Myra_Waldo.jpg |
+| Cooking For the Freezer by Myra Waldo (cropped).jpg | Photo by Bill Hughes | Public domain | https://commons.wikimedia.org/wiki/File:Cooking_For_the_Freezer_by_Myra_Waldo_(cropped).jpg |
+| Dumped fridge freezer Lordship Lane Tottenham London England.jpg | Acabashi | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Dumped_fridge_freezer_Lordship_Lane_Tottenham_London_England.jpg |
+| Freezer War.jpg | Alexander Khanin | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Freezer_War.jpg |
+| Bottles of water and a tray of ice cubes inside a fridge freezer.jpg | Philsacor | CC0 | https://commons.wikimedia.org/wiki/File:Bottles_of_water_and_a_tray_of_ice_cubes_inside_a_fridge_freezer.jpg |
+| Freezer contents 2.jpg | Panamitsu | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Freezer_contents_2.jpg |
+| Washing machine- spring.jpg | No machine-readable author provided. Poo~commonswiki assumed (based on copyright claims). | Public domain | https://commons.wikimedia.org/wiki/File:Washing_machine-_spring.jpg |
+| LG 드럼세탁기와 식기세척기, 영국서 물사용 효율 최우수 제품 수상.jpg | LG전자 | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:LG_%EB%93%9C%EB%9F%BC%EC%84%B8%ED%83%81%EA%B8%B0%EC%99%80_%EC%8B%9D%EA%B8%B0%EC%84%B8%EC%B2%99%EA%B8%B0,_%EC%98%81%EA%B5%AD%EC%84%9C_%EB%AC%BC%EC%82%AC%EC%9A%A9_%ED%9A%A8%EC%9C%A8_%EC%B5%9C%EC%9A%B0%EC%88%98_%EC%A0%9C%ED%92%88_%EC%88%98%EC%83%81.jpg |
+| Washing Machine Beko.jpg | zzpza | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Washing_Machine_Beko.jpg |
+| Consumer Reports - product testing - Philco Wringer Washing Machine.jpg | Consumer Reports | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Consumer_Reports_-_product_testing_-_Philco_Wringer_Washing_Machine.jpg |
+| Open top-loading washing machine.jpg | W.carter | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Open_top-loading_washing_machine.jpg |
+| Drum of a washing machine (Bosch Maxx WFO 2440).jpg | Petar Milošević | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Drum_of_a_washing_machine_(Bosch_Maxx_WFO_2440).jpg |
+| Washing Machine Drum (102440309).jpeg | Charrine Liu | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Washing_Machine_Drum_(102440309).jpeg |
+| Washing machine drum.jpeg | Alfonso Pierantonio from L'Aquila, Italy | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Washing_machine_drum.jpeg |
+| Washing machine capacities.jpg | Gaurav Bhardwaj | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Washing_machine_capacities.jpg |
+| HITACHI NW-KQ42 Drum Washing Machine.jpg | Mr.ちゅらさん | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:HITACHI_NW-KQ42_Drum_Washing_Machine.jpg |
+| Metal washing machine from the 1920s or 1930s, manufactured by GEM.jpg | Helsinki City Museum | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Metal_washing_machine_from_the_1920s_or_1930s,_manufactured_by_GEM.jpg |
+| Washing machine by Denso 1954.jpg | 投稿者によるスキャン | Public domain | https://commons.wikimedia.org/wiki/File:Washing_machine_by_Denso_1954.jpg |
+| Washing machine by Hitachi & Mitsubishi 1956.jpg | 投稿者によるスキャン | Public domain | https://commons.wikimedia.org/wiki/File:Washing_machine_by_Hitachi_%26_Mitsubishi_1956.jpg |
+| House of Eternal Return washing machine.jpg | Skvader | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:House_of_Eternal_Return_washing_machine.jpg |
+| Pictogram on washing machine AEG-Electrolux Öko-Lavamat.jpg | Pittigrilli | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Pictogram_on_washing_machine_AEG-Electrolux_%C3%96ko-Lavamat.jpg |
+| WASHING MACHINE ICON BY V.V ICONS.jpg | Vusi vilanculos | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:WASHING_MACHINE_ICON_BY_V.V_ICONS.jpg |
+| Coin-operated washing machines in Seven Dials Launderette & Dry Cleaners, Brighton.jpg | Andy Li | CC0 | https://commons.wikimedia.org/wiki/File:Coin-operated_washing_machines_in_Seven_Dials_Launderette_%26_Dry_Cleaners,_Brighton.jpg |
+| LG WP-A48PW Washing Machine.jpg | Mr.ちゅらさん | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LG_WP-A48PW_Washing_Machine.jpg |
+| Old Maytag wringer washing machine clothes washer.jpg | Watts | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Old_Maytag_wringer_washing_machine_clothes_washer.jpg |
+| New Magtag washing machine June 26, 2009.jpg | Birdies100 | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:New_Magtag_washing_machine_June_26,_2009.jpg |
+| The Twins - Matag washer and dryer.jpg | Birdies100 | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:The_Twins_-_Matag_washer_and_dryer.jpg |
+| Compact washer and dryer March Photo Challenge - Laundering.jpg | Gabbybratcher | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Compact_washer_and_dryer_March_Photo_Challenge_-_Laundering.jpg |
+| Washing machines in HMS Warrior.jpg | Andy Li | CC0 | https://commons.wikimedia.org/wiki/File:Washing_machines_in_HMS_Warrior.jpg |
+| Front Load Washing Machine.jpg | Fanti Salms | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Front_Load_Washing_Machine.jpg |
+| Panasonic WASHING MACHINE XQB70-H710U.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_WASHING_MACHINE_XQB70-H710U.jpg |
+| Washing machine open.jpg | Corn cheese | CC0 | https://commons.wikimedia.org/wiki/File:Washing_machine_open.jpg |
+| Panasonic WASHING MACHINE XQB70-H710U (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_WASHING_MACHINE_XQB70-H710U_(2).jpg |
+| 40 lb capacity Continental Girbau ExpressWash coin-op washing machine.jpg | Baron Maddock | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:40_lb_capacity_Continental_Girbau_ExpressWash_coin-op_washing_machine.jpg |
+| Schaeffer Twätt-Machine.jpg | Jacob Christian Schaeffer | Public domain | https://commons.wikimedia.org/wiki/File:Schaeffer_Tw%C3%A4tt-Machine.jpg |
+| SAMSUNG WASHING MACHINE.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:SAMSUNG_WASHING_MACHINE.jpg |
+| SAMSUNG WASHING MACHINE (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:SAMSUNG_WASHING_MACHINE_(2).jpg |
+| Cat in samsung washing machine.jpg | Glarph | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Cat_in_samsung_washing_machine.jpg |
+| Oldfashioned AEG wringer washing machine.jpg | Lymantria | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Oldfashioned_AEG_wringer_washing_machine.jpg |
+| SANYO DIQUA WASHING MACHINE DB8057ES.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:SANYO_DIQUA_WASHING_MACHINE_DB8057ES.jpg |
+| SANYO DIQUA WASHING MACHINE DB8057ES (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:SANYO_DIQUA_WASHING_MACHINE_DB8057ES_(2).jpg |
+| Washing machine exhibit in HaHaHouse.jpg | HaHaHouse | CC0 | https://commons.wikimedia.org/wiki/File:Washing_machine_exhibit_in_HaHaHouse.jpg |
+| Domus washing machine.jpg | Amakuha | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Domus_washing_machine.jpg |
+| Electric Clothes dryer.jpg | Somebody in the WWW | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Electric_Clothes_dryer.jpg |
+| Cat in a clothes dryer.jpg | Lachaume | Public domain | https://commons.wikimedia.org/wiki/File:Cat_in_a_clothes_dryer.jpg |
+| Electrolux T3190 20060827.jpg | Riggwelter | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Electrolux_T3190_20060827.jpg |
+| Fuzzy Logic Clothes Dryer.jpg | User:Jérôme | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fuzzy_Logic_Clothes_Dryer.jpg |
+| Clothes dryer P1040954.jpg | Franklin Heijnen | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Clothes_dryer_P1040954.jpg |
+| American Dryer Corp. laundromat dryer lint tray.JPG | BrokenSphere | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:American_Dryer_Corp._laundromat_dryer_lint_tray.JPG |
+| Bad Idea Machine lolcat.jpg | derivative work: Mr.Z-man (talk) Cat_washing_mashing.jpg: User:Lachaume | Public domain | https://commons.wikimedia.org/wiki/File:Bad_Idea_Machine_lolcat.jpg |
+| Heat Pump Clothes Dryer.jpg | Suzyj | Public domain | https://commons.wikimedia.org/wiki/File:Heat_Pump_Clothes_Dryer.jpg |
+| Modern front load tumble dryer.JPG | Rickharp at English Wikipedia | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:Modern_front_load_tumble_dryer.JPG |
+| Tumble Dryer 2.JPG | Sweetie candykim | CC0 | https://commons.wikimedia.org/wiki/File:Tumble_Dryer_2.JPG |
+| Tumble Dryer.JPG | Sweetie candykim | CC0 | https://commons.wikimedia.org/wiki/File:Tumble_Dryer.JPG |
+| London MMB 64 Liberator tumble dryer.jpg | mattbuck (category) | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:London_MMB_64_Liberator_tumble_dryer.jpg |
+| Electric clothes dryer, Hamilton Manufacturing Company, Two Rivers, Wisconsin, c. 1940 - Wisconsin Historical Museum - DSC02837.JPG | Daderot | CC0 | https://commons.wikimedia.org/wiki/File:Electric_clothes_dryer,_Hamilton_Manufacturing_Company,_Two_Rivers,_Wisconsin,_c._1940_-_Wisconsin_Historical_Museum_-_DSC02837.JPG |
+| Clothes-dryer-damaged-by-fire.jpg | Original photo: Jerry on Flickr Modified by Gazebo on December 6, 2015 with lossless optimization and the addition of c | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Clothes-dryer-damaged-by-fire.jpg |
+| Torktumlare.jpg | Elina.jarlenius | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Torktumlare.jpg |
+| Clothes Dryer 1 2016-11-05.jpg | FASTILY | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Clothes_Dryer_1_2016-11-05.jpg |
+| Dryer (12121508555).jpg | XoMEoX | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Dryer_(12121508555).jpg |
+| Clothes dryer 1 2018-09-29.jpg | FASTILY | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Clothes_dryer_1_2018-09-29.jpg |
+| Free Dryer! (33799292).jpg | mexican 2000 from Tokyo, Japan | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Free_Dryer!_(33799292).jpg |
+| Inside clothes dryer 20190218.jpg | Santeri Viinamäki | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Inside_clothes_dryer_20190218.jpg |
+| Laundry time.jpg | Infrogmation of New Orleans | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Laundry_time.jpg |
+| Clothes dryer flex hose kinked.jpg | Rick Harpenau | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:Clothes_dryer_flex_hose_kinked.jpg |
+| Secador de ropa Mocama b.jpg | B25es | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Secador_de_ropa_Mocama_b.jpg |
+| Secador de ropa Mocama a.jpg | B25es | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Secador_de_ropa_Mocama_a.jpg |
+| Tesla - sušilni stroj.jpg | Dibko | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Tesla_-_su%C5%A1ilni_stroj.jpg |
+| New Washer & Dryer!.jpg | tara hunt | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:New_Washer_%26_Dryer!.jpg |
+| Whirlpool Cabrio Dryer.jpg | Baron Maddock | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Whirlpool_Cabrio_Dryer.jpg |
+| Lehorgailua-115.jpg | Luistxo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Lehorgailua-115.jpg |
+| Electrolux T5550 tumble dryer.jpg | Amakuha | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Electrolux_T5550_tumble_dryer.jpg |
+| Wascomat TD30x30 tumble dryer.jpg | Amakuha | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Wascomat_TD30x30_tumble_dryer.jpg |
+| Speed Queen dryer Canal St. Laundry 216 Canal Street Brattleboro VT July 2026.jpg | Artaxerxes | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Speed_Queen_dryer_Canal_St._Laundry_216_Canal_Street_Brattleboro_VT_July_2026.jpg |
+| Speed Queen dryer Canal St. Laundry 216 Canal Street Brattleboro VT July 2026 2.jpg | Artaxerxes | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Speed_Queen_dryer_Canal_St._Laundry_216_Canal_Street_Brattleboro_VT_July_2026_2.jpg |
+| Ceranfeld.jpg | Felix Reimann | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Ceranfeld.jpg |
+| Zanussi IR-stove.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Zanussi_IR-stove.JPG |
+| Thinktank Birmingham - object 1982S03572(1).jpg | Birmingham Museums Trust | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Thinktank_Birmingham_-_object_1982S03572(1).jpg |
+| Thinktank Birmingham - GEC(3).jpg | AnonymousUnknown author | Public domain | https://commons.wikimedia.org/wiki/File:Thinktank_Birmingham_-_GEC(3).jpg |
+| Thinktank Birmingham - GEC(2).jpg | AnonymousUnknown author | Public domain | https://commons.wikimedia.org/wiki/File:Thinktank_Birmingham_-_GEC(2).jpg |
+| Westinghouse electric stove at NTM museum, Prague.jpg | Kotivalo | CC0 | https://commons.wikimedia.org/wiki/File:Westinghouse_electric_stove_at_NTM_museum,_Prague.jpg |
+| Marina Malta postcard (Maltese stoves, kenur).jpg | anonymous | Public domain | https://commons.wikimedia.org/wiki/File:Marina_Malta_postcard_(Maltese_stoves,_kenur).jpg |
+| St. Nicholas-Vol 40.1-418-5.jpg | Harry B. Bradford | Public domain | https://commons.wikimedia.org/wiki/File:St._Nicholas-Vol_40.1-418-5.jpg |
+| Dishwasher with dishes.JPG | No machine-readable author provided. Piotrus assumed (based on copyright claims). | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Dishwasher_with_dishes.JPG |
+| Asko D3112 dishwasher closed.JPG | BrokenSphere | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Asko_D3112_dishwasher_closed.JPG |
+| Asko D3112 dishwasher open.JPG | BrokenSphere | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Asko_D3112_dishwasher_open.JPG |
+| Geschirrspuelmaschine.JPG | The original uploader was Tim Simms at German Wikipedia. | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Geschirrspuelmaschine.JPG |
+| View of dishwasher inside.jpg | Ryan from Louisville, USA | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:View_of_dishwasher_inside.jpg |
+| Countertop dishwasher 7882.JPG | Myke2020 | Public domain | https://commons.wikimedia.org/wiki/File:Countertop_dishwasher_7882.JPG |
+| Countertop dishwasher (cropped).jpg | Myke2020 | Public domain | https://commons.wikimedia.org/wiki/File:Countertop_dishwasher_(cropped).jpg |
+| Melted Dishwasher (4780894129).jpg | Peretz Partensky from San Francisco, USA | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Melted_Dishwasher_(4780894129).jpg |
+| Electric dishwashing machine, 1917.jpg | Keith's Magazine | Public domain | https://commons.wikimedia.org/wiki/File:Electric_dishwashing_machine,_1917.jpg |
+| SLNSW 12050 Dishwashing machine at Sargents in Elizabeth Street for Building Publishing Co.jpg | Sam Hood | Public domain | https://commons.wikimedia.org/wiki/File:SLNSW_12050_Dishwashing_machine_at_Sargents_in_Elizabeth_Street_for_Building_Publishing_Co.jpg |
+| Old School Dishwasher (14876229924).jpg | fabulousfabs | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Old_School_Dishwasher_(14876229924).jpg |
+| Hotpoint Dishwasher Model HDA460-03AD, IMG01.jpg | Steven Pavlov | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Hotpoint_Dishwasher_Model_HDA460-03AD,_IMG01.jpg |
+| Hotpoint Dishwasher Model HDA460-03AD, IMG03.jpg | Steven Pavlov | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Hotpoint_Dishwasher_Model_HDA460-03AD,_IMG03.jpg |
+| Hotpoint Dishwasher Model HDA460-03AD, IMG02.jpg | Steven Pavlov | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Hotpoint_Dishwasher_Model_HDA460-03AD,_IMG02.jpg |
+| Hotpoint Dishwasher Model HDA460-03AD, IMG04.jpg | Steven Pavlov | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Hotpoint_Dishwasher_Model_HDA460-03AD,_IMG04.jpg |
+| General Electric Dishwasher Model GSD500D-03AW, img05.jpg | Steven Pavlov | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:General_Electric_Dishwasher_Model_GSD500D-03AW,_img05.jpg |
+| General Electric Dishwasher Model GSD500D-03AW, img03.jpg | Steven Pavlov | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:General_Electric_Dishwasher_Model_GSD500D-03AW,_img03.jpg |
+| General Electric Dishwasher Model GSD500D-03AW, img02.jpg | Steven Pavlov | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:General_Electric_Dishwasher_Model_GSD500D-03AW,_img02.jpg |
+| Viking dishwasher from Eaton's.jpg | Oaktree b | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Viking_dishwasher_from_Eaton%27s.jpg |
+| Inside a dishwasher – 360° Photo.jpg | Maximilian Schönherr | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Inside_a_dishwasher_%E2%80%93_360%C2%B0_Photo.jpg |
+| Dishwasher ketterer 1950 001.jpg | Angelina2020 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Dishwasher_ketterer_1950_001.jpg |
+| Dishwasher ketterer 1950 002.jpg | Angelina2020 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Dishwasher_ketterer_1950_002.jpg |
+| Dishwasher ketterer 1950 003.jpg | Angelina2020 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Dishwasher_ketterer_1950_003.jpg |
+| Detergent holder integrated to cutlery basket of dishwasher クリナップ ZWPP45R09ADK.jpg | Syced | CC0 | https://commons.wikimedia.org/wiki/File:Detergent_holder_integrated_to_cutlery_basket_of_dishwasher_%E3%82%AF%E3%83%AA%E3%83%8A%E3%83%83%E3%83%97_ZWPP45R09ADK.jpg |
+| Pictograms on Siemens dishwasher c. 2010 (cropped).jpg | Pittigrilli | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Pictograms_on_Siemens_dishwasher_c._2010_(cropped).jpg |
+| Pictograms on Siemens-dishwasher c. 2010.jpg | Pittigrilli | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Pictograms_on_Siemens-dishwasher_c._2010.jpg |
+| 24-inch Built-In Dishwasher (F89088VI-M-1).jpg | Storerichmond | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:24-inch_Built-In_Dishwasher_(F89088VI-M-1).jpg |
+| Patent Model-Self Cleaning Dishwasher Cabinet.jpg | Jennifer Johns | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Patent_Model-Self_Cleaning_Dishwasher_Cabinet.jpg |
+| A place for a capsule in a dishwasher ftom above. (51632058430).jpg | Nenad Stojkovic | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:A_place_for_a_capsule_in_a_dishwasher_ftom_above._(51632058430).jpg |
+| Capacitive touch buttons.jpg | Zeroping | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Capacitive_touch_buttons.jpg |
+| Loading Dishwasher with Detergent.jpg | SelenaJKruse | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Loading_Dishwasher_with_Detergent.jpg |
+| KitchenAid home dishwasher - Open.jpg | Infrogmation | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:KitchenAid_home_dishwasher_-_Open.jpg |
+| KitchenAid home dishwasher - Closed.jpg | Infrogmation | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:KitchenAid_home_dishwasher_-_Closed.jpg |
+| Dishwashing at Kibbutz Sde Boker.jpg | Khane Rokhl Barazani | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Dishwashing_at_Kibbutz_Sde_Boker.jpg |
+| Norwegen Schimmel im Geschirrspüler lub 2025-07-21.jpg | Lukas Beck | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Norwegen_Schimmel_im_Geschirrsp%C3%BCler_lub_2025-07-21.jpg |
+| Man putting gel in dishwasher detergent box.jpg | Shixart1985 | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Man_putting_gel_in_dishwasher_detergent_box.jpg |
+| Panasonic AIR CONDITIONER INDOOR UNIT CS-C10KJ2.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_INDOOR_UNIT_CS-C10KJ2.jpg |
+| Panasonic AIR CONDITIONER INDOOR UNIT CS-C10KJ2 (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_INDOOR_UNIT_CS-C10KJ2_(2).jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & National AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_National_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & National AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_National_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & National AIR CONDITIONER OUTDOOR UNIT (3).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_National_AIR_CONDITIONER_OUTDOOR_UNIT_(3).jpg |
+| FUJITSU AIR CONDITIONER OUTDOOR UNIT & DAIKIN AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:FUJITSU_AIR_CONDITIONER_OUTDOOR_UNIT_%26_DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & National AIR CONDITIONER OUTDOOR UNIT (4).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_National_AIR_CONDITIONER_OUTDOOR_UNIT_(4).jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT (3).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_(3).jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| LG AIR CONDITIONER OUTDOOR UNIT, Panasonic AIR CONDITIONER OUTDOOR UNIT, National (Panasonic) AIR CONDITIONER OUTDOOR UNIT & DAIKIN AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LG_AIR_CONDITIONER_OUTDOOR_UNIT,_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT,_National_(Panasonic)_AIR_CONDITIONER_OUTDOOR_UNIT_%26_DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT (4).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_(4).jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT (4).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_(4).jpg |
+| LG AIR CONDITIONER OUTDOOR UNIT, National (Panasonic) AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LG_AIR_CONDITIONER_OUTDOOR_UNIT,_National_(Panasonic)_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| LG AIR CONDITIONER OUTDOOR UNIT, National (Panasonic) AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LG_AIR_CONDITIONER_OUTDOOR_UNIT,_National_(Panasonic)_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| National AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:National_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT (5).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_(5).jpg |
+| MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT & LG AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_%26_LG_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & DAIKIN AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| LG AIR CONDITIONER OUTDOOR UNIT & National (Panasonic) AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LG_AIR_CONDITIONER_OUTDOOR_UNIT_%26_National_(Panasonic)_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT (6).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_(6).jpg |
+| National AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:National_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & National AIR CONDITIONER OUTDOOR UNIT (5).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_National_AIR_CONDITIONER_OUTDOOR_UNIT_(5).jpg |
+| HITACHI AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:HITACHI_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| MITSUBISHI HEAVY INDUSTRIES AIR CONDITIONER OUTDOOR UNIT, GENERAL (FUJITSU GENERAL)AIR CONDITIONER OUTDOOR UNIT & SANYO AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:MITSUBISHI_HEAVY_INDUSTRIES_AIR_CONDITIONER_OUTDOOR_UNIT,_GENERAL_(FUJITSU_GENERAL)AIR_CONDITIONER_OUTDOOR_UNIT_%26_SANYO_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT (381).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_(381).jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT, GENERAL (FUJITSU GENERAL) AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI HEAVY INDUSTRIES AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT,_GENERAL_(FUJITSU_GENERAL)_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_HEAVY_INDUSTRIES_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| TOSHIBA AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:TOSHIBA_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| TOSHIBA AIR CONDITIONER OUTDOOR UNIT & HITACHI AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:TOSHIBA_AIR_CONDITIONER_OUTDOOR_UNIT_%26_HITACHI_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT (4).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_(4).jpg |
+| MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT (5).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_(5).jpg |
+| National AIR CONDITIONER OUTDOOR UNIT & Panasonic AIR CONDITIONER OUTDOOR UNIT (3).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:National_AIR_CONDITIONER_OUTDOOR_UNIT_%26_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_(3).jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & McQuay AIR CONDITIONING AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_McQuay_AIR_CONDITIONING_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & McQuay AIR CONDITIONING AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_McQuay_AIR_CONDITIONING_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT & National (Panasonic) AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_%26_National_(Panasonic)_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| DAIKIN AIR CONDITIONER OUTDOOR UNIT, Panasonic AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI HEAVY INDUSTRIES AIR CONDITIONER OUTDOOR UNIT.jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT,_Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_HEAVY_INDUSTRIES_AIR_CONDITIONER_OUTDOOR_UNIT.jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & MITSUBISHI ELECTRIC AIR CONDITIONER OUTDOOR UNIT (9).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_MITSUBISHI_ELECTRIC_AIR_CONDITIONER_OUTDOOR_UNIT_(9).jpg |
+| Panasonic AIR CONDITIONER OUTDOOR UNIT & DAIKIN AIR CONDITIONER OUTDOOR UNIT (2).jpg | Dinkun Chen | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Panasonic_AIR_CONDITIONER_OUTDOOR_UNIT_%26_DAIKIN_AIR_CONDITIONER_OUTDOOR_UNIT_(2).jpg |
+| Vacuum cleaner.jpg | unknown | CC BY-SA 2.5 | https://commons.wikimedia.org/wiki/File:Vacuum_cleaner.jpg |
+| Buhler 1940 Vacuum cleaner img 1408.jpg | Rama | CC BY-SA 2.0 fr | https://commons.wikimedia.org/wiki/File:Buhler_1940_Vacuum_cleaner_img_1408.jpg |
+| RCA ’808’ Power Vacuum Tube.jpg | 池田正樹 (talk)masaki ikeda | Public domain | https://commons.wikimedia.org/wiki/File:RCA_%E2%80%99808%E2%80%99_Power_Vacuum_Tube.jpg |
+| Vacuum cleaner brand Lux.JPG | Ştefănescu Coronades | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Vacuum_cleaner_brand_Lux.JPG |
+| Vacuum cleaner 1910.JPG | The Regina Company | Public domain | https://commons.wikimedia.org/wiki/File:Vacuum_cleaner_1910.JPG |
+| Ruton vacuum cleaner pic1.JPG | Alf van Beem | CC0 | https://commons.wikimedia.org/wiki/File:Ruton_vacuum_cleaner_pic1.JPG |
+| Ruton vacuum cleaner pic2.JPG | Alf van Beem | CC0 | https://commons.wikimedia.org/wiki/File:Ruton_vacuum_cleaner_pic2.JPG |
+| Ruton vacuum cleaner pic3.JPG | Alf van Beem | CC0 | https://commons.wikimedia.org/wiki/File:Ruton_vacuum_cleaner_pic3.JPG |
+| Central vacuum cleaner part.jpg | Chico1996 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Central_vacuum_cleaner_part.jpg |
+| Central vacuum cleaner hose.jpg | Chico1996 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Central_vacuum_cleaner_hose.jpg |
+| Dust pan for central vacuum cleaner.jpg | Chico1996 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Dust_pan_for_central_vacuum_cleaner.jpg |
+| Original Booth trolley vacuum cleaner.jpg | Unknown authorUnknown author | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Original_Booth_trolley_vacuum_cleaner.jpg |
+| Robot vacuum cleaner concept study 1994.jpg | TiHa | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Robot_vacuum_cleaner_concept_study_1994.jpg |
+| USSR 'Typhoon' vacuum cleaner 01.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_01.jpg |
+| USSR 'Typhoon' vacuum cleaner 03.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_03.jpg |
+| USSR 'Typhoon' vacuum cleaner 02.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_02.jpg |
+| USSR 'Typhoon' vacuum cleaner 04.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_04.jpg |
+| USSR 'Typhoon' vacuum cleaner 06.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_06.jpg |
+| USSR 'Typhoon' vacuum cleaner 07.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_07.jpg |
+| USSR 'Typhoon' vacuum cleaner 05.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_05.jpg |
+| USSR 'Typhoon' vacuum cleaner 08.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_08.jpg |
+| USSR 'Typhoon' vacuum cleaner 09.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_09.jpg |
+| USSR 'Typhoon' vacuum cleaner 10.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_10.jpg |
+| USSR 'Typhoon' vacuum cleaner 11.jpg | Wesha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:USSR_%27Typhoon%27_vacuum_cleaner_11.jpg |
+| Vintage Hoover vacuum at the Ohio History Center June 2022.jpg | DogsRNice | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Vintage_Hoover_vacuum_at_the_Ohio_History_Center_June_2022.jpg |
+| Vintage Old Numatic NV250 Vacuum Cleaner (Henry Hoover).jpg | J3TTF | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Vintage_Old_Numatic_NV250_Vacuum_Cleaner_(Henry_Hoover).jpg |
+| Firestone Vacuum Cleaner, 1953 - Advertising Postcard (4887977946).jpg | Steve Shook from Moscow, Idaho, USA | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Firestone_Vacuum_Cleaner,_1953_-_Advertising_Postcard_(4887977946).jpg |
+| 2023 Air Duster (1).jpg | Jacek Halicki | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:2023_Air_Duster_(1).jpg |
+| 2023 Air Duster (2).jpg | Jacek Halicki | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:2023_Air_Duster_(2).jpg |
+| Vorwerk-kobold1 hg.jpg | Hannes Grobe | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Vorwerk-kobold1_hg.jpg |
+| Sebo Felix 'Fun' Upright Vacuum Cleaner Hoover.jpg | Jettmuss | CC0 | https://commons.wikimedia.org/wiki/File:Sebo_Felix_%27Fun%27_Upright_Vacuum_Cleaner_Hoover.jpg |
+| C002005 Electrolux vacuum cleaner demonstration Te Papa 116698 492132.jpg | Gordon Burt (photographer) | Public domain | https://commons.wikimedia.org/wiki/File:C002005_Electrolux_vacuum_cleaner_demonstration_Te_Papa_116698_492132.jpg |
+| Raketa Vacuum cleaner.jpg | Alex Blokha | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Raketa_Vacuum_cleaner.jpg |
+| Siemens vacuum cleaner Super 500.jpg | Smiley.toerist | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Siemens_vacuum_cleaner_Super_500.jpg |
+| Mechanical vacuum cleaner ATOM.jpg | Happa | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Mechanical_vacuum_cleaner_ATOM.jpg |
+| Powerful vacuum cleaner in hand closeup.jpg | Shixart1985 | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Powerful_vacuum_cleaner_in_hand_closeup.jpg |
+| Cordless vacuum cleaner in the kitchen closeup.jpg | Shixart1985 | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Cordless_vacuum_cleaner_in_the_kitchen_closeup.jpg |
+| True Hepa Vacuum Cleaner.jpg | Infrogmation | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:True_Hepa_Vacuum_Cleaner.jpg |
+| Kawasaki-Electric Fan.jpg | unknown | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Kawasaki-Electric_Fan.jpg |
+| Asian fan dance2.jpg | user:AngMoKio | CC BY-SA 2.5 | https://commons.wikimedia.org/wiki/File:Asian_fan_dance2.jpg |
+| Samsung Electric Fan.JPG | FriedC | Public domain | https://commons.wikimedia.org/wiki/File:Samsung_Electric_Fan.JPG |
+| Electric Fan 240x355.jpg | Rfc1394(talk) | Public domain | https://commons.wikimedia.org/wiki/File:Electric_Fan_240x355.jpg |
+| Electric fan Emerson Junior.JPG | Infrogmation of New Orleans | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Electric_fan_Emerson_Junior.JPG |
+| Electric fan early GE.JPG | Infrogmation of New Orleans | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Electric_fan_early_GE.JPG |
+| USB Fan 20110701 2.JPG | Tobosha | Public domain | https://commons.wikimedia.org/wiki/File:USB_Fan_20110701_2.JPG |
+| Oscillating Electric Fan, General Electric, Schenectady NY, c. 1920 - Franklin Institute - DSC06678.jpg | Daderot | Public domain | https://commons.wikimedia.org/wiki/File:Oscillating_Electric_Fan,_General_Electric,_Schenectady_NY,_c._1920_-_Franklin_Institute_-_DSC06678.jpg |
+| Marco Zanuso Ariante Fan Vortice Austin Calhoon Photograph.jpg | Austin Calhoon | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Marco_Zanuso_Ariante_Fan_Vortice_Austin_Calhoon_Photograph.jpg |
+| 11718 - DC Brushless Fan - 80x80x15mm (12V).jpg | SparkFun Electronics from Boulder, USA | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:11718_-_DC_Brushless_Fan_-_80x80x15mm_(12V).jpg |
+| พัดลม (Electric fan).JPG | Ozoneaumm | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:%E0%B8%9E%E0%B8%B1%E0%B8%94%E0%B8%A5%E0%B8%A1_(Electric_fan).JPG |
+| Clip on Fan.jpg | Iadirmiz | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Clip_on_Fan.jpg |
+| 1870's electric switch and fan regulator - Golra Sharif Railway Museum.jpg | Sohail Aziz | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:1870%27s_electric_switch_and_fan_regulator_-_Golra_Sharif_Railway_Museum.jpg |
+| Electric Oscillating Table Fan by Emerson.jpg | Unknown authorUnknown author | Public domain | https://commons.wikimedia.org/wiki/File:Electric_Oscillating_Table_Fan_by_Emerson.jpg |
+| ELECTRIC FAN (7174555233).jpg | Dorian Wallender from Lake Havasu City, Arizona, USA | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:ELECTRIC_FAN_(7174555233).jpg |
+| Business Use Fan at Tennoji Park.jpg | Mr.ちゅらさん | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Business_Use_Fan_at_Tennoji_Park.jpg |
+| Toyotetsu-1800-Electric-fan-001.jpg | HQA02330 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Toyotetsu-1800-Electric-fan-001.jpg |
+| Toyotetsu-1800-Electric-fan-002.jpg | HQA02330 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Toyotetsu-1800-Electric-fan-002.jpg |
+| Desk fan GE (2).jpg | Melissa Highton | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Desk_fan_GE_(2).jpg |
+| Bestron retro electric fan, Hillegersberg, Rotterdam (2021) 03.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 International.(Want to use this image?)Origina | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bestron_retro_electric_fan,_Hillegersberg,_Rotterdam_(2021)_03.jpg |
+| Bestron retro electric fan, Hillegersberg, Rotterdam (2021) 01.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 International.(Want to use this image?)Origina | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bestron_retro_electric_fan,_Hillegersberg,_Rotterdam_(2021)_01.jpg |
+| Bestron retro electric fan, Hillegersberg, Rotterdam (2021) 02.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 International.(Want to use this image?)Origina | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bestron_retro_electric_fan,_Hillegersberg,_Rotterdam_(2021)_02.jpg |
+| Bestron retro electric fan, Hillegersberg, Rotterdam (2021) 04.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 International.(Want to use this image?)Origina | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bestron_retro_electric_fan,_Hillegersberg,_Rotterdam_(2021)_04.jpg |
+| Bestron retro electric fan, Hillegersberg, Rotterdam (2021) 05.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 International.(Want to use this image?)Origina | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bestron_retro_electric_fan,_Hillegersberg,_Rotterdam_(2021)_05.jpg |
+| Bestron retro electric fan, Hillegersberg, Rotterdam (2021) 06.jpg | Donald Trung Quoc Don (Chữ Hán: 徵國單) - Wikimedia Commons - © CC BY-SA 4.0 International.(Want to use this image?)Origina | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bestron_retro_electric_fan,_Hillegersberg,_Rotterdam_(2021)_06.jpg |
+| Electric fans in the Philippines 06.jpg | SwarmCheng | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Electric_fans_in_the_Philippines_06.jpg |
+| Rip Hamilton Beach fan 1995-2009.jpg | Reuben Strayer | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Rip_Hamilton_Beach_fan_1995-2009.jpg |
+| Air-raid shelter mechanical fan SS.jpg | Antti Leppänen | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Air-raid_shelter_mechanical_fan_SS.jpg |
+| Modern electric fan at a school.jpg | Curpharar | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Modern_electric_fan_at_a_school.jpg |
+| Battery-powered electric fan on a white background at home.jpg | Curpharar | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Battery-powered_electric_fan_on_a_white_background_at_home.jpg |
+| Mounted electric fan in a classroom.jpg | Curpharar | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Mounted_electric_fan_in_a_classroom.jpg |
+| Antique light switch - power outlet & fan regulator.jpg | Amitbalani | CC0 | https://commons.wikimedia.org/wiki/File:Antique_light_switch_-_power_outlet_%26_fan_regulator.jpg |
+| Usha Corporation fan regulator.jpg | Amitbalani | CC0 | https://commons.wikimedia.org/wiki/File:Usha_Corporation_fan_regulator.jpg |
+| Holtzer-Cabot type F electric fan (NMAH EM.310608).jpg | Crawdad Blues | CC0 | https://commons.wikimedia.org/wiki/File:Holtzer-Cabot_type_F_electric_fan_(NMAH_EM.310608).jpg |
+| Tube tunnel fan.jpg | DanielMichaelPerry | CC0 | https://commons.wikimedia.org/wiki/File:Tube_tunnel_fan.jpg |
+| Dornbirn-Haemmerle-mechanical fan (roof)-02ASD.jpg | Asurnipal | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Dornbirn-Haemmerle-mechanical_fan_(roof)-02ASD.jpg |
+| Dornbirn-Haemmerle-mechanical fan (roof)-01ASD.jpg | Asurnipal | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Dornbirn-Haemmerle-mechanical_fan_(roof)-01ASD.jpg |
+| Ventilator BW 2026-06-19 16-42-30.jpg | Berthold Werner | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Ventilator_BW_2026-06-19_16-42-30.jpg |
+| Ventilator BW 2026-06-19 16-42-30 standing.jpg | Berthold Werner | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Ventilator_BW_2026-06-19_16-42-30_standing.jpg |
+| Ventilator BW 2026-06-19 16-42-30 running.jpg | Berthold Werner | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Ventilator_BW_2026-06-19_16-42-30_running.jpg |
+| Electric iron lie.jpg | Li-sung | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Electric_iron_lie.jpg |
+| Charcoal iron open.jpg | Vincent de Groot - http://www.videgro.net | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Charcoal_iron_open.jpg |
+| Утюг.jpg | George Shuklin | CC BY-SA 1.0 | https://commons.wikimedia.org/wiki/File:%D0%A3%D1%82%D1%8E%D0%B3.jpg |
+| Flatirons Winter Sunrise edit 2.jpg | Taken by Jesse Varner. Modified by AzaToth. | CC BY-SA 2.5 | https://commons.wikimedia.org/wiki/File:Flatirons_Winter_Sunrise_edit_2.jpg |
+| Bielsko-Biała Muzeum Techniki i Włókiennictwa 004.JPG | Janericloebe | Public domain | https://commons.wikimedia.org/wiki/File:Bielsko-Bia%C5%82a_Muzeum_Techniki_i_W%C5%82%C3%B3kiennictwa_004.JPG |
+| Edificio Fuller (Flatiron) en 2010 desde el Empire State crop boxin.jpg | Imelenchon (original work) | Public domain | https://commons.wikimedia.org/wiki/File:Edificio_Fuller_(Flatiron)_en_2010_desde_el_Empire_State_crop_boxin.jpg |
+| Electric steam iron.jpg | Colin | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Electric_steam_iron.jpg |
+| H-sovetskaa-11-5249.jpg | PereslavlFoto | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:H-sovetskaa-11-5249.jpg |
+| Old iron 3.jpg | Sonia Sevilla | CC0 | https://commons.wikimedia.org/wiki/File:Old_iron_3.jpg |
+| Old iron 4.JPG | Sonia Sevilla | CC0 | https://commons.wikimedia.org/wiki/File:Old_iron_4.JPG |
+| Clothes iron - Mogán - Gran Canaria.jpg | H. Zell | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Clothes_iron_-_Mog%C3%A1n_-_Gran_Canaria.jpg |
+| Sad Iron with twisted wrought iron handle.jpg | Unknown authorUnknown author | Public domain | https://commons.wikimedia.org/wiki/File:Sad_Iron_with_twisted_wrought_iron_handle.jpg |
+| Flatiron, toy (AM 1968.121-1).jpg | unknown | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Flatiron,_toy_(AM_1968.121-1).jpg |
+| Clothes iron on ironing board.jpg | Michael Slaten | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Clothes_iron_on_ironing_board.jpg |
+| Arlington Gregg, Iron, c. 1937, NGA 23740.jpg | Arlington Gregg | CC0 | https://commons.wikimedia.org/wiki/File:Arlington_Gregg,_Iron,_c._1937,_NGA_23740.jpg |
+| Plancha de hierro, Museo Etnográfico del Oriente de Asturias.jpg | Malopez 21 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Plancha_de_hierro,_Museo_Etnogr%C3%A1fico_del_Oriente_de_Asturias.jpg |
+| Plancha de hierro, Museo del Pueblo de Asturias, 03.jpg | Malopez 21 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Plancha_de_hierro,_Museo_del_Pueblo_de_Asturias,_03.jpg |
+| Plancha de hierro, Museo del Pueblo de Asturias, 01.jpg | Malopez 21 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Plancha_de_hierro,_Museo_del_Pueblo_de_Asturias,_01.jpg |
+| Plancha de hierro, Museo del Pueblo de Asturias, 02.jpg | Malopez 21 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Plancha_de_hierro,_Museo_del_Pueblo_de_Asturias,_02.jpg |
+| Darimi(Clothes iron), Brazier, Indu(Clothes iron) (1).jpg | 고려 | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Darimi(Clothes_iron),_Brazier,_Indu(Clothes_iron)_(1).jpg |
+| Darimi(Clothes iron), Brazier, Indu(Clothes iron) (2).jpg | 고려 | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Darimi(Clothes_iron),_Brazier,_Indu(Clothes_iron)_(2).jpg |
+| 02016 0969 Deposit of iron items from Trepcza-Horodyszcze, 2nd half of the 9th century, the Great Moravia horizon.jpg | Silar | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:02016_0969_Deposit_of_iron_items_from_Trepcza-Horodyszcze,_2nd_half_of_the_9th_century,_the_Great_Moravia_horizon.jpg |
+| Good helper electric iron box.jpg | Kengitau254 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Good_helper_electric_iron_box.jpg |
+| Philips steam iron model HD 1256 A.jpg | Peter Häll | CC0 | https://commons.wikimedia.org/wiki/File:Philips_steam_iron_model_HD_1256_A.jpg |
+| Antique sad iron.jpg | Lambtron | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Antique_sad_iron.jpg |
+| 2023 Żelazko turystyczne (2).jpg | Jacek Halicki | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:2023_%C5%BBelazko_turystyczne_(2).jpg |
+| Strijkijzerkachels van de firma Bolinder.jpg | Agaath | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Strijkijzerkachels_van_de_firma_Bolinder.jpg |
+| Walton electric iron.jpg | Nafis Fuad Ayon | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Walton_electric_iron.jpg |
+| Paraffin pressure domestic iron (front view).jpg | AKibombo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Paraffin_pressure_domestic_iron_(front_view).jpg |
+| Paraffin pressure domestic iron (back view).jpg | AKibombo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Paraffin_pressure_domestic_iron_(back_view).jpg |
+| Paraffin pressure domestic iron (left-facing side view).jpg | AKibombo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Paraffin_pressure_domestic_iron_(left-facing_side_view).jpg |
+| Paraffin pressure domestic iron (left facing angled view).jpg | AKibombo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Paraffin_pressure_domestic_iron_(left_facing_angled_view).jpg |
+| Paraffin pressure domestic iron (front facing right side view).jpg | AKibombo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Paraffin_pressure_domestic_iron_(front_facing_right_side_view).jpg |
+| Paraffin pressure domestic iron (right facing side view).jpg | AKibombo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Paraffin_pressure_domestic_iron_(right_facing_side_view).jpg |
+| Belleville, Ontario - Glanmore museum - first floor - clothe irons.jpg | Cantons-de-l'Est | CC0 | https://commons.wikimedia.org/wiki/File:Belleville,_Ontario_-_Glanmore_museum_-_first_floor_-_clothe_irons.jpg |
+| Coal Iron 01.jpg | Geossegawa | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Coal_Iron_01.jpg |
+| Coal Iron 02.jpg | Geossegawa | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Coal_Iron_02.jpg |
+| Сast-iron charcoal irons.jpg | Berser25 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:%D0%A1ast-iron_charcoal_irons.jpg |
+| Teal and white electric steam iron - side view.jpg | Sokolikmawwer0 | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Teal_and_white_electric_steam_iron_-_side_view.jpg |
+| Fluorescent Lamp electrode.jpg | Uploaded by Bernd in Japan | CC BY-SA 2.5 | https://commons.wikimedia.org/wiki/File:Fluorescent_Lamp_electrode.jpg |
+| Neon.JPG | Lestat (Jan Mehlich) | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Neon.JPG |
+| Escalators at Liverpool Street tube station, London looking up 1090969.jpg | Nevit Dilmen (talk) | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Escalators_at_Liverpool_Street_tube_station,_London_looking_up_1090969.jpg |
+| Escalators at Marble Arch tube station, London 1090992.jpg | Nevit Dilmen (talk) | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Escalators_at_Marble_Arch_tube_station,_London_1090992.jpg |
+| Escalators at King's Cross St. Pancras tube station, London 1100469.jpg | Nevit Dilmen (talk) | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Escalators_at_King%27s_Cross_St._Pancras_tube_station,_London_1100469.jpg |
+| Lichtinstallation DU-Nord tagsüber.JPG | H005 | Public domain | https://commons.wikimedia.org/wiki/File:Lichtinstallation_DU-Nord_tags%C3%BCber.JPG |
+| Fluorescent emergency light.JPG | Dmitry G | Public domain | https://commons.wikimedia.org/wiki/File:Fluorescent_emergency_light.JPG |
+| Fluorescent lamp spectrum.jpg | Reguiieee (talk) | Public domain | https://commons.wikimedia.org/wiki/File:Fluorescent_lamp_spectrum.jpg |
+| Fluorescent tube under electric line.jpg | BaronAlaric | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_tube_under_electric_line.jpg |
+| Fluorescent tube under power lines SETUP.JPG | BaronAlaric | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_tube_under_power_lines_SETUP.JPG |
+| Defective compact fluorescent lamp x-ray.jpg | SecretDisc | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Defective_compact_fluorescent_lamp_x-ray.jpg |
+| BlackLightBulb4300ppx2.jpg | FASTILY (TALK) | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:BlackLightBulb4300ppx2.jpg |
+| Narva 20W colour860 Compact fluorescent lamp home made spectrum.jpg | Xofc | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Narva_20W_colour860_Compact_fluorescent_lamp_home_made_spectrum.jpg |
+| Fluorescent lamp symbols.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_lamp_symbols.JPG |
+| Fluorescent lamp without cover.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_lamp_without_cover.JPG |
+| Fluorescent lamp with reactive ballasts.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_lamp_with_reactive_ballasts.JPG |
+| Grande salle ENC n1.jpg | Marie-Lan Nguyen | CC BY 2.5 | https://commons.wikimedia.org/wiki/File:Grande_salle_ENC_n1.jpg |
+| Lamp (5494531443).jpg | Paweł from Poland | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Lamp_(5494531443).jpg |
+| Lamp (5495124902).jpg | Paweł from Poland | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Lamp_(5495124902).jpg |
+| Lámpara de cocina encendida.JPG | Alan | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:L%C3%A1mpara_de_cocina_encendida.JPG |
+| Fluorescent light strip 2 tube.JPG | Chetvorno | CC0 | https://commons.wikimedia.org/wiki/File:Fluorescent_light_strip_2_tube.JPG |
+| Fluorescent-grow-lights.jpg | Dennis Brown | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent-grow-lights.jpg |
+| Fluorescent lights.jpg | Luke | Public domain | https://commons.wikimedia.org/wiki/File:Fluorescent_lights.jpg |
+| Fluorescent lamp hold for T8 and T12 lamps.jpg | Dennis Brown | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_lamp_hold_for_T8_and_T12_lamps.jpg |
+| Two fluorescent tubes.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Two_fluorescent_tubes.JPG |
+| Fluorescent lamp with seperation transformer.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_lamp_with_seperation_transformer.JPG |
+| Candela Philips F40T12.jpg | Josue21 | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Candela_Philips_F40T12.jpg |
+| Fractured fluorescent lamp in Sweden.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fractured_fluorescent_lamp_in_Sweden.JPG |
+| How to wire fluorescent lamp with built-in Schuko socket.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:How_to_wire_fluorescent_lamp_with_built-in_Schuko_socket.JPG |
+| Fluorescent lamp with run mercury.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_lamp_with_run_mercury.JPG |
+| Colored fluorescent lamps.jpg | Robert F. Smith, photographer | Public domain | https://commons.wikimedia.org/wiki/File:Colored_fluorescent_lamps.jpg |
+| 2 fluorescent lamps.jpg | Mieczeslaw | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:2_fluorescent_lamps.jpg |
+| Fluorescent lamps 1 2018-09-06.jpg | FASTILY | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_lamps_1_2018-09-06.jpg |
+| T12 Fluorescent lamp electrodes - rapid start and instant strt.jpg | Zaereth | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:T12_Fluorescent_lamp_electrodes_-_rapid_start_and_instant_strt.jpg |
+| Dirty fluorescent light fixture on the Red Line.jpg | JayCubby | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Dirty_fluorescent_light_fixture_on_the_Red_Line.jpg |
+| Spiral fluorescent lamp.jpg | Alphax | CC BY 2.5 | https://commons.wikimedia.org/wiki/File:Spiral_fluorescent_lamp.jpg |
+| Energiesparlampe 01a.jpg | Kuebi = Armin Kübelbeck; Edit by Waugsberg (less cropped) | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Energiesparlampe_01a.jpg |
+| Old compact fluorescent lamp.JPG | Echtner | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Old_compact_fluorescent_lamp.JPG |
+| Compact fluorescent flood.jpg | Unknown authorUnknown author | Public domain | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_flood.jpg |
+| Compact fluorescent globe.jpg | unknown | Public domain | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_globe.jpg |
+| Compact fluorescent straight.jpg | unknown | Public domain | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_straight.jpg |
+| Light dispersion of a compact fluorescent lamp seen through an Amici direct-vision prism PNr°0114.jpg | D-Kuru | CC BY-SA 3.0 at | https://commons.wikimedia.org/wiki/File:Light_dispersion_of_a_compact_fluorescent_lamp_seen_through_an_Amici_direct-vision_prism_PNr%C2%B00114.jpg |
+| HK 光管 Lamp 螢光燈 Compact fluorescent light bulb.jpg | Temsonmie | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:HK_%E5%85%89%E7%AE%A1_Lamp_%E8%9E%A2%E5%85%89%E7%87%88_Compact_fluorescent_light_bulb.jpg |
+| 02 Spiral CFL Bulb 2010-03-08 (black back).jpg | Sun Ladder | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:02_Spiral_CFL_Bulb_2010-03-08_(black_back).jpg |
+| Compact light bulb.JPG | Dmitry G | Public domain | https://commons.wikimedia.org/wiki/File:Compact_light_bulb.JPG |
+| Compact fluorescent lamp.jpg | Levente Fulop from Brno, Czech Republic | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_lamp.jpg |
+| Compact fluorescent lamp glowin under power lines.jpg | BaronAlaric | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_lamp_glowin_under_power_lines.jpg |
+| Old style street lamp (1960s) with fluorescent globe.jpg | Bidgee | CC BY-SA 3.0 au | https://commons.wikimedia.org/wiki/File:Old_style_street_lamp_(1960s)_with_fluorescent_globe.jpg |
+| Old style street lamp (1960s) missing the shade with fluorescent globe.jpg | Bidgee | CC BY-SA 3.0 au | https://commons.wikimedia.org/wiki/File:Old_style_street_lamp_(1960s)_missing_the_shade_with_fluorescent_globe.jpg |
+| CFL Lamp night view.JPG | Vaikoovery | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:CFL_Lamp_night_view.JPG |
+| Compact fluorescent lamp replacement.jpg | GSA | Public domain | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_lamp_replacement.jpg |
+| Disassembled CFL (3).JPG | McZusatz | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Disassembled_CFL_(3).JPG |
+| Disassembled CFL (1).JPG | McZusatz | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Disassembled_CFL_(1).JPG |
+| CFL cristal lamp (3166068407).jpg | Paul Keller | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:CFL_cristal_lamp_(3166068407).jpg |
+| 50W Nelson brand compact flourescent lamp.jpg | Leon Brooks | Public domain | https://commons.wikimedia.org/wiki/File:50W_Nelson_brand_compact_flourescent_lamp.jpg |
+| U Fluorescent lamp.jpg | Mavre | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:U_Fluorescent_lamp.jpg |
+| Compact fluorescent straight crop.jpg | Nroose | CC0 | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_straight_crop.jpg |
+| Dimmable compact fluorescent light bulb.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Dimmable_compact_fluorescent_light_bulb.JPG |
+| Compact fluorescent lamp wall mounted.JPG | Prabhupuducherry | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_lamp_wall_mounted.JPG |
+| Compact floresent lamp.jpg | J73364 | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Compact_floresent_lamp.jpg |
+| Cold-Cathode-CFL-illuminated.jpg | Gazebo | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Cold-Cathode-CFL-illuminated.jpg |
+| Pile of Compact Fluorescent Light Bulbs.jpg | Patrick Pelletier | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Pile_of_Compact_Fluorescent_Light_Bulbs.jpg |
+| Compact fluorescent lamp E27 23W.jpg | Mk2010 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Compact_fluorescent_lamp_E27_23W.jpg |
+| Lamp-globe.jpg | Zeitlupe | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Lamp-globe.jpg |
+| CFL after frequent switching.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:CFL_after_frequent_switching.JPG |
+| Closed double envelope compact fluorescent lamp.jpg | Bsilby | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Closed_double_envelope_compact_fluorescent_lamp.jpg |
+| Fluorescent lamp E 27.jpg | Dmitry Makeev | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Fluorescent_lamp_E_27.jpg |
+| Cold-cathode fluorescent lamp connected to transformer.jpg | Zaereth | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Cold-cathode_fluorescent_lamp_connected_to_transformer.jpg |
+| Lamp harp with fluorescent bulb.jpg | Verne Equinox | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Lamp_harp_with_fluorescent_bulb.jpg |
+| Light-bulbs.jpg | Hidalgo944 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Light-bulbs.jpg |
+| LED bulbs.jpg | Geoffrey.landis at English Wikipedia | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:LED_bulbs.jpg |
+| LED SC electric warm white.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:LED_SC_electric_warm_white.JPG |
+| 64 Energy-saving-LED-bulb-E27.jpg | Nasena LED Light | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:64_Energy-saving-LED-bulb-E27.jpg |
+| Osram 4½W LED light bulb with GU10 screw.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Osram_4%C2%BDW_LED_light_bulb_with_GU10_screw.JPG |
+| LED lighting in hallway.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:LED_lighting_in_hallway.JPG |
+| LED-Strahler.jpg | Harry20 at German Wikipedia | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:LED-Strahler.jpg |
+| E-40-led-lamp.jpg | V.v.p | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:E-40-led-lamp.jpg |
+| Superstar 5W LED light bulb.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Superstar_5W_LED_light_bulb.JPG |
+| LED P1138.JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:LED_P1138.JPG |
+| Hitachi, LED light bulb, LDA15D-G, E26 cap,.jpg | Mj-bird | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Hitachi,_LED_light_bulb,_LDA15D-G,_E26_cap,.jpg |
+| LED bulb.jpg | Pogrebnoj-Alexandroff | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:LED_bulb.jpg |
+| 7W LED light bulb (GU10).JPG | Dmitry G | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:7W_LED_light_bulb_(GU10).JPG |
+| Led-lampa.jpg | Zátonyi Sándor, (ifj.) Fizped | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:Led-lampa.jpg |
+| IKEA Ledare GU10 LED light bulb.jpg | Matt Kieffer | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:IKEA_Ledare_GU10_LED_light_bulb.jpg |
+| Inside of chaina led bulb (lamp)IMG 0548.JPG | Kottakkalnet | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Inside_of_chaina_led_bulb_(lamp)IMG_0548.JPG |
+| Orange LED Light Bulb.jpg | Wikilester1999 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Orange_LED_Light_Bulb.jpg |
+| Bombillas led baratas philips.jpg | Barbetrukitos | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Bombillas_led_baratas_philips.jpg |
+| LED bulb internals.agr.jpg | ArnoldReinhold | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:LED_bulb_internals.agr.jpg |
+| Two Incandescent Bulb and One LED Bulb.jpg | ParentingPatch | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Two_Incandescent_Bulb_and_One_LED_Bulb.jpg |
+| McLED GU 10 LED light bulb.jpg | Jiří Sedláček | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:McLED_GU_10_LED_light_bulb.jpg |
+| Verbatim LED light bulb.jpg | Jiří Sedláček | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Verbatim_LED_light_bulb.jpg |
+| LED globo light bulb markings EU.jpg | Maxmust | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LED_globo_light_bulb_markings_EU.jpg |
+| Shattered light fixture 3.jpg | W.carter | CC0 | https://commons.wikimedia.org/wiki/File:Shattered_light_fixture_3.jpg |
+| LED-E27-Light-Bulb-1134.jpg | Loadmaster (David R. Tribble) This image was made by Loadmaster (David R. Tribble). Email the author: David R. Tr | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LED-E27-Light-Bulb-1134.jpg |
+| LED-E27-Light-Bulb-1112 01.jpg | Loadmaster (David R. Tribble) This image was made by Loadmaster (David R. Tribble). Email the author: David R. Tr | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LED-E27-Light-Bulb-1112_01.jpg |
+| Philips LED bulb.jpg | Vitaium | CC0 | https://commons.wikimedia.org/wiki/File:Philips_LED_bulb.jpg |
+| LED light bulb ~171113.jpg | Grzegorz W. Tężycki | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LED_light_bulb_~171113.jpg |
+| Low-key photograph of light bulb, Straume, Norway julesvernex2.jpg | Jules Verne Times Two | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Low-key_photograph_of_light_bulb,_Straume,_Norway_julesvernex2.jpg |
+| Blue LED light.jpg | Common Member code specialist | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Blue_LED_light.jpg |
+| Led light bulb.jpg | Beendy234 | CC0 | https://commons.wikimedia.org/wiki/File:Led_light_bulb.jpg |
+| LED bulb 800 Lm Soft white 2024.agr.jpg | ArnoldReinhold | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:LED_bulb_800_Lm_Soft_white_2024.agr.jpg |
+| Dusty E27 light bulb.jpg | RAIL P (RAIL.PHOTOGRAPHY) | CC0 | https://commons.wikimedia.org/wiki/File:Dusty_E27_light_bulb.jpg |
+| Jivah 9-Watt LED Bulb.jpg | Xzantiyamoloy | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Jivah_9-Watt_LED_Bulb.jpg |
+| LED-E27-Light-Bulb-1134-cropped.jpg | User:Loadmaster, User:Bech | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:LED-E27-Light-Bulb-1134-cropped.jpg |
+| E27 LED Filament BULB 6W 230V broken excited by 370-380 nm.jpg | Marián Hubinský | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:E27_LED_Filament_BULB_6W_230V_broken_excited_by_370-380_nm.jpg |
+| Moscow, Trikolor brand LED lightbulb, June 2026 08.jpg | Retired electrician | Public domain | https://commons.wikimedia.org/wiki/File:Moscow,_Trikolor_brand_LED_lightbulb,_June_2026_08.jpg |
+| Moscow, Trikolor brand LED lightbulb, June 2026 04.jpg | Retired electrician | CC0 | https://commons.wikimedia.org/wiki/File:Moscow,_Trikolor_brand_LED_lightbulb,_June_2026_04.jpg |

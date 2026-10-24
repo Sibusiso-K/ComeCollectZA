@@ -6,6 +6,8 @@ Dated record of decisions and work. Newest entries go at the top.
 
 - **Payouts and SAWPRS, as a demo.** Every recorded sale now queues a payout for the full amount on a mock rail. It is marked sent and no money moves, and the app says so on every screen that shows it. Operators can record a reclaimer's SAWPRS status by hand, and the programme dashboard counts the registered ones. Migration 0008, applied live. 74 database checks pass.
 - **A hole found by writing the test.** A reclaimer can update their own row, so they could have marked themselves SAWPRS-registered. A trigger now rejects that, and a test tries it.
+- **Scanner version 4.** A second round added large appliances, lamps and everyday scenes. The scenes were a third off-topic and made results slightly worse, so they were left out. Result: lamps found rose from 83% to 100%, large appliances stayed at 95% (the old head already knew them), real recycling accuracy held at 81.6%, and recyclables wrongly called electronics rose from 0.2% to 0.4% on TrashNet. Photos of a clear glass bulb can still read as glass.
+- **Kaggle.** The Kaggle CLI is installed and signed in through the browser flow, ready to pull more datasets.
 - **Not done:** a real payout rail and a live SAWPRS check. Both need outside access: a payment partner with credentials, and the registry's data.
 
 ## 23 Oct 2026, late night (hackathon day 1)
