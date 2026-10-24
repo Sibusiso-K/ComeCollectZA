@@ -1,20 +1,20 @@
-// Original 20-second music bed for the pitch video, synthesised from scratch (no samples, nothing to license).
-// 0 to 6.3 s: the problem. Sparse minor piano over a low pulse.
-// 6.0 to 6.3 s: a noise riser into the solution.
-// 6.3 to 17.4 s: the solution. Major progression (C, G, Am, F) at 100 BPM with kick, clap, hats, bass and a pluck arpeggio.
-// 17.4 to 20 s: the end card. One warm C major chord, fading out.
+// Music bed for the final pitch video, built around the recorded voice.
+// Notes and chords land on the start of each spoken line. Calm tempo (84 BPM) with a soft pulse only in the
+// solution and value sections, so it never rushes the voice. The mix ducks it further under speech.
+// Everything is synthesised here from scratch (no samples, nothing to license).
 import { writeFileSync } from "node:fs";
 
 const SR = 44100;
-const LEN = 20;
-const N = SR * LEN;
+const LEN = 19.6;
+const N = Math.round(SR * LEN);
 const L = new Float32Array(N);
 const R = new Float32Array(N);
-const BPM = 100;
-const BEAT = 60 / BPM;
-const SOL = 6.3;
-const END = 17.4;
-const hz = (midi) => 440 * 2 ** ((midi - 69) / 12);
+// Line starts on the final timeline (seconds). L3 begins the solution, L7 the end card.
+const S = [0.4, 3.45, 5.95, 9.18, 10.97, 13.42, 15.16];
+const SOL = 5.7;
+const END = 14.9;
+const BEAT = 60 / 84;
+const hz = (m) => 440 * 2 ** ((m - 69) / 12);
 
 function add(t0, dur, fn, gain = 1, pan = 0) {
   const s0 = Math.floor(t0 * SR);
@@ -29,64 +29,51 @@ function add(t0, dur, fn, gain = 1, pan = 0) {
   }
 }
 const env = (t, a, d) => (t < a ? t / a : Math.exp(-(t - a) / d));
-
-// Piano-like pluck: a few harmonics with fast decay.
-const piano = (f, d = 1.2) => (t) => env(t, 0.005, d) * (Math.sin(2 * Math.PI * f * t) + 0.35 * Math.sin(4 * Math.PI * f * t) + 0.12 * Math.sin(6 * Math.PI * f * t));
-// Soft pad: detuned sines with a slow swell.
+const piano = (f, d = 1.4) => (t) => env(t, 0.006, d) * (Math.sin(2 * Math.PI * f * t) + 0.32 * Math.sin(4 * Math.PI * f * t) + 0.1 * Math.sin(6 * Math.PI * f * t));
 const pad = (notes, len) => (t) => {
-  const a = Math.min(1, t / 0.8) * Math.min(1, (len - t) / 0.6);
+  const a = Math.min(1, t / 0.7) * Math.min(1, (len - t) / 0.7);
   let v = 0;
-  for (const m of notes) { const f = hz(m); v += Math.sin(2 * Math.PI * f * t) + Math.sin(2 * Math.PI * f * 1.003 * t) * 0.8; }
+  for (const m of notes) { const f = hz(m); v += Math.sin(2 * Math.PI * f * t) + 0.8 * Math.sin(2 * Math.PI * f * 1.003 * t); }
   return (a * v) / notes.length;
 };
-const kick = (t) => Math.exp(-t / 0.12) * Math.sin(2 * Math.PI * (50 + 90 * Math.exp(-t / 0.03)) * t);
-let seed = 7;
+const kick = (t) => Math.exp(-t / 0.14) * Math.sin(2 * Math.PI * (48 + 80 * Math.exp(-t / 0.035)) * t);
+let seed = 11;
 const noise = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648) * 2 - 1;
-const clap = (t) => Math.exp(-t / 0.09) * noise() * (t < 0.012 || (t > 0.02 && t < 0.03) || t > 0.04 ? 1 : 0.3);
-const hat = (t) => Math.exp(-t / 0.025) * noise();
-const bass = (f, d) => (t) => env(t, 0.01, d) * Math.tanh(2 * Math.sin(2 * Math.PI * f * t));
+const hat = (t) => Math.exp(-t / 0.03) * noise();
+const bass = (f, d) => (t) => env(t, 0.012, d) * Math.tanh(1.8 * Math.sin(2 * Math.PI * f * t));
 
-// ---- Problem: A minor, sparse.
-add(0, SOL + 0.3, pad([57, 60, 64], SOL + 0.3), 0.12);
-const melody = [69, 72, 76, 72, 69, 67, 64, 67];
-melody.forEach((m, i) => add(0.4 + i * 0.72, 2.2, piano(hz(m), 1.0), 0.16, i % 2 ? 0.3 : -0.3));
-for (let t = 0.0; t < SOL - 0.2; t += BEAT * 2) add(t, 0.5, (x) => Math.exp(-x / 0.18) * Math.sin(2 * Math.PI * 55 * x), 0.35);
+// One chord per line: Am, F (the tension), then C, G, Am, F, and C to finish on.
+const chords = [
+  [57, 60, 64], [53, 57, 60], [48, 60, 64, 67], [43, 59, 62, 67], [45, 60, 64, 69], [41, 60, 65, 69], [48, 60, 64, 67, 72],
+];
+const tops = [76, 72, 79, 74, 76, 72, 79]; // the single note that rings at the start of each line
+const roots = [45, 41, 48, 43, 45, 41, 48];
 
-// ---- Riser into the solution.
-add(SOL - 1.4, 1.4, (t) => (t / 1.4) ** 2.5 * noise() * 0.6 + (t / 1.4) ** 3 * Math.sin(2 * Math.PI * (200 + 600 * (t / 1.4)) * t) * 0.15, 0.5);
+S.forEach((t, i) => {
+  const next = i + 1 < S.length ? S[i + 1] : LEN;
+  const len = next - t + 0.5;
+  add(t - 0.05, len, pad(chords[i], len), i === 6 ? 0.2 : 0.13);
+  add(t, 2.2, piano(hz(tops[i]), 1.2), i >= 2 ? 0.17 : 0.14, i % 2 ? 0.3 : -0.3);
+  add(t, Math.min(len, 1.6), bass(hz(roots[i] - 12), 0.7), 0.17);
+});
+// A second, higher note in the middle of each solution line, so the melody moves with the words.
+[7.2, 10.0, 11.9, 14.1].forEach((t, i) => add(t, 1.2, piano(hz([84, 79, 83, 81][i]), 0.7), 0.1, i % 2 ? -0.4 : 0.4));
 
-// ---- Solution: C G Am F, one chord per bar (4 beats).
-const chords = [[48, 60, 64, 67], [43, 59, 62, 67], [45, 60, 64, 69], [41, 60, 65, 69]];
-const bar = BEAT * 4;
-let c = 0;
-for (let t = SOL; t < END - 0.01; t += bar, c++) {
-  const ch = chords[c % 4];
-  const len = Math.min(bar, END - t) + 0.3;
-  add(t, len, pad(ch.slice(1), len), 0.13);
-  for (let b = 0; b < 4 && t + b * BEAT < END; b++) {
-    add(t + b * BEAT, 0.6, kick, 0.55);
-    if (b % 2 === 1) add(t + b * BEAT, 0.25, clap, 0.22, 0.1);
-    add(t + b * BEAT + BEAT / 2, 0.08, hat, 0.08, 0.4);
-    add(t + b * BEAT, BEAT * 0.9, bass(hz(ch[0]), 0.5), 0.18);
-  }
-  // Pluck arpeggio in eighths.
-  const arp = [ch[1] + 12, ch[2] + 12, ch[3] + 12, ch[2] + 12];
-  for (let k = 0; k < 8 && t + (k * BEAT) / 2 < END; k++) add(t + (k * BEAT) / 2, 0.6, piano(hz(arp[k % 4]), 0.25), 0.1, k % 2 ? 0.45 : -0.45);
+// Slow, soft pulse through the solution and value sections only.
+for (let t = SOL + 0.25; t < END - 0.2; t += BEAT) {
+  add(t, 0.5, kick, 0.3);
+  add(t + BEAT / 2, 0.08, hat, 0.05, 0.4);
 }
-// Impact on the first beat of the solution.
-add(SOL, 1.2, (t) => Math.exp(-t / 0.35) * noise() * 0.5 + kick(t), 0.45);
+// Riser into the solution, and a soft impact when the solution begins.
+add(SOL - 1.3, 1.3, (t) => (t / 1.3) ** 2.5 * noise() * 0.45 + (t / 1.3) ** 3 * Math.sin(2 * Math.PI * (180 + 500 * (t / 1.3)) * t) * 0.12, 0.45);
+add(SOL, 1.0, (t) => Math.exp(-t / 0.3) * noise() * 0.3 + kick(t), 0.35);
+// The end card: one warm chord, a kick, and a long fade.
+add(S[6], 0.9, kick, 0.4);
 
-// ---- End card: C major, fading out.
-add(END, LEN - END, pad([48, 60, 64, 67, 72], LEN - END + 0.1), 0.22);
-add(END, LEN - END, piano(hz(72), 1.8), 0.2);
-add(END, LEN - END, piano(hz(76), 1.8), 0.14, 0.3);
-add(END, 0.8, kick, 0.5);
-
-// Master: fade in and out, soft limit, normalise to -1 dBFS peak.
 let peak = 0;
 for (let i = 0; i < N; i++) {
   const t = i / SR;
-  const g = Math.min(1, t / 0.3) * Math.min(1, (LEN - t) / 1.5);
+  const g = Math.min(1, t / 0.3) * Math.min(1, (LEN - t) / 2.0);
   L[i] = Math.tanh(L[i] * g * 1.2);
   R[i] = Math.tanh(R[i] * g * 1.2);
   peak = Math.max(peak, Math.abs(L[i]), Math.abs(R[i]));
@@ -97,5 +84,5 @@ buf.write("RIFF", 0); buf.writeUInt32LE(36 + N * 4, 4); buf.write("WAVE", 8); bu
 buf.writeUInt32LE(16, 16); buf.writeUInt16LE(1, 20); buf.writeUInt16LE(2, 22); buf.writeUInt32LE(SR, 24);
 buf.writeUInt32LE(SR * 4, 28); buf.writeUInt16LE(4, 32); buf.writeUInt16LE(16, 34); buf.write("data", 36); buf.writeUInt32LE(N * 4, 40);
 for (let i = 0; i < N; i++) { buf.writeInt16LE(Math.round(L[i] * k * 32767), 44 + i * 4); buf.writeInt16LE(Math.round(R[i] * k * 32767), 46 + i * 4); }
-writeFileSync(new URL("./music.wav", import.meta.url), buf);
-console.log("wrote music.wav", LEN, "s");
+writeFileSync(new URL("./music3.wav", import.meta.url), buf);
+console.log("wrote music3.wav", LEN, "s");

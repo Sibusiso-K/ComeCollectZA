@@ -8,7 +8,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 
 const TEMP = realpathSync.native(process.env.TEMP);
 const P = join(TEMP, "pitch");
-const OUT = join(P, "scenes");
+const OUT = join(P, "scenes2");
 mkdirSync(OUT, { recursive: true });
 const url = (p) => pathToFileURL(p).href;
 const SHOT = (f) => url(join(TEMP, "mock", "shots", f));
@@ -42,29 +42,36 @@ p.sub{margin-top:28px;font-size:44px;line-height:1.25;font-weight:600;color:rgba
 .end h1 b{color:#a6e85a}
 .end .tag{margin-top:22px;font-size:52px;font-weight:700}
 .end .url{margin-top:44px;font-size:40px;font-weight:800;color:#0b2415;background:#a6e85a;padding:18px 44px;border-radius:999px}
+.end .vals{margin-top:34px;font-size:40px;font-weight:700;color:#7fd1ff}
 .end .meta{margin-top:40px;font-size:28px;font-weight:600;color:rgba(255,255,255,.75)}
+.cap{position:absolute;left:120px;max-width:1040px;bottom:100px;text-align:left}
+.cap span{display:inline-block;font-weight:800;font-size:46px;background:rgba(6,18,11,.78);padding:14px 38px;border-radius:18px;letter-spacing:-.01em}
+.value{background:#7fd1ff;color:#06202e}
+.steps{position:absolute;left:120px;top:176px;display:flex;gap:14px;font-weight:800;font-size:24px;letter-spacing:.1em}
+.steps i{font-style:normal;padding:9px 20px;border-radius:999px;background:rgba(255,255,255,.14);color:rgba(255,255,255,.55)}
+.steps i.on.p{background:#f5b544;color:#1a1205}.steps i.on.s{background:#a6e85a;color:#0b2415}.steps i.on.v{background:#7fd1ff;color:#06202e}
 .credit{position:absolute;left:0;right:0;bottom:26px;text-align:center;font-size:17px;color:rgba(255,255,255,.55)}
 `;
 const BRAND = `<div class="brand">${LOGO(56)}<span>ComeCollect<b>ZA</b></span></div>`;
 const page = (body, transparent = false) => `<!doctype html><html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"><style>${CSS}${transparent ? "html,body{background:transparent}" : "body{background:#06140b}"}</style></head><body>${body}</body></html>`;
 
+const CAP = (t) => `<div class="cap"><span>${t}</span></div>`;
+const STEPS = (on) => `<div class="steps"><i class="${on === 0 ? "on p" : ""}">PROBLEM</i><i class="${on === 1 ? "on s" : ""}">SOLUTION</i><i class="${on === 2 ? "on v" : ""}">VALUE</i></div>`;
 const phone = (shot, top = 0) => `<div class="phone"><div class="scr"><img src="${SHOT(shot)}" style="margin-top:-${top}px"></div></div>`;
 
+const G = `<div class="green"></div><div class="soweto" style="background-image:url('${SOWETO}')"></div>`;
 const scenes = {
-  // 1. Problem, over the landfill footage (transparent overlay).
-  "1-problem": page(`<div class="shade"></div>${BRAND}<div class="copy"><span class="chip problem">THE PROBLEM</span><h1>Reclaimers collect our recycling by hand.</h1><p class="sub">Most never know what a load is worth.</p></div>`, true),
-  // 2. Problem, a reclaimer carrying a load.
-  "2-problem": page(`<div class="full" style="background-image:url('${STOCK("picker-115593683.jpg")}');background-position:60% 30%"></div><div class="shade"></div>${BRAND}<div class="copy"><span class="chip problem">THE PROBLEM</span><h1>Prices are hidden. Pay is a guess.</h1><p class="sub">Loads get mixed. Old electronics get dumped.</p></div>`),
-  // 3. Solution: scan.
-  "3-scan": page(`<div class="green"></div><div class="soweto" style="background-image:url('${SOWETO}')"></div>${BRAND}<div class="copy" style="width:880px"><span class="chip solution">THE SOLUTION</span><h1>Snap a photo. The app names the material.</h1><p class="sub">On the phone, even with no data.</p></div>${phone("06-scan-cardboard.png", 0)}`),
-  // 4. Solution: price.
-  "4-price": page(`<div class="green"></div><div class="soweto" style="background-image:url('${SOWETO}')"></div>${BRAND}<div class="copy" style="width:880px"><span class="chip solution">THE SOLUTION</span><h1>See the best price nearby.</h1><p class="sub">Every buy-back centre's price per kilogram.</p></div>${phone("08-sell-centres.png", 0)}`),
-  // 5. Solution: sell and record.
-  "5-sell": page(`<div class="green"></div><div class="soweto" style="background-image:url('${SOWETO}')"></div>${BRAND}<div class="copy" style="width:880px"><span class="chip solution">THE SOLUTION</span><h1>Sell, get paid, and every kilogram is on record.</h1><p class="sub">Proof of income for the reclaimer. Verified tonnes for recyclers.</p></div>${phone("14-money.png", 0)}`),
-  // 6. Solution: electronics.
-  "6-ewaste": page(`<div class="green"></div><div class="soweto" style="background-image:url('${SOWETO}')"></div>${BRAND}<div class="copy" style="width:700px"><span class="chip solution">AND MORE</span><h1>Old phones and fridges too.</h1><p class="sub">Where to sell, give or drop them safely.</p></div><div class="card" style="background-image:url('${STOCK("ewaste-4638550.jpg")}')"></div>${phone("31-scan-electronics.png", 0)}`),
-  // 7. End card.
-  "7-end": page(`<div class="green"></div><div class="soweto" style="background-image:url('${SOWETO}')"></div><div class="end">${LOGO(180)}<h1>ComeCollect<b>ZA</b></h1><div class="tag">Fair pay for every kilogram.</div><div class="url">comecollectza.vercel.app</div><div class="meta">FNB App of the Year Hackathon 2026 · Team JBB</div></div><div class="credit">Footage: V. M. E. Verheyen (CC BY 3.0). Photos: FBenjr123 (CC BY-SA 4.0), AvWijk (public domain), via Wikimedia Commons. App screens are the live app.</div>`),
+  // PROBLEM
+  "1-problem": page(`<div class="shade"></div>${BRAND}<div class="copy"><span class="chip problem">THE PROBLEM</span><h1>Reclaimers sort our recycling by hand.</h1><p class="sub">And never know what a load is worth.</p></div>${STEPS(0)}${CAP("Reclaimers sort our recycling by hand.")}`, true),
+  "2-problem": page(`<div class="full" style="background-image:url('${STOCK("picker-115593683.jpg")}');background-position:60% 30%"></div><div class="shade"></div>${BRAND}<div class="copy"><span class="chip problem">THE PROBLEM</span><h1>Prices are hidden. Pay is a guess.</h1><p class="sub">Loads get mixed. Old electronics get dumped.</p></div>${STEPS(0)}${CAP("Prices are hidden. Pay is a guess.")}`),
+  // SOLUTION
+  "3-scan": page(`${G}${BRAND}<div class="copy" style="width:880px"><span class="chip solution">THE SOLUTION</span><h1>Snap a photo. Know the material.</h1><p class="sub">The scanner runs on the phone, even with no data.</p></div>${phone("06-scan-cardboard.png", 0)}${STEPS(1)}${CAP("ComeCollectZA: snap a photo, know the material.")}`),
+  "4-price": page(`${G}${BRAND}<div class="copy" style="width:880px"><span class="chip solution">THE SOLUTION</span><h1>See the best price nearby.</h1><p class="sub">Every buy-back centre's price per kilogram.</p></div>${phone("08-sell-centres.png", 0)}${STEPS(1)}${CAP("See the best price nearby.")}`),
+  // VALUE
+  "5-sell": page(`${G}${BRAND}<div class="copy" style="width:880px"><span class="chip value">THE VALUE</span><h1>Fair pay, with proof of every kilo.</h1><p class="sub">Income you can show. Verified tonnes for recyclers.</p></div>${phone("14-money.png", 0)}${STEPS(2)}${CAP("Sell, and every kilo is recorded.")}`),
+  "6-ewaste": page(`${G}${BRAND}<div class="copy" style="width:700px"><span class="chip value">THE VALUE</span><h1>Old electronics, sorted out.</h1><p class="sub">Sell it, give it, or drop it off safely.</p></div><div class="card" style="background-image:url('${STOCK("ewaste-4638550.jpg")}')"></div>${phone("31-scan-electronics.png", 0)}${STEPS(2)}${CAP("Old electronics too.")}`),
+  // END
+  "7-end": page(`${G}<div class="end">${LOGO(170)}<h1>ComeCollect<b>ZA</b></h1><div class="tag">Fair pay, every kilo.</div><div class="vals">Know the price &nbsp;·&nbsp; Prove every sale &nbsp;·&nbsp; Keep waste out of landfill</div><div class="url">comecollectza.vercel.app</div><div class="meta">FNB App of the Year Hackathon 2026 · Team JBB</div></div><div class="credit">Footage: V. M. E. Verheyen (CC BY 3.0). Photos: FBenjr123 (CC BY-SA 4.0), AvWijk (public domain), via Wikimedia Commons. App screens are the live app.</div>`),
 };
 
 const PORT = 9555;

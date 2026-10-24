@@ -1,27 +1,54 @@
-# 20-second pitch video: script
+# 20-second pitch video
 
 Sonke's brief: a 20-second HustleWindow video that sells the app, under 30 MB, uploaded by Saturday 24 Oct at 13:30.
 
-The video `ComeCollectZA-pitch-music.mp4` (20.0 s, 1920 x 1080, 10.9 MB) has the visuals and music. Record your voice over it with the lines below. Each line starts when its scene appears.
+**Final file:** `ComeCollectZA-pitch-final.mp4`. 19.6 s, 1920 x 1080, 30 fps, 10.4 MB, loudness -15.5 LUFS.
 
-| Time | On screen | Say this |
+## The script, as recorded
+
+| Time | Scene | Said |
 |---|---|---|
-| 0.0 to 3.4 s | **The problem.** Landfill footage. "Reclaimers collect our recycling by hand." | "Reclaimers sort our recycling by hand." |
-| 3.4 to 6.3 s | **The problem.** A reclaimer carrying a load. "Prices are hidden. Pay is a guess." | "Prices are hidden. Pay is a guess." |
-| 6.3 to 9.2 s | **The solution.** The scanner names the material. | "ComeCollectZA: snap a photo, know the material." |
-| 9.2 to 12.1 s | The best price at each centre. | "See the best price nearby." |
-| 12.1 to 15.0 s | My money: the sale, payouts, SAWPRS. | "Sell, and every kilo is recorded." |
-| 15.0 to 17.4 s | Old electronics: the scanner and an e-waste pile. | "Old electronics too." |
-| 17.4 to 20.0 s | Logo, "Fair pay for every kilogram", the link. | "ComeCollectZA. Fair pay, every kilo." |
+| 0.4 s | **Problem.** Landfill footage | "Reclaimers sort our recycling by hand." |
+| 3.5 s | **Problem.** A reclaimer carrying a load | "Prices are hidden. Pay is a guess." |
+| 6.0 s | **Solution.** The scanner | "ComeCollectZA: snap a photo, know the material." |
+| 9.2 s | **Solution.** Best price at each centre | "See the best price nearby." |
+| 11.0 s | **Value.** My money: proof of every sale | "Sell, and every kilo is recorded." |
+| 13.4 s | **Value.** Old electronics | "Old electronics too." |
+| 15.2 s | Logo, value line, link | "ComeCollectZA. Fair pay, every kilo." |
 
-About 35 words, so there is room to breathe. Speak at a calm, confident pace, and leave a short pause after "Pay is a guess." The music lifts into the solution at 6.3 s.
+Each scene says what it is in a coloured label (THE PROBLEM, THE SOLUTION, THE VALUE) and a progress tracker shows where the viewer is. The words are also on screen as captions, so it works on mute.
 
-## Recording tips
+## How it was made
 
-- Play the video with headphones on, so the music does not get into your microphone, and read along.
-- Quiet room, phone or microphone a hand's width from your mouth.
-- Do three takes and keep the best one.
-- If Sonke wants your face on screen, record a selfie video as you read. It can go in a corner of this video.
+1. **Transcription:** the recording was transcribed with Whisper (`small.en`, run through faster-whisper, MIT licence), with a time for every word. It heard all seven lines as scripted.
+2. **Cleaning:** rumble and hiss removed, level evened out and brought to -15 LUFS.
+3. **Cutting:** each line was cut out of the take and placed on the timeline. The gaps between lines were tightened from about 0.7 s to 0.45 s so the video fits in 20 seconds. The recording itself was not sped up.
+4. **Scenes:** each scene starts a quarter of a second before its line, so the picture leads the voice.
+5. **Music:** written for this video in code, calm at 84 BPM. Notes and chords land on the start of each line. It lifts when the solution begins, and the mix ducks it under the voice. No samples, nothing to license.
+
+## Score against how pitch videos are judged
+
+The brief says the video must "sell the app offering" and convince a panel to "use and buy" it. Panels usually look for the points below.
+
+| What they look for | Score | Why |
+|---|---|---|
+| Hook in the first 3 seconds | 8 | Opens on real landfill footage with a plain statement of who the app is for. |
+| Problem is clear | 9 | Two scenes, two plain sentences, labelled THE PROBLEM. |
+| Solution is clear | 9 | Scan, price and record, each shown on the live app and labelled THE SOLUTION. |
+| Value is clear | 8 | A labelled VALUE section and the closing line "Fair pay, every kilo." The value is stated as outcomes, with no figures yet. |
+| Proof it is real | 9 | Real app screens throughout, a live link, and a working scanner. Not a mock-up. |
+| Fit for the audience | 8 | Judges see who it is for (reclaimers) and why it matters (income and recycling). |
+| Business case | 5 | The video does not say who pays or how the app earns. Sonke's guidance says to make it make business sense, with figures. |
+| Call to action | 8 | The live link and a demo-ready app. It does not say "try it". |
+| Delivery and audio | 8 | Clean, steady voice at broadcast loudness over a ducked music bed. It is voice only. |
+| Production and pacing | 8 | Seven cuts in 20 seconds, each on a spoken line, with captions. |
+| Meets the rules | 9 | 19.6 s, 10.4 MB (limit 30 MB), real app, sources credited on the end card. |
+| **Average** | **8.1** | |
+
+**What would raise it**
+- **Business case (5):** add a short spoken line such as "Paid for by recyclers, never by reclaimers", and one figure from `BUSINESS_MODEL.md`. This needs a new take and about two more seconds, so a line would have to be dropped or tightened.
+- **A face on camera:** Sonke says "record yourself selling the app". This video is voice only. A small selfie in a corner would meet that wording more closely.
+- **Local footage:** the reclaimer footage and photo are from the Solomon Islands and the Philippines, not South Africa. A few seconds filmed in Soweto, with permission, would be stronger.
 
 ## Sources
 
@@ -30,7 +57,7 @@ About 35 words, so there is room to breathe. Speak at a calm, confident pace, an
 - E-waste photo: "Ewaste-pile.jpg" by AvWijk, public domain, Wikimedia Commons.
 - Soweto background: see `public/images/soweto/CREDITS.md`.
 - App screens: the live app.
-- Music: written for this video in code (`tools/pitch/music.mjs`). No samples, nothing to license.
-- The credits also appear on the end card.
+- Music: `tools/pitch/music.mjs`. Voice: the team's own recording.
+- The credits are on the end card.
 
-`tools/pitch/` holds the scripts that fetch the photos, render the scenes and make the music.
+`tools/pitch/` has the scripts: `fetch-stock.mjs` (open-licence photos), `render.mjs` (scenes), `music.mjs` (music), `transcribe.py` (Whisper timings) and `build.sh` (puts it together).
