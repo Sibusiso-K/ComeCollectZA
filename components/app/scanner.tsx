@@ -53,14 +53,19 @@ function Viewfinder({ children, sweep }: { children: ReactNode; sweep?: boolean 
 
 function Shutter({ onClick, disabled, label }: { onClick: () => void; disabled?: boolean; label: string }) {
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={label}
-      className="mx-auto grid size-20 place-items-center rounded-full bg-white/90 ring-4 ring-highlight transition-transform active:scale-95 disabled:opacity-60"
-    >
-      <span className="size-14 rounded-full bg-white" />
-    </button>
+    <div className="flex flex-col items-center gap-2">
+      <button
+        onClick={onClick}
+        disabled={disabled}
+        aria-label={label}
+        className="grid size-20 place-items-center rounded-full bg-white/90 ring-4 ring-highlight transition-transform active:scale-95 disabled:opacity-60"
+      >
+        <span className="grid size-14 place-items-center rounded-full bg-white text-[#0b2415]">
+          <Camera size={28} aria-hidden />
+        </span>
+      </button>
+      <span className="text-sm font-bold" aria-hidden>{label}</span>
+    </div>
   );
 }
 

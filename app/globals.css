@@ -177,3 +177,6 @@
 
 /* Leaflet needs its own base styles. They are imported from the package in the map component. */
 .leaflet-container { font-family: var(--font-sans); background: var(--secondary); }
+/* Bigger zoom buttons, so they are easy to tap with a thumb. */
+.leaflet-container .leaflet-bar a.leaflet-control-zoom-in,
+.leaflet-container .leaflet-bar a.leaflet-control-zoom-out { width: 44px; height: 44px; line-height: 44px; font-size: 22px; }

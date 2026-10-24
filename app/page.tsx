@@ -56,7 +56,7 @@ export default function Welcome() {
       </section>
 
       <div className="flex items-center justify-between gap-4">
-        <Link href="/home" className="font-bold underline underline-offset-4">
+        <Link href="/home" className="inline-flex min-h-12 items-center font-bold underline underline-offset-4">
           {t("Look around first")}
         </Link>
         <Link

@@ -64,7 +64,7 @@ function AccountButton() {
 function TopBar() {
   return (
     <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 pb-3 pt-4">
-      <Link href="/home" aria-label="ComeCollectZA">
+      <Link href="/home" aria-label="ComeCollectZA" className="flex min-h-11 items-center">
         <Logo size={40} />
       </Link>
       <div className="flex items-center gap-2">
@@ -140,7 +140,7 @@ export function WideScreen({ title, children, place = "kliptown" }: { title: str
     <div className="mx-auto min-h-screen w-full max-w-6xl overflow-x-hidden px-4 pb-12 sm:px-8">
       <Backdrop place={place} />
       <header className="no-print grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-5">
-        <Link href="/home" className="flex min-w-0 items-center gap-3">
+        <Link href="/home" className="flex min-h-11 min-w-0 items-center gap-3">
           <Logo size={40} />
           <span className="hidden truncate text-lg font-bold text-muted-foreground sm:inline">· {title}</span>
         </Link>
