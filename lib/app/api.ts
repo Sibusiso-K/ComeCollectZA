@@ -62,6 +62,8 @@ export function bestPrice(prices: BoardPrice[], m: Material): BoardPrice | undef
 
 // ---------- My sales ----------
 export type FeeStatus = "owed" | "paid" | "missing";
+export type PayoutStatus = "queued" | "sent" | "failed" | "paid";
+type PayoutRow = { status: PayoutStatus; reference: string; channel: string };
 export type MySale = {
   id: string;
   material: Material;
@@ -71,6 +73,7 @@ export type MySale = {
   centre: string;
   createdAt: string;
   fee: { cents: number; status: FeeStatus } | null;
+  payout: { status: PayoutStatus; reference: string; demo: boolean } | null;
 };
 type SaleRow = {
   id: string;
@@ -81,13 +84,14 @@ type SaleRow = {
   created_at: string;
   centres: { name: string } | { name: string }[] | null;
   service_fees: { cents: number; status: FeeStatus } | { cents: number; status: FeeStatus }[] | null;
+  payouts: PayoutRow | PayoutRow[] | null;
 };
 
 export function getMySales(userId: string): Promise<Fetched<MySale[]>> {
   return cached<MySale[]>(`ccza.sales.${userId}`, [], async () => {
     const { data, error } = await db()
       .from("transactions")
-      .select("id, material, weight_g, cents_per_kg, amount_cents, created_at, centres(name), service_fees(cents, status)")
+      .select("id, material, weight_g, cents_per_kg, amount_cents, created_at, centres(name), service_fees(cents, status), payouts(status, reference, channel)")
       .order("created_at", { ascending: false })
       .limit(300);
     if (error) throw error;
@@ -95,6 +99,7 @@ export function getMySales(userId: string): Promise<Fetched<MySale[]>> {
       const material = MATERIAL_BY_CODE[r.material];
       if (!material) return [];
       const fee = first(r.service_fees);
+      const payout = first(r.payouts);
       return [
         {
           id: r.id,
@@ -105,6 +110,7 @@ export function getMySales(userId: string): Promise<Fetched<MySale[]>> {
           centre: first(r.centres)?.name ?? "Buy-back centre",
           createdAt: r.created_at,
           fee: fee ? { cents: fee.cents, status: fee.status } : null,
+          payout: payout ? { status: payout.status, reference: payout.reference, demo: payout.channel.endsWith("_mock") } : null,
         },
       ];
     });
@@ -218,16 +224,28 @@ export async function setBoardPrice(centreId: string, material: Material, centsP
   return !error;
 }
 
-export async function lookupReclaimer(code: string): Promise<{ name: string; area: string } | null> {
+export type SawprsStatus = "unknown" | "pending" | "registered";
+export type LookedUp = { name: string; area: string; sawprs: SawprsStatus; sawprsRef: string | null };
+
+export async function lookupReclaimer(code: string): Promise<LookedUp | null> {
   const { data, error } = await db().rpc("lookup_reclaimer", { p_qr: code });
   if (error) throw error;
-  const row = ((data ?? []) as { display_name: string; area_id: string }[])[0];
-  return row ? { name: row.display_name, area: row.area_id } : null;
+  const row = ((data ?? []) as { display_name: string; area_id: string; sawprs_status?: SawprsStatus; sawprs_ref?: string | null }[])[0];
+  return row ? { name: row.display_name, area: row.area_id, sawprs: row.sawprs_status ?? "unknown", sawprsRef: row.sawprs_ref ?? null } : null;
+}
+
+/** Operators record whether a reclaimer is registered with SAWPRS. It is a record, not a live registry lookup. */
+export async function setSawprsStatus(code: string, status: SawprsStatus, ref: string | null): Promise<string | null> {
+  const { error } = await db().rpc("set_sawprs_status", { p_qr: code, p_status: status, p_ref: ref });
+  if (!error) return null;
+  if (error.message.includes("REF_REQUIRED")) return "Enter the SAWPRS reference number to mark someone as registered.";
+  if (error.message.includes("ROLE_NOT_ALLOWED")) return "Only a centre account can change this.";
+  return "The status did not save. Try again.";
 }
 
 export type SaleInput = { code: string; material: Material; grams: number; centsPerKg: number; centreId: string; key: string };
 export type SaleResult =
-  | { ok: true; amountCents: number; feeCents: number; flags: string[]; replayed: boolean }
+  | { ok: true; amountCents: number; feeCents: number; flags: string[]; replayed: boolean; payout: { status: PayoutStatus; reference: string; demo: boolean } | null }
   | { ok: false; error: "not_configured" | "price" | "unknown_code" | "not_operator" | "signed_out" | "conflict" | "invalid" | "failed"; currentCentsPerKg?: number };
 
 /** Records a weighed sale through the server route, which checks the operator, the centre and the board price. */
@@ -252,11 +270,11 @@ export async function recordSale(s: SaleInput): Promise<SaleResult> {
     return { ok: false, error: "failed" };
   }
   const body = (await res.json().catch(() => ({}))) as {
-    receipt?: { amount_cents: number; service_fee_cents?: number; flags?: string[]; replayed: boolean };
+    receipt?: { amount_cents: number; service_fee_cents?: number; flags?: string[]; replayed: boolean; payout?: PayoutRow | null };
     error?: { code: string; details?: { cents_per_kg?: number } };
   };
   if (res.ok && body.receipt) {
-    return { ok: true, amountCents: body.receipt.amount_cents, feeCents: body.receipt.service_fee_cents ?? 0, flags: body.receipt.flags ?? [], replayed: body.receipt.replayed };
+    return { ok: true, amountCents: body.receipt.amount_cents, feeCents: body.receipt.service_fee_cents ?? 0, flags: body.receipt.flags ?? [], replayed: body.receipt.replayed, payout: body.receipt.payout ? { status: body.receipt.payout.status, reference: body.receipt.payout.reference, demo: body.receipt.payout.channel.endsWith("_mock") } : null };
   }
   const code = body.error?.code;
   if (res.status === 501) return { ok: false, error: "not_configured" };
@@ -270,14 +288,14 @@ export async function recordSale(s: SaleInput): Promise<SaleResult> {
 }
 
 // ---------- PRO dashboard ----------
-export type ProOverview = { registered: number; active: number; youth: number; tonnes30d: number; feesOwedCents: number; feesPaidCents: number };
+export type ProOverview = { registered: number; active: number; youth: number; tonnes30d: number; feesOwedCents: number; feesPaidCents: number; sawprsRegistered: number; payoutsSentCents: number };
 
 export async function getProOverview(): Promise<ProOverview | null> {
   const { data, error } = await db().rpc("pro_overview");
   if (error) throw error;
-  const r = ((data ?? []) as { registered: number; active_reclaimers: number; youth_reclaimers: number; tonnes_30d: number; fees_owed_cents: number; fees_paid_cents: number }[])[0];
+  const r = ((data ?? []) as { registered: number; active_reclaimers: number; youth_reclaimers: number; tonnes_30d: number; fees_owed_cents: number; fees_paid_cents: number; sawprs_registered?: number; payouts_sent_cents?: number }[])[0];
   return r
-    ? { registered: Number(r.registered), active: Number(r.active_reclaimers), youth: Number(r.youth_reclaimers), tonnes30d: Number(r.tonnes_30d), feesOwedCents: Number(r.fees_owed_cents), feesPaidCents: Number(r.fees_paid_cents) }
+    ? { registered: Number(r.registered), active: Number(r.active_reclaimers), youth: Number(r.youth_reclaimers), tonnes30d: Number(r.tonnes_30d), feesOwedCents: Number(r.fees_owed_cents), feesPaidCents: Number(r.fees_paid_cents), sawprsRegistered: Number(r.sawprs_registered ?? 0), payoutsSentCents: Number(r.payouts_sent_cents ?? 0) }
     : null;
 }
 

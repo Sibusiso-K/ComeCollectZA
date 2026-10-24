@@ -109,6 +109,12 @@ export default function Pro() {
               ) : (
                 <p className="text-sm text-muted-foreground">{t("The youth share appears once reclaimers have recorded sales.")}</p>
               )}
+              {overview && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-secondary p-4"><p className="text-xs text-muted-foreground">{t("SAWPRS registered")}</p><p className="text-2xl font-extrabold">{overview.sawprsRegistered} <span className="text-sm font-bold text-muted-foreground">{t("of {total}", { total: overview.registered })}</span></p></div>
+                  <div className="rounded-2xl bg-secondary p-4"><p className="text-xs text-muted-foreground">{t("Demo payouts sent")}</p><p className="text-2xl font-extrabold">{formatRand(overview.payoutsSentCents)}</p></div>
+                </div>
+              )}
               <p className="text-xs text-muted-foreground">{t("Totals only. No names are shown.")}</p>
             </Card>
 

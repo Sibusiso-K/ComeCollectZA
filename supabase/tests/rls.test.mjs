@@ -342,6 +342,50 @@ async function runTests() {
   await check("the same key with a different body is refused", async () => {
     await assert.rejects(recordSale("sale-happy-1", O1, ORLANDO, "ccza_r_7Q2KX9", "CAN_AL", 3000, 1020), /IDEMPOTENCY_CONFLICT/);
   });
+  await check("every sale queues one demo payout for the full amount, and a replay does not add another", async () => {
+    assert.equal(happySale.payout.channel, "ewallet_mock");
+    assert.equal(happySale.payout.status, "sent");
+    assert.match(happySale.payout.reference, /^PO-[A-Z0-9]{10}$/);
+    await db.exec("reset role");
+    const rowsFor = await rows("select channel, status, amount_cents, reference from payouts where transaction_id = $1", [happySale.transaction_id]);
+    assert.equal(rowsFor.length, 1);
+    assert.equal(rowsFor[0].amount_cents, 2040, "the reclaimer gets the full sale amount, not minus the fee");
+    assert.equal(rowsFor[0].reference, happySale.payout.reference);
+    const again = await recordSale("sale-happy-1", O1, ORLANDO, "ccza_r_7Q2KX9", "CAN_AL", 2000, 1020);
+    assert.equal(again.payout.reference, happySale.payout.reference);
+    await db.exec("reset role");
+    assert.equal(await count(`select 1 from payouts where transaction_id = '${happySale.transaction_id}'`), 1);
+  });
+  await check("a reclaimer sees the payout for their own sale and nobody else's", async () => {
+    await as("authenticated", R1);
+    assert.equal(await count(`select 1 from payouts where transaction_id = '${happySale.transaction_id}'`), 1);
+    await as("authenticated", R2);
+    assert.equal(await count(`select 1 from payouts where transaction_id = '${happySale.transaction_id}'`), 0);
+    await as("authenticated", R1);
+    await db.query("update payouts set status = 'failed'");
+    await db.exec("reset role");
+    assert.equal((await rows(`select status from payouts where transaction_id = '${happySale.transaction_id}'`))[0].status, "sent");
+  });
+  await check("only an operator can set a SAWPRS status, and a registered status needs a reference", async () => {
+    await as("authenticated", O1);
+    await db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'pending', null)");
+    assert.equal((await rows("select sawprs_status from lookup_reclaimer('ccza_r_7Q2KX9')"))[0].sawprs_status, "pending");
+    await assert.rejects(db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'registered', null)"), /REF_REQUIRED/);
+    await assert.rejects(db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'approved', 'X1')"), /BAD_STATUS/);
+    await assert.rejects(db.query("select public.set_sawprs_status('ccza_r_NOBODY', 'pending', null)"), /UNKNOWN_CODE/);
+    await db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'registered', 'SAWPRS-12345')");
+    const [found] = await rows("select * from lookup_reclaimer('ccza_r_7Q2KX9')");
+    assert.deepEqual({ s: found.sawprs_status, r: found.sawprs_ref }, { s: "registered", r: "SAWPRS-12345" });
+    await db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'unknown', 'ignored')");
+    const [reset] = await rows("select * from lookup_reclaimer('ccza_r_7Q2KX9')");
+    assert.deepEqual({ s: reset.sawprs_status, r: reset.sawprs_ref }, { s: "unknown", r: null });
+    await as("authenticated", R1);
+    await assert.rejects(db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'registered', 'X')"), /ROLE_NOT_ALLOWED/);
+    await assert.rejects(db.query("update reclaimers set sawprs_status = 'registered', sawprs_ref = 'X' where profile_id = '" + R1 + "'"), /SAWPRS_LOCKED/);
+    await db.query("update reclaimers set age_band = '35+' where profile_id = '" + R1 + "'");
+    await as("anon");
+    await assert.rejects(db.query("select public.set_sawprs_status('ccza_r_7Q2KX9', 'registered', 'X')"));
+  });
   await check("an unknown reclaimer code is refused", async () => {
     await assert.rejects(recordSale("sale-unknown-1", O1, ORLANDO, "ccza_r_NOBODY", "CAN_AL", 1000, 1020), /UNKNOWN_CODE/);
   });

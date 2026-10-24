@@ -75,9 +75,16 @@ values ('makro-example', 'Makro e-waste bin, Example', 'retail_bin', array['phon
 - To hide a place, set `active = false`. Do not delete rows, so the history stays.
 - The first places to add are the ones near Soweto that reclaimers can reach. Only one seeded place is in Soweto, and it needs checking: the Marie Louise landfill stopped taking household waste in September 2025.
 
-## 8. Checks
+## 8. Payouts and SAWPRS
+
+- Payouts are **demo payouts** until a payment partner is connected. Each sale writes a `payouts` row on channel `ewallet_mock` with status `sent`. No money moves.
+- To go live, put the real rail's call in the sales route after `record_sale()` returns, write the real channel (`ewallet` or `payshap`) and update the row to `paid` or `failed` from the rail's answer. Keep the same reference.
+- SAWPRS status is set by the centre operator on the sale screen, from what the reclaimer shows. To correct one: `select public.set_sawprs_status` needs an operator session, so in the SQL editor use `update reclaimers set sawprs_status = 'registered', sawprs_ref = '...' where qr_token = '...';`. The editor runs as an administrator, so the guard trigger does not block it.
+
+## 9. Checks
 
 - `select count(*) from market_points();` returns the map pins.
+- `select channel, status, count(*) from payouts group by 1, 2;` shows the demo payouts.
 - `select count(*) from ewaste_points;` returns the electronics places, and `select * from ewaste_listings();` the open listings (without phone numbers).
 - `select * from pro_overview();` run as a PRO user returns totals. Anyone else gets no rows.
 - Supabase, then Advisors. The warnings about `board_prices`, `market_points` and the sign-in functions are expected: each checks the caller inside.

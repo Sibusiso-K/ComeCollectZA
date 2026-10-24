@@ -238,6 +238,8 @@ flowchart LR
 - **Prices.** `board_prices()` is public. Centre operators insert price rows for their own centre, and every insert becomes the new board price.
 - **Selling.** A reclaimer shows their code. The operator looks it up (`lookup_reclaimer()`, operators only) and records the weighed sale through the server route, which checks the operator's session, the centre and the board price, then calls `record_sale()` in one transaction.
 - **Marketplace.** `market_points()` returns each centre's prices and every open post. Post locations are snapped to a grid of about 250 m inside the database, so the exact spot is never sent to other people. The map groups a centre's prices under one pin. A person can have 20 open posts, and posts expire after 14 days.
+- **Payouts (demo rail).** `record_sale()` also writes a row in `payouts` for the full sale amount, on channel `ewallet_mock`, marked `sent`, with a reference like `PO-1A2B3C4D5E`. No money moves. The service fee is billed to buyers and programmes and is never taken from the reclaimer. Reclaimers see their payouts on My money, labelled as demo. To go live, a real adapter writes a real channel (`ewallet` or `payshap`) instead, and nothing else changes.
+- **SAWPRS status.** `reclaimers.sawprs_status` is `unknown`, `pending` or `registered`, with a reference number. A centre operator sets it by hand with `set_sawprs_status()`. It is a record of what the reclaimer showed, not a lookup of the registry. A trigger stops reclaimers changing it on their own row. The programme dashboard shows the registered count.
 - **Electronics.** `ewaste_points` is a public table that only an administrator writes, and every row has a source and a check date. `ewaste_posts` holds a person's own listings (sell, give, want). `ewaste_listings()` returns open listings with the location snapped to about 250 m and no phone number. `ewaste_contact(id)` returns the number to signed-in people only. A person can have 10 open listings, and listings expire after 30 days. The guide's advice is plain data in `lib/app/ewaste.ts`, checked by `tools/tests/summary.mjs`.
 - **Programme totals.** `pro_overview()` and `pro_material_summary()` return totals for PRO analysts and nothing for anyone else.
 - **Impact.** Worked out in the browser from the person's own sales (`lib/app/summary.ts`), using South African time for days and months.
@@ -247,7 +249,7 @@ flowchart LR
 - A contact method on material posts. Electronics listings have one. Material posts do not.
 - A way for people to report a wrong electronics place, or a listing.
 - Electronics listings on the map. The board is a list for now.
-- Payouts and the SAWPRS registration check.
+- Real payouts (needs a payment partner and credentials) and a live SAWPRS registry check (needs access to the registry).
 - Phone number sign-in (needs an SMS service).
 - An offline queue for writes.
 - Realtime updates when a centre records a sale.

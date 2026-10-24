@@ -13,6 +13,7 @@ export type Profile = {
   qrToken: string | null;
   area: string | null;
   ageBand: string | null;
+  sawprs: "unknown" | "pending" | "registered";
 };
 
 export type SignUpInput = {
@@ -54,13 +55,15 @@ async function loadProfile(userId: string): Promise<Profile | null> {
   let qrToken: string | null = null;
   let area: string | null = null;
   let ageBand: string | null = null;
+  let sawprs: Profile["sawprs"] = "unknown";
   if (p.role === "reclaimer") {
-    const { data: r } = await db.from("reclaimers").select("qr_token, area_id, age_band").eq("profile_id", userId).maybeSingle();
+    const { data: r } = await db.from("reclaimers").select("qr_token, area_id, age_band, sawprs_status").eq("profile_id", userId).maybeSingle();
     qrToken = r?.qr_token ?? null;
     area = r?.area_id ?? null;
     ageBand = r?.age_band ?? null;
+    sawprs = (r?.sawprs_status as Profile["sawprs"] | undefined) ?? "unknown";
   }
-  return { role: p.role as Role, displayName: p.display_name, qrToken, area, ageBand };
+  return { role: p.role as Role, displayName: p.display_name, qrToken, area, ageBand, sawprs };
 }
 
 /** First sign-in after sign-up: create the profile from what the person typed when they signed up. */

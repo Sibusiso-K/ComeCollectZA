@@ -22,10 +22,10 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Programme dashboard | Built | Totals only. Needs a PRO account |
 | First-time tour, languages, light and dark | Built | 11 languages offered. English, Afrikaans, isiZulu and isiXhosa are drafts that need a first-language reader |
 | PWA | Built | Installs. Saved pages and the scanner open with no signal |
-| Payouts and SAWPRS | Not started | The `payouts` table exists. Nothing writes to it |
+| Payouts and SAWPRS | Demo only | Each sale queues a demo payout (no money moves) and operators record a reclaimer's SAWPRS status by hand. A real payout rail and a live registry check are not connected. See [ADMIN.md](ADMIN.md) section 8 |
 | Phone number sign-in | Not started | Needs an SMS service |
 | Offline write queue | Not started | Reading works offline. Writing needs a signal |
-| Tests | 71 database checks, 14 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
+| Tests | 74 database checks, 14 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
 
 ## Set up on a new machine
 

@@ -112,6 +112,17 @@ export const DICT: Record<string, Tr> = {
   "Light bulbs and tubes": { af: "Gloeilampe en buise", zu: "Amabhalbhu namashubhu", xh: "Iibhalbhu neetyhubhu" },
   "Printer": { af: "Drukker", zu: "Iprinta", xh: "Iprinta" },
   "Something else": { af: "Iets anders", zu: "Okunye", xh: "Enye into" },
+  // Payouts and SAWPRS.
+  "Payouts": { af: "Uitbetalings", zu: "Izinkokhelo", xh: "Iintlawulo" },
+  "Demo payouts": { af: "Demo-uitbetalings", zu: "Izinkokhelo zedemo", xh: "Iintlawulo zedemo" },
+  "SAWPRS registration": { af: "SAWPRS-registrasie", zu: "Ukubhalisa ku-SAWPRS", xh: "Ukubhaliswa kwe-SAWPRS" },
+  "Not recorded": { af: "Nie aangeteken nie", zu: "Akuqoshiwe", xh: "Akurekhodwanga" },
+  "Registration pending": { af: "Registrasie hangend", zu: "Ukubhalisa kuyalindelwe", xh: "Ukubhaliswa kuyalindelwa" },
+  "Registered": { af: "Geregistreer", zu: "Kubhalisiwe", xh: "Ibhalisiwe" },
+  "Payout": { af: "Uitbetaling", zu: "Inkokhelo", xh: "Intlawulo" },
+  "demo": { af: "demo", zu: "idemo", xh: "idemo" },
+  "Save status": { af: "Stoor status", zu: "Gcina isimo", xh: "Gcina imeko" },
+  "Pending": { af: "Hangend", zu: "Kuyalindelwa", xh: "Kuyalindelwa" },
 };
 
 export function translate(lang: LangCode, key: string, vars?: Record<string, string | number>): string {
