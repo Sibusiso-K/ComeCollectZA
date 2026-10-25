@@ -194,6 +194,14 @@ check("areas sit inside Gauteng and match what people type", () => {
   assert.equal(areas.areaFor(""), null);
   assert.equal(areas.areaFor("Cape Town"), null);
 });
+check("a load adds each item at the price it was added with", () => {
+  const total = logic.loadTotalCents([
+    { id: "a", material: "cans", grams: 6400, centsPerKg: 1020, centre: "Orlando East" },
+    { id: "b", material: "glass", grams: 1000, centsPerKg: 40, centre: "Klipspruit" },
+  ]);
+  assert.equal(total, 6528 + 40);
+  assert.equal(logic.loadTotalCents([]), 0);
+});
 check("a black or blank photo is refused, a dark or plain real one is not", () => {
   const photo = (colour) => {
     const a = new Uint8ClampedArray(20000 * 4);

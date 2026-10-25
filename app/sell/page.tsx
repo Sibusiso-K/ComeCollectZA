@@ -9,10 +9,19 @@ import { LoadScanner } from "@/components/app/scanner";
 import { useT } from "@/lib/app/prefs";
 import { useAuth } from "@/lib/app/auth";
 import { getBoardPrices, type BoardPrice, type Fetched } from "@/lib/app/api";
-import { MATERIALS, MATERIAL_LABEL, formatPerKg, formatPerTonne, formatRand, parseKgToGrams, saleCents, type Material } from "@/lib/app/logic";
+import { MATERIALS, MATERIAL_LABEL, formatPerKg, formatPerTonne, formatRand, loadTotalCents, parseKgToGrams, saleCents, type LoadItem, type Material } from "@/lib/app/logic";
 import { cn } from "@/lib/utils";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"];
+
+// The load is kept on this phone so a reclaimer can scan several loads before going to the centre.
+const LOAD_KEY = "ccza.load.v1";
+
+function isLoadItem(x: unknown): x is LoadItem {
+  if (typeof x !== "object" || x === null) return false;
+  const i = x as Record<string, unknown>;
+  return typeof i.id === "string" && (MATERIALS as string[]).includes(i.material as string) && typeof i.grams === "number" && typeof i.centsPerKg === "number" && typeof i.centre === "string";
+}
 
 export default function Sell() {
   const t = useT();
@@ -22,12 +31,28 @@ export default function Sell() {
   const [typed, setTyped] = useState("");
   const [centreId, setCentreId] = useState<string | null>(null);
   const [showCode, setShowCode] = useState(false);
+  const [load, setLoad] = useState<LoadItem[]>([]);
 
   useEffect(() => {
     getBoardPrices().then(setPrices);
     const m = new URLSearchParams(window.location.search).get("m");
     if (m && (MATERIALS as string[]).includes(m)) setMaterial(m as Material);
+    try {
+      const saved: unknown = JSON.parse(localStorage.getItem(LOAD_KEY) ?? "[]");
+      if (Array.isArray(saved)) setLoad(saved.filter(isLoadItem));
+    } catch {
+      // Nothing saved, or storage is blocked: the load then lasts for this visit only.
+    }
   }, []);
+
+  const saveLoad = (items: LoadItem[]) => {
+    setLoad(items);
+    try {
+      localStorage.setItem(LOAD_KEY, JSON.stringify(items));
+    } catch {
+      // Storage is blocked (private window): the load still works until the page closes.
+    }
+  };
 
   const choose = (m: Material) => {
     setMaterial(m);
@@ -50,11 +75,50 @@ export default function Sell() {
     setTyped((s) => s + k);
   };
 
+  // Adds the weighed item at the centre price it is showing, then clears the weight for the next item.
+  const addToLoad = () => {
+    if (!material || !picked || grams === null || grams <= 0) return;
+    saveLoad([...load, { id: `${Date.now()}-${load.length}`, material, grams, centsPerKg: picked.centsPerKg, centre: picked.centre }]);
+    setTyped("");
+    setShowCode(false);
+  };
+
   const isReclaimer = profile?.role === "reclaimer";
 
   return (
     <AppScreen place="bara">
       <PageTitle aside={prices && <SavedNote fromCache={prices.fromCache} savedAt={prices.savedAt} />}>{t("Sell")}</PageTitle>
+
+      {load.length > 0 && (
+        <Card className="space-y-3" aria-labelledby="my-load">
+          <div className="flex items-center justify-between gap-2">
+            <h2 id="my-load" className="text-xl font-extrabold">{t("My load")}</h2>
+            <button onClick={() => saveLoad([])} className="text-sm font-bold underline">{t("Clear load")}</button>
+          </div>
+          <ul className="space-y-2">
+            {load.map((item) => (
+              <li key={item.id} className="flex items-center justify-between gap-3">
+                <span className="min-w-0">
+                  <span className="block font-bold">{t(MATERIAL_LABEL[item.material])} · {Number((item.grams / 1000).toFixed(3))} kg</span>
+                  <span className="block truncate text-xs text-muted-foreground">{item.centre}</span>
+                </span>
+                <span className="flex shrink-0 items-center gap-3">
+                  <span className="font-extrabold tabular-nums">{formatRand(saleCents(item.grams, item.centsPerKg))}</span>
+                  <button
+                    onClick={() => saveLoad(load.filter((x) => x.id !== item.id))}
+                    aria-label={`${t("Remove")} ${t(MATERIAL_LABEL[item.material])}`}
+                    className="min-h-11 min-w-11 rounded-full bg-secondary font-extrabold"
+                  >
+                    ×
+                  </button>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-2xl font-extrabold tabular-nums">{t("About {amount} in total", { amount: formatRand(loadTotalCents(load)) })}</p>
+          <p className="text-xs text-muted-foreground">{t("Estimates at each centre's price today. The centre weighs and sets the final price.")}</p>
+        </Card>
+      )}
 
       <section className="space-y-3" aria-labelledby="step1">
         <h2 id="step1" className="text-xl font-extrabold">{t("1. What are you selling?")}</h2>
@@ -121,6 +185,9 @@ export default function Sell() {
                     </button>
                   ))}
                 </div>
+                {grams !== null && grams > 0 && picked && (
+                  <PillButton variant="cta" onClick={addToLoad}>{t("Add to my load")}</PillButton>
+                )}
               </Card>
             </>
           )}
