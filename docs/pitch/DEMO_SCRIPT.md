@@ -30,8 +30,8 @@ Read each line when its caption appears. The times are when the line starts. Abo
 | 0:42 | Prices | "Every centre's price is in one place, with sourced market ranges." |
 | 0:47 | Market map | "The market map links reclaimers with buyers." |
 | 0:52 | Electronics | "Old electronics too. Scan a phone or a TV, and the app shows where it can go safely." |
-| 1:03 | Code (step 4, example data) | "The centre scans your code and records the sale." |
-| 1:07 | My money (step 5, example data) | "Every sale, fee and payout lands in My money." |
+| 1:03 | Code (step 4) | "The centre scans your code and records the sale." |
+| 1:07 | Home with the sale (step 5) | "Your sale shows right on your home screen." |
 | 1:12 | Built and live card | "It is live, it works offline, and it uses free, open tools. Real sales with reclaimers come next." |
 | 1:19 | Close, with a QR code to the app | "ComeCollectZA. Fair pay for every kilo. Try it now." |
 
@@ -44,7 +44,7 @@ Read each line when its caption appears. The times are when the line starts. Abo
 ## What is live and what is example data
 
 - **Live:** every screen from the welcome screen to the electronics guide was recorded on https://comecollectza.vercel.app on 25 Oct 2026, in a phone-sized browser, signed out, in the app's dark theme. The scan, the ranking, the estimate (6.4 kg of PET at R3.80/kg is R24.32) and "My load" are the real app at work. The centres are the seeded demo centres, and the app says so in their names.
-- **Example data:** steps 4 and 5 (the code and My money) are real app screens filled with example data, because no real sale has been recorded yet. The video labels them "Example data, signed in". Once a test sale is recorded on the demo account, re-record these two steps live.
+- **Real screens from the demo account:** steps 4 and 5 are phone screenshots the owner took signed in as the demo reclaimer after the test sale: the Show my code screen, and the home screen with "Money this month R23.36". The sale itself is a test sale recorded on 25 Oct, not real traffic. The video does not claim real sales, and its "built and live, not yet proven" card says so.
 
 ## The scan photo
 
@@ -55,7 +55,7 @@ The scanner was tried on eight open-licence photos before recording. It named PE
 1. `node tools/demo/record.mjs <url> <out dir> <load photo> <electronics photo> --warm` drives a phone-sized headless Chrome through the app, with a green ring on every tap, and saves the screencast frames with their real timestamps. `--warm` scans once first, so the 38 MB scanner model is cached.
 2. `node tools/demo/compose.mjs <out dir> <code screen> <money screen> <out.mp4>` turns the frames into a steady 30 fps phone video, renders the cards and captions in headless Chrome, and joins everything with ffmpeg. Set `FFMPEG` to the ffmpeg path, or have `imageio_ffmpeg` installed for Python.
 
-To swap steps 4 and 5 for real screens, take two phone screenshots signed in as the demo reclaimer (Show my code, and My money after the test sale) and add `--real` to the compose command. It drops the "Example data" label and changes the credit line.
+Steps 4 and 5 use `--real` with two screenshots of the demo reclaimer's screens. Any screenshot shape is fitted into the phone frame without stretching, but a phone-shaped one fills it best. Without `--real`, the two steps are labelled as example data.
 
 Nothing is posted or saved to the server during recording.
 
