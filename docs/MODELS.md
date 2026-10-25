@@ -24,13 +24,13 @@ Current code: the on-device material scanner and the QR reader run in the app. T
 
 **Why on the phone.** The photo never leaves the device, the scan works without the free-tier limits of a hosted model, and the model is small enough to cache. It runs in the browser, so one build serves Android and iPhone.
 
-**How it works.** TinyCLIP ViT-8M (a small image and text model, MIT licence) turns a photo into 512 numbers. A linear head, trained on TrashNet (MIT), turns those into one of seven groups: cardboard, glass, metal, paper, plastic, trash and electronics. The app maps the groups to the materials it prices. Metal becomes cans, paper becomes white paper, and plastic stays ambiguous, so the reclaimer picks PET or HDPE. The reclaimer always confirms with a tap.
+**How it works.** TinyCLIP ViT-8M (a small image and text model, MIT licence) turns a photo into 512 numbers. A small neural network head (one hidden layer of 128, version 7), trained on public recycling and electronics photos, turns those into one of seven groups: cardboard, glass, metal, paper, plastic, trash and electronics. The app maps the groups to the materials it prices. Metal becomes cans, paper becomes white paper, and plastic stays ambiguous, so the reclaimer picks PET or HDPE. The reclaimer always confirms with a tap.
 
 | Part | Size | Licence |
 |---|---|---|
 | `onnx-community/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M-ONNX`, int8, pinned revision | 23.2 MB, served by the app from `/models/tinyclip/` and kept by the service worker | MIT |
 | onnxruntime-web plain SIMD build | 14 MB, served from `/ort/` and kept by the service worker | MIT |
-| `public/models/waste-head.json` (the head) | 30 KB | Ours, trained on MIT data |
+| `public/models/waste-head.json` (the head, version 7) | 104 KB, 72 KB compressed. The hidden layer is stored as 8-bit whole numbers | Ours, trained on MIT, CC BY 4.0, Apache-2.0 and openly licensed data |
 | `@huggingface/transformers` 4.3.1 (runs the model) | Loaded on demand | Apache-2.0 |
 
 **Works without data.** `tools/vision/fetch-assets.mjs` runs before every build. It copies the runtime from `node_modules` and downloads the model at a pinned revision, checked by SHA-256, into `public/` (git-ignored). The app never calls a CDN. The first scan downloads about 38 MB once; after that the service worker serves everything and scans work in flight mode. The tokenizer (5 MB) is not downloaded: the model's dummy text input is hard-coded as the four CLIP token ids for "a photo", checked against the real tokenizer. Verified with the server stopped: the sell page opened and a cardboard photo scanned at 100% in 714 ms.
@@ -39,7 +39,45 @@ Current code: the on-device material scanner and the QR reader run in the app. T
 
 A retrained version 5 (Kaggle train and val photos added) found 99.3% of the Kaggle test photos, but dropped to 94.6% on the Commons electronics photos (from 98.6%) and lost a little on recycling (TrashNet 77.4%, was 78.1%; RealWaste 81.4%, was 81.6%). It is not in the app: it did not meet the rule that recycling accuracy must not fall. `tools/vision/embed-kaggle.mjs` and `eval-kaggle.mjs` reproduce both steps.
 
-**Evidence, version 5 (current): real household recycling photos added.** Version 4 looked fine on our own tests, so it was checked on photos it had never come near: 8,433 more recycling photos from TrashBusters/combined on Hugging Face (MIT; it joins three public datasets: Household Garbage, Garbage Classification V2 and TriCascade WasteImage, each declared MIT on its card; 1,989 are tagged real-world). Its TrashNet-sourced photos were left out, so the TrashNet test stays clean. On these, version 4 was weak:
+**Evidence, version 7 (current, 25 Oct): a small neural network head, measured fairly.**
+
+*First, a correction.* The public photo sets overlap. TrashBusters repackages TrashNet and others, and some photos appear in more than one set. Checked by the features TinyCLIP gives each photo (cosine 0.95 or more counts as the same photo), **71% of the TrashNet test photos and 52% of the real-world test photos have a near-copy among the training photos.** Every earlier figure in this file was measured with those copies in the test, so it is too generous. The figures below are not.
+
+*How version 7 was made.* `tools/vision/train-mlp.py` (numpy only):
+
+- **Training photos:** every training photo, minus 3,076 that are copies of a test photo. That leaves 28,267 for training and 3,331 for validation, again with copies removed.
+- **Settings:** one hidden layer of 128, light dropout, and a little noise added to the features. They were chosen on the validation photos only, never on a test.
+- **Temperature:** fitted on the validation photos too, so that "85% sure" means what it says.
+- **Storage:** the hidden layer is stored as 8-bit whole numbers. The stored head agrees with the trained one on 99.97% of test photos.
+- **App check:** the app's own scoring code (`lib/vision/head.ts`) gives the same accuracy as the Python script.
+
+*Test photos that no head has seen a copy of:*
+
+| Held-out check | v5 (was live) | v6 (PR 37, never shipped) | **v7 (live)** |
+|---|---|---|---|
+| TrashNet (125) | 62.4% | 61.6% | **62.4%** |
+| RealWaste, real photos (621) | 76.2% | 75.7% | **77.5%** |
+| TrashBusters recycling photos (999) | 67.3% | 71.5% | **86.3%** |
+| Real-world photos only (188) | 60.6% | 66.5% | **79.8%** |
+| Commons electronics found (353) | 92.4% | 90.9% | **92.1%** |
+| Kaggle electronics found (260) | 99.2% | 98.5% | **99.2%** |
+| Recyclables wrongly called electronics | 3.0% | 1.8% | **0.8%** |
+| At the app's 70% bar: names a material, and is wrong | 71% named, **19.8% wrong** | 69%, 16.4% wrong | 73% named, **8.7% wrong** |
+| At 85% sure | 54% named, 14.5% wrong | 50%, 11.4% wrong | 57% named, 4.8% wrong |
+
+*In the real app.* `tools/stress/scan-app.mjs` scanned 90 unseen photos in headless Chrome: 70 real-world recycling photos and 20 electronics. It ran once with each head on the same photos.
+
+| | v5 | v7 |
+|---|---|---|
+| Names the right material | 47% | **66%** |
+| Names a wrong material | 29% | **7%** |
+| Electronics caught | 100% named | 90% named, 10% asked |
+
+The rest of the photos are a question with two choices, or "Not sure, pick the material". Speed is unchanged, about 0.5 s a scan on a laptop after the first. The head adds 0.16 ms a photo. Phones that already have the 38 MB model keep it: the app asks for the new head at a new address (`waste-head.json?v=7`), so only the 72 KB head downloads again.
+
+The 70% bar stays where it is. With version 7 it is wrong about 1 time in 11 on photos it names, against 1 in 5 before.
+
+**Evidence, version 5 (replaced 25 Oct): real household recycling photos added.** These figures include test photos with copies in training (see above). Version 4 looked fine on our own tests, so it was checked on photos it had never come near: 8,433 more recycling photos from TrashBusters/combined on Hugging Face (MIT; it joins three public datasets: Household Garbage, Garbage Classification V2 and TriCascade WasteImage, each declared MIT on its card; 1,989 are tagged real-world). Its TrashNet-sourced photos were left out, so the TrashNet test stays clean. On these, version 4 was weak:
 
 - It got **35.7% right**, and only **22.9% of the real-world photos**.
 - It called **46.7%** of these recyclables **electronics**. The electronics group had learned to take photos that look like household scenes.

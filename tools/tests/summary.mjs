@@ -13,8 +13,8 @@ const out = mkdtempSync(join(tmpdir(), "ccza-summary-"));
 mkdirSync(out, { recursive: true });
 
 // Turn the TypeScript modules into plain JavaScript in a temp folder. They have no other dependencies.
-const compile = (file, fix) => {
-  let src = readFileSync(join(root, "lib", "app", `${file}.ts`), "utf8");
+const compile = (file, fix, dir = "app") => {
+  let src = readFileSync(join(root, "lib", dir, `${file}.ts`), "utf8");
   src = fix(src);
   const js = ts.transpileModule(src, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
   writeFileSync(join(out, `${file}.mjs`), js);
@@ -25,6 +25,8 @@ compile("areas", (s) => s);
 compile("summary", (s) => s.replace(/import type \{ MySale \} from "\.\/api";/, "").replace(/from "\.\/logic"/g, 'from "./logic.mjs"'));
 const { monthTotals, feeTotals, feeRecoveryPercent, impactSeries } = await import(pathToFileURL(join(out, "summary.mjs")).href);
 const logic = await import(pathToFileURL(join(out, "logic.mjs")).href);
+compile("head", (s) => s, "vision");
+const head = await import(pathToFileURL(join(out, "head.mjs")).href);
 
 const mk = (id, iso, material, grams, cpk, fee) => ({
   id, createdAt: iso, material, grams, centsPerKg: cpk, amountCents: Math.floor((grams * cpk) / 1000), centre: "C", fee,
@@ -214,6 +216,31 @@ check("a black or blank photo is refused, a dark or plain real one is not", () =
   assert.ok(logic.isBlankPhoto([]), "no pixels");
   assert.ok(!logic.isBlankPhoto(photo((i) => (i % 37 < 3 ? [180, 170, 150] : [2, 2, 2]))), "a lamp on a black table");
   assert.ok(!logic.isBlankPhoto(photo((i) => [134 + (i % 13), 114 + (i % 13), 90])), "plain cardboard, close up");
+});
+check("the scanner head's hidden layer matches a hand-worked case", () => {
+  // Stored bytes 127, 0, 0, -127 with scales 1/127 and 2/127 give the first layer [[1, 0], [0, -2]].
+  const tiny = head.prepareHead({
+    classes: ["glass", "metal"], dim: 2, mean: [0, 0], std: [1, 1], hidden: 2,
+    W1q: Buffer.from(Int8Array.of(127, 0, 0, -127).buffer).toString("base64"), W1scale: [1 / 127, 2 / 127], b1: [0, 1],
+    W: [[1, 0], [0, 1]], b: [0, 0],
+  });
+  // [3, 4] is normalised to [0.6, 0.8]. Hidden: 0.6 and max(0, -1.6 + 1) = 0, so glass is 1 / (1 + e^-0.6).
+  assert.ok(Math.abs(head.scoreEmbedding([3, 4], tiny).glass - 1 / (1 + Math.exp(-0.6))) < 1e-6);
+  // [4, -3] gives [0.8, -0.6]. Hidden: 0.8 and 1.2 + 1 = 2.2, so metal is 1 / (1 + e^-1.4).
+  assert.ok(Math.abs(head.scoreEmbedding([4, -3], tiny).metal - 1 / (1 + Math.exp(-1.4))) < 1e-6);
+  // An older linear head, with no hidden layer, still scores.
+  const linear = head.prepareHead({ classes: ["glass", "metal"], dim: 2, mean: [0, 0], std: [1, 1], W: [[1, 0], [0, 1]], b: [0, 0] });
+  assert.ok(Math.abs(head.scoreEmbedding([3, 4], linear).metal - 1 / (1 + Math.exp(-0.2))) < 1e-6);
+});
+check("the shipped scanner head loads and scores all seven groups", () => {
+  const shipped = head.prepareHead(JSON.parse(readFileSync(join(root, "public", "models", "waste-head.json"), "utf8")));
+  assert.equal(shipped.classes.length, 7);
+  assert.equal(shipped.W1.length, shipped.hidden * 512);
+  const e = Array.from({ length: 512 }, (_, i) => Math.sin(i * 7.1));
+  const scores = Object.values(head.scoreEmbedding(e, shipped));
+  assert.equal(scores.length, 7);
+  assert.ok(scores.every(Number.isFinite));
+  assert.ok(Math.abs(scores.reduce((a, v) => a + v, 0) - 1) < 1e-9);
 });
 
 console.log(`\n${passed} passed, 0 failed.`);

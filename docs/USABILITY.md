@@ -28,6 +28,19 @@ Sonke asks: "Is the app easy to use? Is there clarity, simplicity and an intuiti
 | 6 | A scan froze the screen until it finished (found in the afternoon test pass) | Seconds of a dead screen on a cheap phone, and the sweep animation stops | The scanner lets the screen respond between its five passes | Fixed |
 | 7 | No Cancel while the scanner downloads or works | On a slow connection the first download can take minutes, with no way out but leaving the screen | A Cancel button. The person can then pick the material by hand | Fixed |
 | 8 | A black photo read "Looks like Plastic" | A confident wrong answer is worse than a question | "The photo is too dark or blank. Try again with more light." | Fixed |
+| 9 | On a 320 px phone the bottom bar needed 312 px but had 296, so the round Sell button was squeezed into an oval (25 Oct) | Cheap Android phones and small iPhones are this narrow | The four side buttons share the width and their labels wrap. Sell keeps its size | Fixed |
+| 10 | The app draws edge to edge, but nothing kept clear of the notch or the home bar | In the installed app on a newer iPhone the top bar sat under the status bar and the bottom bar over the home indicator | Top and bottom bars use the phone's safe-area insets | Fixed |
+| 11 | In isiZulu and isiXhosa at 320 px: the welcome heading was cut off, the tour's Next button went off the screen, and the market and electronics tabs spilled out of their boxes. In Afrikaans an electronics button spilled | English hid all of these. The app offers 11 languages | Headings scale with the screen and break long words. The tour row wraps. Tabs take the room their label needs and use 14 px text under 360 px | Fixed |
+| 12 | Source links (Prices, photo credits) were 32 to 36 px tall, map pins 40 px | Under the 44 px a thumb needs | All at least 44 px | Fixed |
+| 13 | The Centre and Programme screens had no main heading when signed out | Screen readers and the page structure | A heading on each | Fixed |
+| 14 | Quick taps on the weight keypad could zoom the page on a phone | Typing "11" zoomed instead of typing | Taps no longer trigger double-tap zoom | Fixed |
+
+**Phone audit, 25 Oct.** `tools/usability/audit.mjs` now also finds content cut off at the screen edge or spilling out of its box. The screens hide sideways scrolling, so the old check could not see this. It also finds fields that make the phone zoom (text under 16 px). Run on all 14 screens:
+
+- **English:** 320, 360, 375 and 412 px, in dark and light.
+- **All 11 languages:** at 320 px.
+
+**0 problems** after the fixes, with no console errors. Example: `WIDTHS=320,360 LANG_CODE=zu node tools/usability/audit.mjs http://localhost:3000 / /home /sell`.
 
 ## Left as they are, and why
 
@@ -45,7 +58,8 @@ Sonke asks: "Is the app easy to use? Is there clarity, simplicity and an intuiti
 - **Screen readers and keyboard-only use** were not tested.
 - **Speed on a cheap phone.** The first scan downloads about 38 MB once, which the screen says plainly. The time on a low-end phone is unmeasured.
 - **Languages.** 11 are offered, 4 are drafts, and the longer electronics advice is English only.
-- **The hardest scan case.** Photos of mixed household items read "Not sure" about a third of the time (see [MODELS.md](MODELS.md)). The screen then asks the person to pick the material, which is the right behaviour, but it is one more tap.
+- **A real phone.** The audit uses Chrome set to phone sizes. The safe-area fix and the keypad taps need a check on a real iPhone and a real Android phone.
+- **The hardest scan case.** Photos of mixed household items read "Not sure" on 13% of real-world photos (9 of 70) with head version 7 (see [MODELS.md](MODELS.md)). The screen then asks the person to pick the material, which is the right behaviour, but it is one more tap.
 
 ## Suggested next steps
 

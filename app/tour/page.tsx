@@ -59,7 +59,7 @@ export default function Tour() {
   };
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col overflow-x-hidden px-4 py-5">
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col overflow-x-hidden px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
       <Backdrop place={step.place} />
       <header className="flex items-center justify-between gap-3">
         <Logo size={40} />
@@ -75,17 +75,18 @@ export default function Tour() {
         <span className="grid size-20 place-items-center rounded-full bg-highlight text-on-bright">
           <Icon size={36} aria-hidden />
         </span>
-        <h1 className="text-5xl font-extrabold leading-[0.95]">{t(step.title)}</h1>
+        <h1 className="text-[clamp(2rem,10vw,3rem)] font-extrabold leading-[0.95] break-words hyphens-auto">{t(step.title)}</h1>
         <p className="text-lg text-muted-foreground">{t(step.body)}</p>
       </div>
 
-      <div className="flex items-center justify-between gap-4">
+      {/* Wraps when a long word for "Next" (isiZulu, isiXhosa) leaves no room beside the dots on a small phone. */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex gap-2" role="presentation">
           {STEPS.map((_, n) => (
             <span key={n} className={cn("h-2.5 rounded-full transition-all", n === i ? "w-8 bg-highlight" : "w-2.5 bg-foreground/40")} />
           ))}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-2">
           {i > 0 && (
             <button onClick={() => setI(i - 1)} aria-label={t("Back")} className="glass grid size-14 place-items-center rounded-full">
               <ArrowLeft size={22} aria-hidden />

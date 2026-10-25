@@ -51,6 +51,7 @@ export default function Centre() {
   if (!user || profile?.role !== "operator") {
     return (
       <WideScreen title={t("Centre")}>
+        <h1 className="mb-4 text-3xl font-extrabold">{t("Centre")}</h1>
         <EmptyState
           title={t("Centre accounts only")}
           body={user ? t("This account is not a centre account. Centre accounts are set up by the ComeCollectZA team.") : t("Sign in with your centre account.")}
@@ -64,6 +65,7 @@ export default function Centre() {
   if (centres && centres.length === 0) {
     return (
       <WideScreen title={t("Centre")}>
+        <h1 className="mb-4 text-3xl font-extrabold">{t("Centre")}</h1>
         <EmptyState title={t("No centre linked yet")} body={t("Your account is a centre account, but it is not linked to a buy-back centre. Ask the ComeCollectZA team to link it.")} />
       </WideScreen>
     );

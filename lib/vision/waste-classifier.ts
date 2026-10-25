@@ -3,13 +3,18 @@
 // Model: TinyCLIP ViT-8M (MIT licence), int8, about 23 MB. Served by this app from /models/tinyclip/ and
 // the runtime from /ort/ (see tools/vision/fetch-assets.mjs). The service worker keeps both, so after the
 // first download the scanner works with no data at all.
-// Head: a small linear classifier on TinyCLIP image features (public/models/waste-head.json), trained on TrashNet,
-// RealWaste and openly licensed photos of electronics. See docs/MODELS.md.
+// Head: a small neural network on TinyCLIP image features (public/models/waste-head.json, see lib/vision/head.ts),
+// trained on public recycling and electronics photos. See docs/MODELS.md.
 // Browser only. Import this from client components, and call loadClassifier() on demand.
 
 import { isBlankPhoto } from "@/lib/app/logic";
+import { prepareHead, scoreEmbedding, type HeadFile, type WasteGroup } from "@/lib/vision/head";
 
-export type WasteGroup = "cardboard" | "glass" | "metal" | "paper" | "plastic" | "trash" | "electronics";
+export type { WasteGroup };
+
+// Bump with the head's version. The service worker keeps model files by their exact address, so a new address makes
+// phones fetch the new head once while keeping the 38 MB model they already have.
+const HEAD_URL = "/models/waste-head.json?v=7";
 
 /** The error a scan throws when the photo is too dark or blank to read. */
 export const BLANK_PHOTO = "BLANK_PHOTO";
@@ -65,15 +70,6 @@ function quartersOf(canvas: HTMLCanvasElement): HTMLCanvasElement[] {
   });
 }
 
-type Head = {
-  classes: WasteGroup[];
-  dim: number;
-  mean: number[];
-  std: number[];
-  W: number[][];
-  b: number[];
-};
-
 // Local folder under /models/. Source: onnx-community/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M-ONNX, pinned revision.
 const MODEL_ID = "tinyclip";
 
@@ -118,7 +114,7 @@ async function build(onProgress?: (fraction: number) => void): Promise<Classifie
         }
       },
     }),
-    fetch("/models/waste-head.json").then((response) => response.json() as Promise<Head>),
+    fetch(HEAD_URL).then(async (response) => prepareHead((await response.json()) as HeadFile)),
   ]);
 
   const ids = BigInt64Array.from(DUMMY_TOKEN_IDS.map(BigInt));
@@ -165,29 +161,4 @@ async function build(onProgress?: (fraction: number) => void): Promise<Classifie
       return run;
     },
   };
-}
-
-// Normalise, standardise with the training statistics, apply the linear head, then softmax.
-function scoreEmbedding(embedding: Float32Array, head: Head): Record<WasteGroup, number> {
-  let norm = 0;
-  for (let j = 0; j < embedding.length; j++) norm += embedding[j] * embedding[j];
-  norm = Math.sqrt(norm) || 1;
-
-  const x = new Array<number>(head.dim);
-  for (let j = 0; j < head.dim; j++) x[j] = (embedding[j] / norm - head.mean[j]) / head.std[j];
-
-  const logits = head.W.map((row, k) => {
-    let sum = head.b[k];
-    for (let j = 0; j < head.dim; j++) sum += row[j] * x[j];
-    return sum;
-  });
-  const max = Math.max(...logits);
-  const exp = logits.map((z) => Math.exp(z - max));
-  const total = exp.reduce((a, v) => a + v, 0);
-
-  const scores = {} as Record<WasteGroup, number>;
-  head.classes.forEach((group, k) => {
-    scores[group] = exp[k] / total;
-  });
-  return scores;
 }

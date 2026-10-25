@@ -165,14 +165,18 @@ export function Segmented<T extends string>({
   label: string;
 }) {
   return (
-    <div role="tablist" aria-label={label} className="grid rounded-full bg-secondary p-1" style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0,1fr))` }}>
+    // Equal widths when the labels fit. A long label (isiZulu on a small phone) gets the room it needs from the others.
+    <div role="tablist" aria-label={label} className="grid rounded-full bg-secondary p-1" style={{ gridTemplateColumns: `repeat(${options.length}, minmax(min-content,1fr))` }}>
       {options.map((o) => (
         <button
           key={o.value}
           role="tab"
           aria-selected={value === o.value}
           onClick={() => onChange(o.value)}
-          className={cn("min-h-12 rounded-full px-3 font-bold transition-colors", value === o.value ? "bg-foreground text-background" : "text-muted-foreground")}
+          className={cn(
+            "min-h-12 rounded-full px-2 text-sm font-bold leading-tight transition-colors min-[360px]:text-base",
+            value === o.value ? "bg-foreground text-background" : "text-muted-foreground",
+          )}
         >
           {o.label}
         </button>

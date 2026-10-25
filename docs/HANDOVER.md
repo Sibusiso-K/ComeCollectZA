@@ -11,7 +11,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Area | State | Notes |
 |---|---|---|
 | Live app | https://comecollectza.vercel.app | Deployed from `main` on every merge |
-| Scanner | Built, tested in a browser | On-device TinyCLIP, works with no data after one 38 MB download, spots mixed loads, tap a part of the photo to see what it thought. Head v5 is 82% on held-out real landfill photos, 71% on mixed household photos (62% real-world), and recognises electronics. Not tested on a real phone. See [MODELS.md](MODELS.md) |
+| Scanner | Built, tested in a browser | On-device TinyCLIP, works with no data after one 38 MB download, spots mixed loads, tap a part of the photo to see what it thought. Head v7 (a small neural network, 25 Oct) is right on 79.8% of real-world photos it never saw a copy of (v5 was 60.6%), and recognises electronics. Earlier figures were inflated by copies shared between the public photo sets. Retrain with `tools/vision/train-mlp.py`. Not tested on a real phone. See [MODELS.md](MODELS.md) |
 | Accounts | Built, not yet used by real people | Email and password through Supabase Auth. Reclaimer and business sign-up. One call creates the profile and the reclaimer's code |
 | Prices | Live from the database | Public ranges for 2026 with sources. Seeded centres are demo centres until real ones post prices |
 | Sell flow | Built | Scan or pick a material, weigh, add to "My load" for a running estimate of the money, show a QR code. The load is kept on the phone. The code is still for one item at a time |
@@ -25,7 +25,8 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Payouts and SAWPRS | Demo only | Each sale queues a demo payout (no money moves) and operators record a reclaimer's SAWPRS status by hand. A real payout rail and a live registry check are not connected. See [ADMIN.md](ADMIN.md) section 8 |
 | Phone number sign-in | Not started | Needs an SMS service |
 | Offline write queue | Not started | Reading works offline. Writing needs a signal |
-| Tests | 74 database checks, 14 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
+| Phone layout | Checked | Every screen at 320 to 412 px, both themes, all 11 languages: 0 problems with `tools/usability/audit.mjs`. Not yet tried on a real iPhone or Android phone |
+| Tests | 78 database checks, 18 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
 
 ## Set up on a new machine
 

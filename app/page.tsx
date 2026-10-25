@@ -23,7 +23,7 @@ export default function Welcome() {
   }, [ready, user, router]);
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-6 overflow-x-hidden px-4 py-5">
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-6 overflow-x-hidden px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
       <Backdrop place="towers" />
       <div className="flex items-center justify-between gap-3">
         <Logo size={44} />
@@ -31,7 +31,8 @@ export default function Welcome() {
       </div>
 
       <div className="flex-1 space-y-3 pt-6">
-        <h1 className="text-5xl font-extrabold uppercase leading-[0.95] tracking-tight">
+        {/* Scales with the screen so the longest words in isiZulu and isiXhosa fit on a 320 px phone. */}
+        <h1 className="text-[clamp(1.75rem,9vw,3rem)] font-extrabold uppercase leading-[0.95] tracking-tight break-words hyphens-auto">
           {t("Fair pay for every kilogram")}
         </h1>
         <p className="text-lg text-muted-foreground">{t("Get paid fairly for every kilogram you collect.")}</p>
@@ -55,14 +56,14 @@ export default function Welcome() {
         <p className="px-1 text-xs text-muted-foreground">* {t("translation in progress")}</p>
       </section>
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <Link href="/home" className="inline-flex min-h-12 items-center font-bold underline underline-offset-4">
           {t("Look around first")}
         </Link>
         <Link
           href="/sign-in"
           aria-label={t("Get started")}
-          className="flex min-h-16 items-center gap-3 rounded-full bg-white py-2 pl-6 pr-2 text-lg font-extrabold text-[#0b2415] shadow-[var(--shadow-soft)]"
+          className="ml-auto flex min-h-16 items-center gap-3 rounded-full bg-white py-2 pl-6 pr-2 text-lg font-extrabold text-[#0b2415] shadow-[var(--shadow-soft)]"
         >
           {t("Get started")}
           <span className="grid size-12 place-items-center rounded-full bg-[#0b2415] text-white ring-4 ring-highlight">

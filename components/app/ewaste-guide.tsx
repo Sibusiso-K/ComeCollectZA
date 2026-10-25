@@ -49,7 +49,7 @@ export default function EwasteGuide({
                 className={cn("flex min-h-16 items-center gap-3 rounded-2xl px-3 text-left font-bold", on ? "bg-highlight text-on-bright" : "glass")}
               >
                 <Icon size={24} aria-hidden className="shrink-0" />
-                <span className="leading-tight">{t(CATEGORY_LABEL[c])}</span>
+                <span className="min-w-0 break-words leading-tight hyphens-auto">{t(CATEGORY_LABEL[c])}</span>
               </button>
             );
           })}

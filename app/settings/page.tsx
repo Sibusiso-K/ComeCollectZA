@@ -106,7 +106,7 @@ export default function Settings() {
             const c = PLACES[p].credit;
             return (
               <li key={p}>
-                <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-block py-2 underline underline-offset-2">{c.title}</a>
+                <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center underline underline-offset-2">{c.title}</a>
                 {" · "}{c.author}{" · "}{c.licence}
               </li>
             );
