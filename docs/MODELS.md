@@ -39,7 +39,24 @@ Current code: the on-device material scanner and the QR reader run in the app. T
 
 A retrained version 5 (Kaggle train and val photos added) found 99.3% of the Kaggle test photos, but dropped to 94.6% on the Commons electronics photos (from 98.6%) and lost a little on recycling (TrashNet 77.4%, was 78.1%; RealWaste 81.4%, was 81.6%). It is not in the app: it did not meet the rule that recycling accuracy must not fall. `tools/vision/embed-kaggle.mjs` and `eval-kaggle.mjs` reproduce both steps.
 
-**Evidence, version 5 (current): real household recycling photos added.** Version 4 looked fine on our own tests, so it was checked on photos it had never come near: 8,433 more recycling photos from TrashBusters/combined on Hugging Face (MIT; it joins three public datasets: Household Garbage, Garbage Classification V2 and TriCascade WasteImage, each declared MIT on its card; 1,989 are tagged real-world). Its TrashNet-sourced photos were left out, so the TrashNet test stays clean. On these, version 4 was weak:
+**Evidence, version 6 (a choice for the team): the full TrashBusters dataset.** Version 5 used 8,433 of the dataset's 29,849 photos. Version 6 adds the other 19,681 (the large training files), still leaving out the TrashNet-sourced photos and keeping the same held-out photos, so the numbers compare directly. Four weightings of the older TrashNet and RealWaste photos were tried:
+
+| Held-out check | Version 5 | Version 6 | Weight 25 |
+|---|---|---|---|
+| TrashNet test (508) | 77.8% | 76.6% | 77.8% |
+| RealWaste test (952, real photos) | 81.6% | 80.6% | 81.6% |
+| Mixed recycling photos (1,696) | 71.2% | **75.8%** | 70.9% |
+| Real-world photos only (401) | 61.8% | **69.1%** | 62.1% |
+| Household garbage set (635) | 62.4% | **70.2%** | 62.8% |
+| Recyclables wrongly called electronics | 3.5% | **2.2%** | 3.5% |
+| Commons electronics found (370) | 92.2% | 90.8% | 92.2% |
+| Kaggle electronics found (300) | 99.3% | 98.7% | 99.3% |
+
+**The honest reading.** Protecting the older photos enough to keep them level (weight 25) gives a head that is no better than version 5, so more data alone did not help. With weight 10, real-world and household photos gain 7 to 8 points. The older tests lose about a point, which is about 10 photos on RealWaste and 5 on TrashNet, within the noise of sets this size. The rule used for version 5 was that nothing already working may get worse, and this version bends it slightly in return for a clear gain on the photos that look most like real use. It is a decision, so it is offered in its own pull request.
+
+**Why the gain stops.** The head is a straight-line classifier on 512 numbers. It cannot fit clean studio photos, landfill photos and household scenes all at once, so extra data trades one for another. The next real gain needs a small non-linear head, or photos of real loads from the people who will use the app.
+
+**Evidence, version 5: real household recycling photos added.** Version 4 looked fine on our own tests, so it was checked on photos it had never come near: 8,433 more recycling photos from TrashBusters/combined on Hugging Face (MIT; it joins three public datasets: Household Garbage, Garbage Classification V2 and TriCascade WasteImage, each declared MIT on its card; 1,989 are tagged real-world). Its TrashNet-sourced photos were left out, so the TrashNet test stays clean. On these, version 4 was weak:
 
 - It got **35.7% right**, and only **22.9% of the real-world photos**.
 - It called **46.7%** of these recyclables **electronics**. The electronics group had learned to take photos that look like household scenes.
