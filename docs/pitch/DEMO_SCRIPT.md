@@ -55,6 +55,8 @@ The scanner was tried on eight open-licence photos before recording. It named PE
 1. `node tools/demo/record.mjs <url> <out dir> <load photo> <electronics photo> --warm` drives a phone-sized headless Chrome through the app, with a green ring on every tap, and saves the screencast frames with their real timestamps. `--warm` scans once first, so the 38 MB scanner model is cached.
 2. `node tools/demo/compose.mjs <out dir> <code screen> <money screen> <out.mp4>` turns the frames into a steady 30 fps phone video, renders the cards and captions in headless Chrome, and joins everything with ffmpeg. Set `FFMPEG` to the ffmpeg path, or have `imageio_ffmpeg` installed for Python.
 
+To swap steps 4 and 5 for real screens, take two phone screenshots signed in as the demo reclaimer (Show my code, and My money after the test sale) and add `--real` to the compose command. It drops the "Example data" label and changes the credit line.
+
 Nothing is posted or saved to the server during recording.
 
 ## Credits
