@@ -10,6 +10,7 @@ import { useAuth } from "@/lib/app/auth";
 import { getMySales, type Fetched, type MySale } from "@/lib/app/api";
 import { MATERIAL_LABEL, formatCo2Grams, formatHundredths, formatKg, formatRand, formatTonnes, workDaysHundredths } from "@/lib/app/logic";
 import { allTimeImpact, feeTotals, monthTotals } from "@/lib/app/summary";
+import { forecastNext30 } from "@/lib/app/advice";
 
 /** Counts up to the latest sale with timers, not requestAnimationFrame, so it still finishes in a hidden tab. */
 function useCountUp(target: number) {
@@ -84,6 +85,7 @@ export default function Money() {
   const payoutCents = list.reduce((sum, x) => (x.payout && (x.payout.status === "sent" || x.payout.status === "paid") ? sum + x.amountCents : sum), 0);
   const month = monthTotals(list);
   const impact = allTimeImpact(list);
+  const forecast = forecastNext30(list);
 
   return (
     <AppScreen place="kliptown">
@@ -143,6 +145,28 @@ export default function Money() {
             <Card className="p-3"><p className="text-xs text-muted-foreground">{t("Still owed")}</p><p className="text-sm font-extrabold tabular-nums">{formatRand(fees.owedCents)}</p></Card>
             <Card className="p-3"><p className="text-xs text-muted-foreground">{t("Missing")}</p><p className="text-sm font-extrabold tabular-nums text-warning">{formatRand(fees.missingCents)}</p></Card>
           </section>
+
+          <Card className="space-y-2" aria-labelledby="next30">
+            <div className="flex items-center justify-between gap-2">
+              <h2 id="next30" className="text-xl font-extrabold">{t("Next 30 days")}</h2>
+              <Sticker>{t("Estimate")}</Sticker>
+            </div>
+            {forecast ? (
+              <>
+                <p className="text-3xl font-extrabold tabular-nums">{t("About {amount}", { amount: formatRand(forecast.cents) })}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("Between {low} and {high}, worked out from your {n} sales in the last {days} days. Not a promise.", {
+                    low: formatRand(forecast.lowCents),
+                    high: formatRand(forecast.highCents),
+                    n: forecast.sales,
+                    days: forecast.days,
+                  })}
+                </p>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">{t("After 3 sales over a week, we show what you may earn in the next 30 days.")}</p>
+            )}
+          </Card>
 
           <Card className="space-y-3" aria-labelledby="impact">
             <div className="flex items-center justify-between gap-2">
