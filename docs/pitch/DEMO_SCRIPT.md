@@ -20,7 +20,7 @@ Read each line when its caption appears. The times are when the line starts. Abo
 
 | Time | Screen | Say |
 |---|---|---|
-| 0:00 | Problem card | "Reclaimers collect South Africa's recycling, but prices are hidden and their work is never recorded." |
+| 0:00 | Opening card | "A free app that shows reclaimers which centre pays most, and records every sale so they can prove their income. Reclaimers never pay." |
 | 0:06 | Welcome screen | "ComeCollectZA opens in any phone browser." |
 | 0:09 | Home | "From home, a reclaimer can scan a load or check today's prices." |
 | 0:16 | Scan (step 1) | "Scan the load. The AI runs on the phone, even with no data. It says plastic, and you can tap a part of the photo to see why." |
