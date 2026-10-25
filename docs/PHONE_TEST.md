@@ -1,5 +1,7 @@
 # Phone test
 
+This is the technical checklist. Parts are out of date: the app's address is https://comecollectza.vercel.app/home, the first scan downloads about 38 MB, and the Sell screen now has a load list and a "Sell now or wait?" card. To try the app with a real person, use [REAL_USER_TEST.md](REAL_USER_TEST.md).
+
 Steps to check the app on a real phone. Write down what you see, and send photos of anything wrong. Takes about 15 minutes.
 
 **Address:** https://comecollectza.vercel.app/reclaimer
