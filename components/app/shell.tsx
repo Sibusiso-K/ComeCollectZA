@@ -61,9 +61,11 @@ function AccountButton() {
   );
 }
 
+// The app draws under the phone's status bar and home bar (viewport-fit=cover), so the bars keep clear of the
+// notch and the home indicator with the safe-area insets. On phones without them the insets are 0.
 function TopBar() {
   return (
-    <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 pb-3 pt-4">
+    <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 pb-3 pt-[max(1rem,env(safe-area-inset-top))]">
       <Link href="/home" aria-label="ComeCollectZA" className="flex min-h-11 items-center">
         <Logo size={40} />
       </Link>
@@ -83,23 +85,28 @@ function BottomNav() {
       href={to}
       aria-label={label}
       aria-current={path === to ? "page" : undefined}
-      className={cn("flex min-h-14 min-w-14 flex-col items-center justify-center rounded-full text-xs font-bold", path === to ? "text-nav-active" : "text-nav-foreground")}
+      className={cn(
+        "flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center rounded-full text-xs font-bold",
+        path === to ? "text-nav-active" : "text-nav-foreground",
+      )}
     >
-      <Icon size={22} aria-hidden />
-      <span className="mt-0.5">{label}</span>
+      <Icon size={22} aria-hidden className="shrink-0" />
+      {/* The four buttons share the width, so a long label (another language, a 320 px phone) wraps instead of
+          pushing the bar off the screen. */}
+      <span className="mt-0.5 max-w-full break-words text-center leading-tight">{label}</span>
     </Link>
   );
   return (
     <nav
       aria-label={t("Main")}
-      className="no-print fixed inset-x-0 bottom-4 z-40 mx-auto flex w-[calc(100%-1.5rem)] max-w-sm items-center justify-between rounded-full bg-nav px-2 py-2 shadow-[var(--shadow-soft)] backdrop-blur-xl"
+      className="no-print fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 mx-auto flex w-[calc(100%-1.5rem)] max-w-sm items-center gap-1 rounded-full bg-nav px-2 py-2 shadow-[var(--shadow-soft)] backdrop-blur-xl"
     >
       {item("/home", t("Home"), Home)}
       {item("/prices", t("Prices"), Tag)}
       <Link
         href="/sell"
         aria-label={t("Sell")}
-        className="-my-5 grid size-18 place-items-center rounded-full bg-highlight font-extrabold text-on-bright shadow-[var(--shadow-soft)] ring-4 ring-background"
+        className="-my-5 grid size-18 shrink-0 place-items-center rounded-full bg-highlight font-extrabold text-on-bright shadow-[var(--shadow-soft)] ring-4 ring-background"
       >
         <span className="flex flex-col items-center leading-none">
           <Recycle size={24} aria-hidden />
@@ -115,7 +122,7 @@ function BottomNav() {
 /** Phone layout: a Soweto photo behind, top bar, content, floating bottom navigation. */
 export function AppScreen({ children, place = "orlando" }: { children: ReactNode; place?: Place }) {
   return (
-    <div className="mx-auto min-h-screen w-full max-w-md overflow-x-hidden pb-32">
+    <div className="mx-auto min-h-screen w-full max-w-md overflow-x-hidden pb-[calc(8rem+env(safe-area-inset-bottom))]">
       <Backdrop place={place} />
       <TopBar />
       <OfflineBanner />
@@ -128,7 +135,7 @@ export function AppScreen({ children, place = "orlando" }: { children: ReactNode
 export function PageTitle({ children, aside }: { children: ReactNode; aside?: ReactNode }) {
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
-      <h1 className="text-4xl font-extrabold leading-none">{children}</h1>
+      <h1 className="text-4xl font-extrabold leading-none break-words hyphens-auto">{children}</h1>
       {aside}
     </div>
   );
@@ -139,7 +146,7 @@ export function WideScreen({ title, children, place = "kliptown" }: { title: str
   return (
     <div className="mx-auto min-h-screen w-full max-w-6xl overflow-x-hidden px-4 pb-12 sm:px-8">
       <Backdrop place={place} />
-      <header className="no-print grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-5">
+      <header className="no-print grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pb-5 pt-[max(1.25rem,env(safe-area-inset-top))]">
         <Link href="/home" className="flex min-h-11 min-w-0 items-center gap-3">
           <Logo size={40} />
           <span className="hidden truncate text-lg font-bold text-muted-foreground sm:inline">· {title}</span>
@@ -160,7 +167,7 @@ export function AppHeader({ title, place = "orlando" }: { title: string; place?:
   return (
     <>
       <Backdrop place={place} />
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 pb-2 pt-4">
+      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 pb-2 pt-[max(1rem,env(safe-area-inset-top))]">
         <Logo size={40} />
         <ThemeToggle />
       </header>

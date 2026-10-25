@@ -87,7 +87,7 @@ export default function Prices() {
                 {r.sources.map((s, i) => (
                   <span key={s.url}>
                     {i > 0 && ", "}
-                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="inline-block py-2 underline underline-offset-2">
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center underline underline-offset-2">
                       {s.name}
                     </a>{" "}
                     ({s.date})

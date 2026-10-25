@@ -35,6 +35,7 @@ export default function Pro() {
   if (!user || profile?.role !== "pro") {
     return (
       <WideScreen title={t("Collections")}>
+        <h1 className="mb-4 text-3xl font-extrabold">{t("Programme dashboard")}</h1>
         <EmptyState
           title={t("Programme accounts only")}
           body={user ? t("This account is not a programme account. Programme accounts are set up by the ComeCollectZA team.") : t("Sign in with your programme account.")}

@@ -44,3 +44,12 @@ Bump `version` in the exported file when you change it.
 4. `node export-v2.mjs ../public/models/waste-head.json` writes the head the app loads. Bump `version` when you change it.
 
 A Kaggle dataset works the same way: unzip it so each class has its own folder, map its class names to the six groups in `embed-realwaste.mjs`, then run steps 2 to 4.
+
+## Version 7: a small neural network, measured fairly
+
+The public sets overlap (TrashBusters repackages TrashNet, and some photos appear twice), so a test photo can have a near-copy in training. `train-mlp.py` drops every training photo whose features are within cosine 0.95 of a test photo, picks its settings and temperature on a validation slice, and compares heads only on test photos no head has seen a copy of. It needs Python 3 and numpy.
+
+1. Embed the photo sets as in the sections above (`emb_*.json`), and put the live head next to them as `live-head-v5.json` and the PR 37 head as `live-head-v6.json`.
+2. `python -P train-mlp.py <folder> sweep` tries 12 settings on the validation photos.
+3. `python -P train-mlp.py <folder> hidden=128 drop=0.2 noise=0.5 write ../public/models/waste-head.json` trains, prints every test, and writes the head. The hidden layer is stored as 8-bit whole numbers in base64.
+4. Bump `HEAD_URL` in `lib/vision/waste-classifier.ts` so phones fetch the new head.

@@ -4,6 +4,17 @@ Dated record of decisions and work. Newest entries go at the top.
 
 ## 25 Oct 2026 (hackathon day 3)
 
+- **A more accurate scanner (head version 7).** A check found that the public photo sets overlap: 71% of the TrashNet test photos and 52% of the real-world test photos had a near-copy in training. So every earlier accuracy figure was too generous. On photos with no copy, the old head was right on 60.6% of real-world photos. The new head is a small neural network, trained with the copies removed and its settings chosen on validation photos only, and it is right on 79.8%. At the app's 70% bar it names a wrong material 8.7% of the time, down from 19.8%. In the real app, on 70 unseen real-world photos, right answers went from 47% to 66% and wrong ones from 29% to 7%. Electronics are still caught. The head is 72 KB compressed, and phones keep the 38 MB model they already have. Details in [MODELS.md](MODELS.md). Two new app checks (18 pass).
+- **Made for small phones.** The phone audit now finds cut-off content, and was run on every screen at 320 to 412 px, in both themes and all 11 languages. Fixed:
+  - **Bottom bar:** too wide for a 320 px phone, which squeezed the Sell button.
+  - **Notch and home bar:** nothing kept clear of them in the installed app.
+  - **Other languages:** isiZulu, isiXhosa and Afrikaans words were cut off or spilled at 320 px.
+  - **Small taps:** links and map pins under 44 px.
+  - **Headings:** two signed-out screens had no main heading.
+  - **Keypad:** quick taps could zoom the page.
+
+  0 problems after the fixes. See [USABILITY.md](USABILITY.md).
+
 - **Scan, add to my load, see the money.** The sell screen now has a load. After a scan (or a tap on a material) and a weight, "Add to my load" puts the item on a "My load" list with its own estimate, and the card shows "About R70.08 in total". Each item is priced at the centre price it was added with. The person can remove an item or clear the load, and the load is kept on the phone, so it survives a reload. Checked in a phone-size browser: 6.4 kg of cans at R10.20 plus 12 kg of glass at R0.40 gave R65.28 and R4.80, and R70.08 in total. One new app check (16 pass). The new words are English only for now. The code still covers one item at a time: the centre records each material as its own sale.
 
 ## 24 Oct 2026 (hackathon day 2)

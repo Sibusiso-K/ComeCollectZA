@@ -4,7 +4,9 @@ The app scored against the seven Sonke judging criteria for the FNB App of the Y
 
 Scores are our own honest estimate, not the judges'. Where a score is low, the "To raise it" column is the plan.
 
-## Current score: 46 / 70 (24 Oct 2026, afternoon)
+## Current score: 47 / 70 (25 Oct 2026, morning)
+
+25 Oct: Intelligence rose to 6 with scanner head version 7 (see the history). The table below is otherwise the 24 Oct afternoon scoring.
 
 Scored against the exact questions on Sonke's Criteria tab, which put more weight on traction and on forecasting than our earlier notes did. The afternoon's full test pass made the app safer and smoother (see [STRESS_TEST.md](STRESS_TEST.md)) but does not move a criterion on its own. Presentation rose because the video and the canvas are now on Sonke.
 
@@ -16,7 +18,7 @@ Scored against the exact questions on Sonke's Criteria tab, which put more weigh
 | **Sustainability** | 6 | Potential of the app and the team? Can it go to the next level? A path to revenue? | A written business model with unit economics (programme bodies pay about R50 a verified tonne, buyers about 2%, reclaimers never pay). The Lean Business Canvas on Sonke is filled. **No outside check of the numbers yet.** One person on the team | One conversation with a programme body or centre to test the numbers |
 | **Impact** | 7 | How much impact? A big or small problem? How indispensable? | A big problem (unpaid, unrecorded recycling work, and old electronics with nowhere to go). CO2e, landfill and work days are worked out from real sales. **No real sales behind the numbers yet** | Real sales and a before and after for one reclaimer |
 | **Presentation** | 7 | How well was the idea communicated? Was the story told, with its importance and relevance? | A 20-second video with the problem, solution and value labelled, the team's own voice and captions, uploaded to Sonke. The Lean Business Canvas is filled. Five mockup boards. Clear docs. **No deck yet** | Build the ten-slide deck with a demo login and a 90-second demo |
-| **Intelligence** | 5 | Can the app think for itself, forecast and predict the user's likely behaviour from data? | An on-device scanner that knows seven groups (81.6% on real recycling photos, 98.6% of held-out electronics, 94.3% on an independent Kaggle set), mixed-load detection, and an assistant that reads the live board. **No forecasting or prediction yet** | Sell-or-wait advice from price history. A forecast of next month's earnings from a person's own sales |
+| **Intelligence** | 6 | Can the app think for itself, forecast and predict the user's likely behaviour from data? | An on-device scanner that knows seven groups (version 7: 79.8% on real-world photos it never saw a copy of, wrong only 8.7% of the times it names a material, 99.2% of independent Kaggle electronics), mixed-load detection, and an assistant that reads the live board. **No forecasting or prediction yet** | Sell-or-wait advice from price history. A forecast of next month's earnings from a person's own sales |
 
 ## Biggest gains for the least work
 
@@ -38,6 +40,7 @@ Scored against the exact questions on Sonke's Criteria tab, which put more weigh
 | 23 Oct, late night | 7 | 9 | 7 | 6 | 7 | 5 | 7 | 48 | Scanner retrained to recognise electronics (version 3) and send people to the guide |
 | 24 Oct, midday | 6 | 8 | 7 | 6 | 7 | 6 | 5 | 45 | Re-scored against Sonke's exact questions (traction and forecasting weigh more). Added pitch video, demo payouts, SAWPRS record, Kaggle check |
 | 24 Oct, afternoon | 6 | 8 | 7 | 6 | 7 | 7 | 5 | 46 | Video and canvas on Sonke. Full test pass: a database write hole closed, the scanner no longer freezes the screen, can be cancelled and refuses blank photos |
+| 25 Oct, morning | 6 | 8 | 7 | 6 | 7 | 7 | 6 | 47 | Scanner head version 7, measured fairly: real-world photos 60.6% to 79.8%, wrong answers at the 70% bar 19.8% to 8.7%. Every screen checked at 320 to 412 px in 11 languages, 0 layout problems. Usability stays at 7 until a real reclaimer tries it |
 
 The 21 Oct and morning rows were scored afterwards from the build log.
 
