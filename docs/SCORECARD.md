@@ -26,7 +26,7 @@ A check of the three things judges will see, against the way this hackathon says
 | Sustainability | 7 | Costs near zero (free tiers, AI on the phone), revenue from those who benefit, the EPR law keeps the need, a 3 and 12 month plan. Uptime through judging is handled (keep-alive PR) | Merge the keep-alive PR and run it once |
 | Impact | 7 | Income made visible, fees recovered, CO2e and landfill worked out from weighed sales. At 1,000 reclaimers: about 26,400 t a year kept from landfill (assumption) | Real sales behind the numbers |
 | Presentation | 8 | The deck covers everything on the checklist: problem with stats, users, solution and journey, architecture, competitors, business model, partners, sustainability, the ask, live link and demo login. The video is under 90 s and follows the demo guidance | Type the demo password on the last slide, add the video link, record the voice |
-| Intelligence | 6 | On-device scanner (79.8% right on real photos it never saw), mixed-load detection, explains what it saw. Today it named PET right on 2 of 2 photos but misread 3 of 3 can photos | Do not demo a can scan. Sell-or-wait advice from price history remains the biggest gain here |
+| Intelligence | 7 | On-device scanner (79.8% right on real photos it never saw), mixed-load detection, explains what it saw. Today it named PET right on 2 of 2 photos but misread 3 of 3 can photos | Do not demo a can scan. Sell-or-wait advice from price history remains the biggest gain here |
 
 **Round check total: 49 / 70.** The single biggest step up is one real sale on the demo account: it moves Product, Impact and the video at once.
 
@@ -36,9 +36,9 @@ A check of the three things judges will see, against the way this hackathon says
 - **Free hosting:** Vercel Hobby for the app and Supabase Free for the database. The one risk is Supabase pausing a free project after 7 idle days. The keep-alive workflow pings a database-backed health route every six hours, and a failed run emails the repo owner.
 - **During judging:** keep "Confirm email" off so judges can sign up without waiting for an email (switch it back on after judging), keep the demo account's password unchanged, and do not merge risky changes to `main`.
 
-## Current score: 50 / 70 (25 Oct 2026, evening)
+## Current score: 51 / 70 (25 Oct 2026, evening)
 
-25 Oct evening: Product rose to 7. The demo reclaimer now has a recorded test sale, so a judge who signs in sees My money, the service fee, the demo payout and impact filled in. It is a test sale, not a real one, so Product stops at 7 and the traction answer is still none.
+25 Oct evening: Intelligence rose to 7 with sell-or-wait advice and a 30 day earnings estimate (rules over public 2026 prices and the person's own sales, not a trained model, so not higher). Product rose to 7. The demo reclaimer now has a recorded test sale, so a judge who signs in sees My money, the service fee, the demo payout and impact filled in. It is a test sale, not a real one, so Product stops at 7 and the traction answer is still none.
 
 25 Oct afternoon: the round check above raised Sustainability and Presentation to 7 and 8 (see the history). 25 Oct morning: Intelligence rose to 6 with scanner head version 7. The table below is otherwise the 24 Oct afternoon scoring.
 
@@ -52,7 +52,7 @@ Scored against the exact questions on Sonke's Criteria tab, which put more weigh
 | **Sustainability** | 6 | Potential of the app and the team? Can it go to the next level? A path to revenue? | A written business model with unit economics (programme bodies pay about R50 a verified tonne, buyers about 2%, reclaimers never pay). The Lean Business Canvas on Sonke is filled. **No outside check of the numbers yet.** One person on the team | One conversation with a programme body or centre to test the numbers |
 | **Impact** | 7 | How much impact? A big or small problem? How indispensable? | A big problem (unpaid, unrecorded recycling work, and old electronics with nowhere to go). CO2e, landfill and work days are worked out from real sales. **No real sales behind the numbers yet** | Real sales and a before and after for one reclaimer |
 | **Presentation** | 7 | How well was the idea communicated? Was the story told, with its importance and relevance? | A 20-second video with the problem, solution and value labelled, the team's own voice and captions, uploaded to Sonke. The Lean Business Canvas is filled. Five mockup boards. Clear docs. **No deck yet** | Build the ten-slide deck with a demo login and a 90-second demo |
-| **Intelligence** | 6 | Can the app think for itself, forecast and predict the user's likely behaviour from data? | An on-device scanner that knows seven groups (version 7: 79.8% on real-world photos it never saw a copy of, wrong only 8.7% of the times it names a material, 99.2% of independent Kaggle electronics), mixed-load detection, and an assistant that reads the live board. **No forecasting or prediction yet** | Sell-or-wait advice from price history. A forecast of next month's earnings from a person's own sales |
+| **Intelligence** | 7 | Can the app think for itself, forecast and predict the user's likely behaviour from data? | An on-device scanner that knows seven groups (version 7: 79.8% on real-world photos it never saw a copy of, wrong only 8.7% of the times it names a material, 99.2% of independent Kaggle electronics), mixed-load detection, and an assistant that reads the live board. A sell-or-wait card on the sell screen and a 30 day earnings estimate on My money: plain rules, labelled as estimates, **not a learned model**. The estimate shows only after 3 sales across a week, so the demo account does not show it yet | Learn the advice from real price history once the board has some. Have a few real reclaimers sell enough to see their estimate |
 
 ## Biggest gains for the least work
 
@@ -77,6 +77,7 @@ Scored against the exact questions on Sonke's Criteria tab, which put more weigh
 | 25 Oct, morning | 6 | 8 | 7 | 6 | 7 | 7 | 6 | 47 | Scanner head version 7, measured fairly: real-world photos 60.6% to 79.8%, wrong answers at the 70% bar 19.8% to 8.7%. Every screen checked at 320 to 412 px in 11 languages, 0 layout problems. Usability stays at 7 until a real reclaimer tries it |
 | 25 Oct, afternoon | 6 | 8 | 7 | 7 | 7 | 8 | 6 | 49 | Round check. Deck reworked to 14 slides (competitors, partners, sustainability, the ask), an 86.7 s demo video of the live app, keep-alive for judging. Scanner misread 3 of 3 can photos in the check |
 | 25 Oct, evening | 7 | 8 | 7 | 7 | 7 | 8 | 6 | 50 | Test sale recorded on the demo accounts (centre operator set up, 6.4 kg PET, R23.36). Not real traffic, so Product is 7, not higher |
+| 25 Oct, night | 7 | 8 | 7 | 7 | 7 | 8 | 7 | 51 | Sell-or-wait advice and a 30 day earnings estimate (rules, not a model). 25 app checks pass |
 
 The 21 Oct and morning rows were scored afterwards from the build log.
 

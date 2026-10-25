@@ -189,6 +189,22 @@ Stricter and looser rules were compared in the same run. A 70% rule for both mat
 
 **Optional bigger model.** The vision prompt below, for a hosted vision model on OpenRouter, is kept as a design option. It is not used, because the on-device scanner replaces it.
 
+## Sell-or-wait advice and the earnings forecast
+
+Two small pieces of intelligence that need no model, no server and no paid service. Both are plain rules in [lib/app/advice.ts](../lib/app/advice.ts), checked by `npm run test:app`, and both screens say that they are estimates.
+
+**Sell now or wait (sell screen, once a material and centre are chosen).** The advice looks at the chosen centre's board price and answers in this order:
+
+1. **A better centre.** If another centre pays at least 10% more for the material, it says "Compare first" and names the centre and its price.
+2. **A falling market.** If a source reports that the price fell by 15% or more in 2026, it says "Sell now". Only PET (R7 to R3.50/kg, about 50%) and cans (R14 to R10/kg, about 29%) have a reported fall, from the Sunday Times (Sep 2026). Nothing is guessed for the other materials.
+3. **Where the price sits in the usual range.** Above two thirds of the public 2026 range it says "Sell now". Below one third it says "Hold if you can". Between, "Fair price".
+
+It is not a forecast of tomorrow's price. There is no public price history to train one on: the board holds one price per centre and material, and the app has not run long enough to build a history. The screen says "From today's centre prices and public 2026 prices. Not a promise of tomorrow's price."
+
+**Next 30 days (My money).** From the person's own sales in the last 28 days: the pay per day since their first sale in that window, times 30, with a range of plus or minus a quarter. It needs at least 3 sales that span at least 7 days, so one sale never produces a forecast. Until then the card says "After 3 sales over a week, we show what you may earn in the next 30 days." It is labelled "Estimate".
+
+**What would make it a model.** Once centres have posted prices for a few weeks, a seasonal or trend model on the board history could replace rule 3, and the forecast could use each person's weekday pattern. Both are future work.
+
 ## Models we left out on purpose
 
 | Model | Why not |
