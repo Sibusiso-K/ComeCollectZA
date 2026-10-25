@@ -27,6 +27,10 @@ const { monthTotals, feeTotals, feeRecoveryPercent, impactSeries } = await impor
 const logic = await import(pathToFileURL(join(out, "logic.mjs")).href);
 compile("head", (s) => s, "vision");
 const head = await import(pathToFileURL(join(out, "head.mjs")).href);
+compile("market-prices", (s) => s, "");
+compile("advice", (s) =>
+  s.replace(/import type \{ MySale \} from "\.\/api";/, "").replace(/from "\.\/logic"/g, 'from "./logic.mjs"').replace(/from "\.\.\/market-prices"/g, 'from "./market-prices.mjs"'));
+const { adviceFor, forecastNext30 } = await import(pathToFileURL(join(out, "advice.mjs")).href);
 
 const mk = (id, iso, material, grams, cpk, fee) => ({
   id, createdAt: iso, material, grams, centsPerKg: cpk, amountCents: Math.floor((grams * cpk) / 1000), centre: "C", fee,
@@ -241,6 +245,51 @@ check("the shipped scanner head loads and scores all seven groups", () => {
   assert.equal(scores.length, 7);
   assert.ok(scores.every(Number.isFinite));
   assert.ok(Math.abs(scores.reduce((a, v) => a + v, 0) - 1) < 1e-9);
+});
+
+const centres = (...prices) => prices.map((p, i) => ({ centre: `Centre ${i + 1}`, centsPerKg: p }));
+check("advice: a centre paying 10% more or better comes first, before anything else", () => {
+  const a = adviceFor("hdpe", 300, centres(300, 340, 310));
+  assert.deepEqual(a, { verdict: "compare", centre: "Centre 2", centsPerKg: 340 });
+  // Exactly 10% more counts. Just under does not.
+  assert.equal(adviceFor("hdpe", 300, centres(300, 330)).verdict, "compare");
+  assert.notEqual(adviceFor("hdpe", 300, centres(300, 329)).verdict, "compare");
+  // Even PET, whose price fell, sends the person to the better centre first.
+  assert.equal(adviceFor("pet", 350, centres(350, 400)).verdict, "compare");
+});
+check("advice: PET and cans have a reported fall, so the advice is to sell", () => {
+  assert.deepEqual(adviceFor("pet", 365, centres(365, 380)), { verdict: "sell", reason: "falling", dropPercent: 50 });
+  assert.deepEqual(adviceFor("cans", 990, centres(990)), { verdict: "sell", reason: "falling", dropPercent: 29 });
+});
+check("advice: with no reported fall it follows where the price sits in the usual range", () => {
+  assert.deepEqual(adviceFor("glass", 78, centres(78)), { verdict: "sell", reason: "high" }); // 95% of 40 to 80
+  assert.equal(adviceFor("cardboard", 62, centres(62)).verdict, "wait"); // 3% of 60 to 120
+  assert.equal(adviceFor("hdpe", 320, centres(320)).verdict, "fair"); // 40% of 200 to 500
+  assert.equal(adviceFor("paper", 75, centres(75)).verdict, "sell"); // 70% of 40 to 90
+});
+check("advice: a falling market is not called low or high, and an empty board still answers", () => {
+  assert.equal(adviceFor("pet", 250, centres(250)).verdict, "sell");
+  assert.equal(adviceFor("glass", 60, []).verdict, "fair");
+});
+const fsale = (iso, cents) => ({ id: iso, createdAt: iso, material: "pet", grams: 1000, centsPerKg: cents, amountCents: cents, centre: "C", fee: null });
+const later = new Date("2026-11-20T10:00:00Z");
+check("forecast: needs three sales over a week, so one sale gives nothing", () => {
+  assert.equal(forecastNext30([fsale("2026-11-19T10:00:00Z", 2336)], later), null);
+  assert.equal(forecastNext30([fsale("2026-11-19T10:00:00Z", 2000), fsale("2026-11-18T10:00:00Z", 2000), fsale("2026-11-17T10:00:00Z", 2000)], later), null);
+});
+check("forecast: daily rate over the days since the first recent sale, times 30, plus or minus a quarter", () => {
+  // 4 sales of R50 across 10 days: R200 over 10 days is R20 a day, so R600 in 30 days.
+  const four = ["2026-11-10T10:00:00Z", "2026-11-13T10:00:00Z", "2026-11-16T10:00:00Z", "2026-11-19T10:00:00Z"].map((d) => fsale(d, 5000));
+  const f = forecastNext30(four, later);
+  assert.deepEqual(f, { cents: 60000, lowCents: 45000, highCents: 75000, sales: 4, days: 10 });
+});
+check("forecast: ignores sales older than 28 days and uses at most a 28 day window", () => {
+  const old = fsale("2026-09-01T10:00:00Z", 99999);
+  const recent = ["2026-10-23T12:00:00Z", "2026-11-05T10:00:00Z", "2026-11-18T10:00:00Z"].map((d) => fsale(d, 2800));
+  const f = forecastNext30([old, ...recent], later);
+  assert.equal(f.sales, 3);
+  assert.equal(f.days, 28);
+  assert.equal(f.cents, 9000); // R84 over 28 days is R3 a day, so R90 in 30 days
 });
 
 console.log(`\n${passed} passed, 0 failed.`);

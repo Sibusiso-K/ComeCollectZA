@@ -77,5 +77,14 @@ export const MARKET_RANGES: MarketRange[] = [
   },
 ];
 
+// Price moves reported for 2026, where a source gives both ends. The sell-or-wait advice uses them to say that a price has
+// been falling. Only materials with a reported move are listed: nothing is guessed for the rest.
+export type MarketTrend = { earlierCentsPerKg: number; nowCentsPerKg: number; source: MarketSource };
+
+export const MARKET_TRENDS: Partial<Record<Exclude<MaterialCode, "OTHER">, MarketTrend>> = {
+  CAN_AL: { earlierCentsPerKg: 1400, nowCentsPerKg: 1000, source: SUNDAY_TIMES },
+  PET: { earlierCentsPerKg: 700, nowCentsPerKg: 350, source: SUNDAY_TIMES },
+};
+
 // The EPR service fee the industry agreed to pay reclaimers on top of the price: 15c/kg, which is R150/t.
 export const SERVICE_FEE_CENTS_PER_KG = 15;

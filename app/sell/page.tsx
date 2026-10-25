@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 import { AppScreen, PageTitle } from "@/components/app/shell";
-import { Card, EmptyState, MaterialBadge, PillButton, SavedNote } from "@/components/app/bits";
+import { Card, EmptyState, MaterialBadge, PillButton, SavedNote, Sticker } from "@/components/app/bits";
+import { adviceFor, type Advice } from "@/lib/app/advice";
 import { LoadScanner } from "@/components/app/scanner";
 import { useT } from "@/lib/app/prefs";
 import { useAuth } from "@/lib/app/auth";
@@ -64,6 +65,16 @@ export default function Sell() {
   const options = material && prices ? prices.data.filter((p) => p.material === material).sort((a, b) => b.centsPerKg - a.centsPerKg) : [];
   const picked = options.find((o) => o.centreId === centreId) ?? options[0];
   const grams = parseKgToGrams(typed);
+  const advice = material && picked ? adviceFor(material, picked.centsPerKg, options) : null;
+
+  const adviceLabel = (a: Advice) => (a.verdict === "sell" ? t("Sell now") : a.verdict === "compare" ? t("Compare first") : a.verdict === "wait" ? t("Hold if you can") : t("Fair price"));
+  const adviceLine = (a: Advice, m: Material) => {
+    if (a.verdict === "compare") return t("{centre} pays {price} for this. Check it first.", { centre: a.centre, price: formatPerKg(a.centsPerKg) });
+    if (a.verdict === "sell" && a.reason === "falling") return t("{material}: the price fell about {pct}% this year, so waiting is unlikely to pay more.",{ material: t(MATERIAL_LABEL[m]), pct: a.dropPercent });
+    if (a.verdict === "sell") return t("This price is at the high end of the usual range.");
+    if (a.verdict === "wait") return t("This price is at the low end of the usual range. If you can keep the load, wait and watch the board.");
+    return t("A fair price. Sell when you are ready.");
+  };
 
   const press = (k: string) => {
     setShowCode(false);
@@ -165,6 +176,17 @@ export default function Sell() {
                   </li>
                 ))}
               </ul>
+
+              {advice && material && (
+                <Card className="space-y-2" aria-labelledby="advice">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 id="advice" className="text-lg font-extrabold">{t("Sell now or wait?")}</h3>
+                    <Sticker>{adviceLabel(advice)}</Sticker>
+                  </div>
+                  <p className="font-bold">{adviceLine(advice, material)}</p>
+                  <p className="text-xs text-muted-foreground">{t("From today's centre prices and public 2026 prices. Not a promise of tomorrow's price.")}</p>
+                </Card>
+              )}
 
               <Card className="space-y-3">
                 <p className="text-5xl font-extrabold tabular-nums" aria-live="polite">

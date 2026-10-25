@@ -27,7 +27,8 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Phone number sign-in | Not started | Needs an SMS service |
 | Offline write queue | Not started | Reading works offline. Writing needs a signal |
 | Phone layout | Checked | Every screen at 320 to 412 px, both themes, all 11 languages: 0 problems with `tools/usability/audit.mjs`. Not yet tried on a real iPhone or Android phone |
-| Tests | 78 database checks, 18 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
+| Sell-or-wait and forecast | Built | Rules, not a model. The sell screen says whether to sell now, hold or compare centres. My money shows a 30 day estimate after 3 sales across a week. See [MODELS.md](MODELS.md) |
+| Tests | 78 database checks, 25 app checks | `npm run test:db`, `npm run test:app`. Both run in CI with typecheck and build |
 
 ## Set up on a new machine
 
@@ -78,7 +79,7 @@ Each item gets its own branch and pull request.
 6. **Phone number sign-in:** connect an SMS service, then add a phone option to the sign-in screen.
 7. **Translations:** have first-language speakers check the four drafts and write the other seven.
 8. **Offline queue:** keep sales lookups and market posts and send them when a signal returns.
-9. **Sell-or-wait advice** from price history, and the duplicate photo check.
+9. **Sell-or-wait from real price history** (the first version is rules over public 2026 prices, built 25 Oct) and the duplicate photo check.
 10. **Sonke submission:** the 20-second pitch video, the deck with a demo login, the SSDLC form and the Lean Canvas. The canvas text is in [BUSINESS_MODEL.md](BUSINESS_MODEL.md).
 
 ## Known issues
