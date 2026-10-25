@@ -98,9 +98,11 @@ async function scan(photo) {
   await waitFor(`/Looks like|Could be|Not sure what this is|Not a recyclable/.test(document.querySelector('#scan-title')?.closest('section')?.innerText ?? '')`, 240000);
 }
 
+// The demo uses the app's dark theme.
+await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: "dark" }] });
 const prepare = async () => {
   await go("/icon.svg");
-  await js(`localStorage.clear(); localStorage.setItem('ccza.lang', 'en'); localStorage.setItem('ccza.tour.done', '1'); 'ok'`);
+  await js(`localStorage.clear(); localStorage.setItem('ccza.lang', 'en'); localStorage.setItem('ccza.theme', 'dark'); localStorage.setItem('ccza.tour.done', '1'); 'ok'`);
 };
 
 if (flags.includes("--warm")) {

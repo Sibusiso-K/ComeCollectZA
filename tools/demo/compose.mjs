@@ -7,6 +7,9 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync, realpathSync } from "no
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { setTimeout as sleep } from "node:timers/promises";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { QRCodeSVG } from "qrcode.react";
 
 const [REC, CODE_SHOT, MONEY_SHOT, OUT] = process.argv.slice(2);
 const FF = process.env.FFMPEG ?? execFileSync("python", ["-c", "import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())"], { encoding: "utf8" }).trim();
@@ -43,6 +46,8 @@ const stills = [
 ];
 
 const LOGO = (s) => `<svg viewBox="0 0 512 512" width="${s}" height="${s}"><rect width="512" height="512" rx="116" fill="#0F4A2A"/><path d="M331 179 A118 118 0 1 0 331 345" fill="none" stroke="#fff" stroke-width="58" stroke-linecap="round"/><circle cx="272" cy="262" r="46" fill="#A6E85A"/><path d="M338 166 C352 118 402 108 426 122 C424 176 382 200 338 166 Z" fill="#A6E85A"/></svg>`;
+// The closing QR code opens the live app. Same library the app uses for reclaimer codes.
+const QR = renderToStaticMarkup(createElement(QRCodeSVG, { value: "https://comecollectza.vercel.app", size: 300, marginSize: 1, fgColor: "#0b2415", bgColor: "#ffffff" }));
 const SOWETO = pathToFileURL(realpathSync.native(join(import.meta.dirname, "../../public/images/soweto/towers.jpg"))).href;
 const CSS = `
 *{box-sizing:border-box;margin:0}
@@ -67,11 +72,15 @@ p.sub{margin-top:26px;font-size:38px;line-height:1.3;font-weight:600;color:rgba(
 .col{flex:1;background:rgba(255,255,255,.08);border-radius:28px;padding:36px 40px}
 .col h2{font-size:34px;font-weight:800;margin-bottom:18px}.col.ok h2{color:#a6e85a}.col.not h2{color:#f5b544}
 .col li{font-size:31px;line-height:1.35;font-weight:600;margin:0 0 12px 32px}
-.end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.end{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:130px}
+.end .left{display:flex;flex-direction:column;align-items:flex-start}
 .end h1{font-size:110px;margin-top:30px}.end h1 b{color:#a6e85a}
 .end .tag{margin-top:16px;font-size:46px;font-weight:700}
 .end .url{margin-top:40px;font-size:40px;font-weight:800;color:#0b2415;background:#a6e85a;padding:16px 44px;border-radius:999px}
 .end .meta{margin-top:30px;font-size:32px;font-weight:700;color:#7fd1ff}
+.qr{background:#fff;border-radius:36px;padding:30px 30px 22px;text-align:center;box-shadow:0 50px 100px -40px rgba(0,0,0,.8)}
+.qr svg{display:block}
+.qr p{margin-top:16px;font-size:30px;font-weight:800;color:#0b2415}
 .credit{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-size:19px;color:rgba(255,255,255,.55)}
 `;
 const page = (body) => `<!doctype html><html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"><style>${CSS}</style></head><body><div class="green"></div><div class="soweto"></div>${body}</body></html>`;
@@ -83,7 +92,7 @@ const appScene = (s, example) =>
 const cards = {
   intro: page(`${BRAND}<div class="copy" style="top:300px;width:1500px"><span class="chip example">THE PROBLEM</span><h1>60,000 to 90,000 reclaimers collect South Africa's recycling.</h1><p class="sub">Prices are hidden, sales are not recorded, and the service fee they are owed goes unpaid.</p></div><div class="foot">Sources: NWMS and Regenize estimates, Sunday Times (Sep 2026), GroundUp</div>`),
   proof: page(`${BRAND}<div class="card"><h1>Built and live, not yet proven with sales</h1><div class="cols"><div class="col ok"><h2>Built and live</h2><ul><li>AI scanner on the phone: right on 79.8% of real photos it never saw</li><li>Works offline after one download</li><li>78 database checks and 18 app checks pass</li><li>Free, open tools. No paid AI</li></ul></div><div class="col not"><h2>Not yet</h2><ul><li>No real sales or payouts yet</li><li>Not yet tested with reclaimers</li><li>Next 30 days: 5 reclaimers, 1 PRO, 1 centre pilot</li></ul></div></div></div>`),
-  close: page(`<div class="end">${LOGO(150)}<h1>ComeCollect<b>ZA</b></h1><div class="tag">Fair pay for every kilo.</div><div class="url">comecollectza.vercel.app</div><div class="meta">Demo login is on the last slide of our deck</div></div><div class="credit">Scan photos: Grendelkhan (CC BY-SA 4.0) and AvWijk (public domain), Wikimedia Commons. Live app screens; steps 4 and 5 use example data. Team JBB, FNB App of the Year Hackathon 2026.</div>`),
+  close: page(`<div class="end"><div class="left">${LOGO(150)}<h1>ComeCollect<b>ZA</b></h1><div class="tag">Fair pay for every kilo.</div><div class="url">comecollectza.vercel.app</div><div class="meta">Demo login is on the last slide of our deck</div></div><div class="qr">${QR}<p>Scan to open the app</p></div></div><div class="credit">Scan photos: Grendelkhan (CC BY-SA 4.0) and AvWijk (public domain), Wikimedia Commons. Live app screens; steps 4 and 5 use example data. Team JBB, FNB App of the Year Hackathon 2026.</div>`),
 };
 
 // 3. Render every scene to a PNG in headless Chrome.
@@ -143,7 +152,7 @@ for (const [i, s] of stills.entries()) {
     "-filter_complex", `${PHONE},${fades(s.dur)}`, "-t", String(s.dur)]);
 }
 card("proof", 7);
-card("close", 6.5);
+card("close", 7.5);
 
 writeFileSync(join(WORK, "segments.txt"), segs.map((s) => `file '${s}'`).join("\n") + "\n");
 ff(["-f", "concat", "-safe", "0", "-i", join(WORK, "segments.txt"), "-c", "copy", "-movflags", "+faststart", OUT]);

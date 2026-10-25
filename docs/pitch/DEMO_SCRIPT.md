@@ -1,6 +1,6 @@
 # Demo video
 
-The submission checklist asks for a demo video under 90 seconds, linked in the slides. This one runs 84.6 s at 1920 x 1080 and 30 fps. It shows one promise and the proof: a reclaimer scans a load, sees the best price, weighs it and knows the money before selling.
+The submission checklist asks for a demo video under 90 seconds, linked in the slides. This one runs 86.7 s at 1920 x 1080 and 30 fps. It shows one promise and the proof: a reclaimer scans a load, sees the best price, weighs it and knows the money before selling.
 
 **File:** `ComeCollectZA-demo-silent.mp4` (8 MB), kept out of the repo until the voice is mixed in. The picture is final. The voice is recorded by the team over it (see below).
 
@@ -27,13 +27,13 @@ Read each line when its caption appears. The times are when the line starts. Abo
 | 0:27 | Centres (step 2) | "Centres are ranked, best price first." |
 | 0:30 | Keypad (step 3) | "Type the weight. Six point four kilograms is about twenty-four rand." |
 | 0:36 | My load | "Add it to My load. At the centre, your code proves the sale." |
-| 0:41 | Prices | "Every centre's price is in one place, with sourced market ranges." |
+| 0:42 | Prices | "Every centre's price is in one place, with sourced market ranges." |
 | 0:47 | Market map | "The market map links reclaimers with buyers." |
 | 0:52 | Electronics | "Old electronics too. Scan a phone or a TV, and the app shows where it can go safely." |
-| 1:02 | Code (step 4, example data) | "The centre scans your code and records the sale." |
-| 1:06 | My money (step 5, example data) | "Every sale, fee and payout lands in My money." |
-| 1:11 | Built and live card | "It is live, it works offline, and it uses free, open tools. Real sales with reclaimers come next." |
-| 1:18 | Close | "ComeCollectZA. Fair pay for every kilo. Try it now." |
+| 1:03 | Code (step 4, example data) | "The centre scans your code and records the sale." |
+| 1:07 | My money (step 5, example data) | "Every sale, fee and payout lands in My money." |
+| 1:12 | Built and live card | "It is live, it works offline, and it uses free, open tools. Real sales with reclaimers come next." |
+| 1:19 | Close, with a QR code to the app | "ComeCollectZA. Fair pay for every kilo. Try it now." |
 
 ## Recording the voice
 
@@ -43,7 +43,7 @@ Read each line when its caption appears. The times are when the line starts. Abo
 
 ## What is live and what is example data
 
-- **Live:** every screen from the welcome screen to the electronics guide was recorded on https://comecollectza.vercel.app on 25 Oct 2026, in a phone-sized browser, signed out. The scan, the ranking, the estimate (6.4 kg of PET at R3.80/kg is R24.32) and "My load" are the real app at work. The centres are the seeded demo centres, and the app says so in their names.
+- **Live:** every screen from the welcome screen to the electronics guide was recorded on https://comecollectza.vercel.app on 25 Oct 2026, in a phone-sized browser, signed out, in the app's dark theme. The scan, the ranking, the estimate (6.4 kg of PET at R3.80/kg is R24.32) and "My load" are the real app at work. The centres are the seeded demo centres, and the app says so in their names.
 - **Example data:** steps 4 and 5 (the code and My money) are real app screens filled with example data, because no real sale has been recorded yet. The video labels them "Example data, signed in". Once a test sale is recorded on the demo account, re-record these two steps live.
 
 ## The scan photo
