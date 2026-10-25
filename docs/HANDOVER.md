@@ -14,7 +14,7 @@ ComeCollectZA is an app for South Africa's informal recyclers (reclaimers), buil
 | Scanner | Built, tested in a browser | On-device TinyCLIP, works with no data after one 38 MB download, spots mixed loads, tap a part of the photo to see what it thought. Head v5 is 82% on held-out real landfill photos, 71% on mixed household photos (62% real-world), and recognises electronics. Not tested on a real phone. See [MODELS.md](MODELS.md) |
 | Accounts | Built, not yet used by real people | Email and password through Supabase Auth. Reclaimer and business sign-up. One call creates the profile and the reclaimer's code |
 | Prices | Live from the database | Public ranges for 2026 with sources. Seeded centres are demo centres until real ones post prices |
-| Sell flow | Built | Choose centre, weigh, show a QR code |
+| Sell flow | Built | Scan or pick a material, weigh, add to "My load" for a running estimate of the money, show a QR code. The load is kept on the phone. The code is still for one item at a time |
 | My money and impact | Built, from the person's own sales | Fees paid, owed, missing. CO2e, landfill, work days. Needs a signed-in reclaimer with recorded sales |
 | Marketplace | Built | Map and list of centres and posts. Reclaimers and businesses can post. Posts have no contact method yet |
 | Electronics | Built | Guide, drop-off finder (8 places, none visited), and a sell, give or ask board with contact shown to signed-in people. Only one seeded place is in Soweto, and it needs a phone call. See [ADMIN.md](ADMIN.md) section 7 |

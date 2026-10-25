@@ -66,6 +66,14 @@ export const formatWholeRand = (r: number) => `R${groupThousands(r)}`;
 export function saleCents(grams: number, centsPerKg: number): number {
   return Math.round((grams * centsPerKg) / 1000);
 }
+
+/** One weighed item on a reclaimer's load, priced at the centre price it was added with. */
+export type LoadItem = { id: string; material: Material; grams: number; centsPerKg: number; centre: string };
+
+/** The approximate money for a whole load: each item at its own price, added together. */
+export function loadTotalCents(items: LoadItem[]): number {
+  return items.reduce((sum, item) => sum + saleCents(item.grams, item.centsPerKg), 0);
+}
 export function feeCents(grams: number): number {
   return Math.round((grams * FEE_CENTS_PER_KG) / 1000);
 }
