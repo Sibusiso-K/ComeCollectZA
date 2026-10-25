@@ -6,7 +6,7 @@ Scores are our own honest estimate, not the judges'. Where a score is low, the "
 
 ## Round check: app, deck and demo video (25 Oct 2026, afternoon)
 
-A check of the three things judges will see, against the way this hackathon says apps are judged. The deck is the reworked 14-slide draft (not yet saved in Canva), the video is the 84.6 s demo in [pitch/DEMO_SCRIPT.md](pitch/DEMO_SCRIPT.md), and the app is the live site, used signed out in a phone-sized browser.
+A check of the three things judges will see, against the way this hackathon says apps are judged. The deck is the reworked 14-slide deck, saved in Canva on 25 Oct, the video is the 84.6 s demo in [pitch/DEMO_SCRIPT.md](pitch/DEMO_SCRIPT.md), and the app is the live site, used signed out in a phone-sized browser.
 
 ### The three questions
 
@@ -36,9 +36,9 @@ A check of the three things judges will see, against the way this hackathon says
 - **Free hosting:** Vercel Hobby for the app and Supabase Free for the database. The one risk is Supabase pausing a free project after 7 idle days. The keep-alive workflow pings a database-backed health route every six hours, and a failed run emails the repo owner.
 - **During judging:** keep "Confirm email" off so judges can sign up without waiting for an email (switch it back on after judging), keep the demo account's password unchanged, and do not merge risky changes to `main`.
 
-## Current score: 47 / 70 (25 Oct 2026, morning)
+## Current score: 49 / 70 (25 Oct 2026, afternoon)
 
-25 Oct: Intelligence rose to 6 with scanner head version 7 (see the history). The table below is otherwise the 24 Oct afternoon scoring. The afternoon round check above scores 49 once the reworked deck is saved.
+25 Oct afternoon: the round check above raised Sustainability and Presentation to 7 and 8 (see the history). 25 Oct morning: Intelligence rose to 6 with scanner head version 7. The table below is otherwise the 24 Oct afternoon scoring.
 
 Scored against the exact questions on Sonke's Criteria tab, which put more weight on traction and on forecasting than our earlier notes did. The afternoon's full test pass made the app safer and smoother (see [STRESS_TEST.md](STRESS_TEST.md)) but does not move a criterion on its own. Presentation rose because the video and the canvas are now on Sonke.
 
@@ -73,7 +73,7 @@ Scored against the exact questions on Sonke's Criteria tab, which put more weigh
 | 24 Oct, midday | 6 | 8 | 7 | 6 | 7 | 6 | 5 | 45 | Re-scored against Sonke's exact questions (traction and forecasting weigh more). Added pitch video, demo payouts, SAWPRS record, Kaggle check |
 | 24 Oct, afternoon | 6 | 8 | 7 | 6 | 7 | 7 | 5 | 46 | Video and canvas on Sonke. Full test pass: a database write hole closed, the scanner no longer freezes the screen, can be cancelled and refuses blank photos |
 | 25 Oct, morning | 6 | 8 | 7 | 6 | 7 | 7 | 6 | 47 | Scanner head version 7, measured fairly: real-world photos 60.6% to 79.8%, wrong answers at the 70% bar 19.8% to 8.7%. Every screen checked at 320 to 412 px in 11 languages, 0 layout problems. Usability stays at 7 until a real reclaimer tries it |
-| 25 Oct, afternoon | 6 | 8 | 7 | 7 | 7 | 8 | 6 | 49 | Round check. Deck reworked to 14 slides (competitors, partners, sustainability, the ask), an 84.6 s demo video of the live app, keep-alive for judging. Scanner misread 3 of 3 can photos in the check. Counts once the deck is saved |
+| 25 Oct, afternoon | 6 | 8 | 7 | 7 | 7 | 8 | 6 | 49 | Round check. Deck reworked to 14 slides (competitors, partners, sustainability, the ask), an 84.6 s demo video of the live app, keep-alive for judging. Scanner misread 3 of 3 can photos in the check |
 
 The 21 Oct and morning rows were scored afterwards from the build log.
 
