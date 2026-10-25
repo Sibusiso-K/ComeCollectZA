@@ -36,7 +36,9 @@ A check of the three things judges will see, against the way this hackathon says
 - **Free hosting:** Vercel Hobby for the app and Supabase Free for the database. The one risk is Supabase pausing a free project after 7 idle days. The keep-alive workflow pings a database-backed health route every six hours, and a failed run emails the repo owner.
 - **During judging:** keep "Confirm email" off so judges can sign up without waiting for an email (switch it back on after judging), keep the demo account's password unchanged, and do not merge risky changes to `main`.
 
-## Current score: 49 / 70 (25 Oct 2026, afternoon)
+## Current score: 50 / 70 (25 Oct 2026, evening)
+
+25 Oct evening: Product rose to 7. The demo reclaimer now has a recorded test sale, so a judge who signs in sees My money, the service fee, the demo payout and impact filled in. It is a test sale, not a real one, so Product stops at 7 and the traction answer is still none.
 
 25 Oct afternoon: the round check above raised Sustainability and Presentation to 7 and 8 (see the history). 25 Oct morning: Intelligence rose to 6 with scanner head version 7. The table below is otherwise the 24 Oct afternoon scoring.
 
@@ -74,6 +76,7 @@ Scored against the exact questions on Sonke's Criteria tab, which put more weigh
 | 24 Oct, afternoon | 6 | 8 | 7 | 6 | 7 | 7 | 5 | 46 | Video and canvas on Sonke. Full test pass: a database write hole closed, the scanner no longer freezes the screen, can be cancelled and refuses blank photos |
 | 25 Oct, morning | 6 | 8 | 7 | 6 | 7 | 7 | 6 | 47 | Scanner head version 7, measured fairly: real-world photos 60.6% to 79.8%, wrong answers at the 70% bar 19.8% to 8.7%. Every screen checked at 320 to 412 px in 11 languages, 0 layout problems. Usability stays at 7 until a real reclaimer tries it |
 | 25 Oct, afternoon | 6 | 8 | 7 | 7 | 7 | 8 | 6 | 49 | Round check. Deck reworked to 14 slides (competitors, partners, sustainability, the ask), an 86.7 s demo video of the live app, keep-alive for judging. Scanner misread 3 of 3 can photos in the check |
+| 25 Oct, evening | 7 | 8 | 7 | 7 | 7 | 8 | 6 | 50 | Test sale recorded on the demo accounts (centre operator set up, 6.4 kg PET, R23.36). Not real traffic, so Product is 7, not higher |
 
 The 21 Oct and morning rows were scored afterwards from the build log.
 
