@@ -1,7 +1,7 @@
 // Builds the demo video from a recording made by record.mjs: the live app in a phone frame, with captions,
 // a user-journey tracker, an opening problem card and closing cards. 1920x1080, 30 fps, silent.
 // The team's voice is added afterwards with mix.sh, using the timings in docs/pitch/DEMO_SCRIPT.md.
-// Usage: node tools/demo/compose.mjs <recording dir> <signed-in code shot> <signed-in money shot> <out.mp4>
+// Usage: node tools/demo/compose.mjs <recording dir> <signed-in code shot> <signed-in money shot> <out.mp4> [--real]
 import { spawn, spawnSync, execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
@@ -11,7 +11,9 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { QRCodeSVG } from "qrcode.react";
 
-const [REC, CODE_SHOT, MONEY_SHOT, OUT] = process.argv.slice(2);
+// --real: steps 4 and 5 are real screens from the demo account, so they are not labelled as example data.
+const REAL = process.argv.includes("--real");
+const [REC, CODE_SHOT, MONEY_SHOT, OUT] = process.argv.slice(2).filter((a) => a !== "--real");
 const FF = process.env.FFMPEG ?? execFileSync("python", ["-c", "import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())"], { encoding: "utf8" }).trim();
 const WORK = join(REC, "build");
 rmSync(WORK, { recursive: true, force: true });
@@ -92,7 +94,7 @@ const appScene = (s, example) =>
 const cards = {
   intro: page(`${BRAND}<div class="copy" style="top:300px;width:1500px"><span class="chip example">WHAT IT IS</span><h1>A free app that shows reclaimers which centre pays most, and records every sale so they can prove their income.</h1><p class="sub">Producers pay for the verified data. Reclaimers never pay.</p></div><div class="foot">Sources: NWMS and Regenize estimates, Sunday Times (Sep 2026), GroundUp</div>`),
   proof: page(`${BRAND}<div class="card"><h1>Built and live, not yet proven with sales</h1><div class="cols"><div class="col ok"><h2>Built and live</h2><ul><li>AI scanner on the phone: right on 79.8% of real photos it never saw</li><li>Works offline after one download</li><li>78 database checks and 18 app checks pass</li><li>Free, open tools. No paid AI</li></ul></div><div class="col not"><h2>Not yet</h2><ul><li>No real sales or payouts yet</li><li>Not yet tested with reclaimers</li><li>Next 30 days: 5 reclaimers, 1 PRO, 1 centre pilot</li></ul></div></div></div>`),
-  close: page(`<div class="end"><div class="left">${LOGO(150)}<h1>ComeCollect<b>ZA</b></h1><div class="tag">Fair pay for every kilo.</div><div class="url">comecollectza.vercel.app</div><div class="meta">Demo login is on the last slide of our deck</div></div><div class="qr">${QR}<p>Scan to open the app</p></div></div><div class="credit">Scan photos: Grendelkhan (CC BY-SA 4.0) and AvWijk (public domain), Wikimedia Commons. Live app screens; steps 4 and 5 use example data. Team JBB, FNB App of the Year Hackathon 2026.</div>`),
+  close: page(`<div class="end"><div class="left">${LOGO(150)}<h1>ComeCollect<b>ZA</b></h1><div class="tag">Fair pay for every kilo.</div><div class="url">comecollectza.vercel.app</div><div class="meta">Demo login is on the last slide of our deck</div></div><div class="qr">${QR}<p>Scan to open the app</p></div></div><div class="credit">Scan photos: Grendelkhan (CC BY-SA 4.0) and AvWijk (public domain), Wikimedia Commons. ${REAL ? "Live app screens, demo account." : "Live app screens; steps 4 and 5 use example data."} Team JBB, FNB App of the Year Hackathon 2026.</div>`),
 };
 
 // 3. Render every scene to a PNG in headless Chrome.
@@ -126,7 +128,7 @@ async function shoot(name, html) {
   writeFileSync(join(WORK, `${name}.png`), Buffer.from(shot.data, "base64"));
 }
 for (const [i, s] of app.entries()) await shoot(`app${i}`, appScene(s, false));
-for (const [i, s] of stills.entries()) await shoot(`still${i}`, appScene(s, true));
+for (const [i, s] of stills.entries()) await shoot(`still${i}`, appScene(s, !REAL));
 for (const [name, html] of Object.entries(cards)) await shoot(name, html);
 await shoot("mask", `<!doctype html><html><body style="margin:0;background:#000;width:406px;height:880px"><div style="width:406px;height:880px;border-radius:44px;background:#fff"></div></body></html>`);
 try { await send("Browser.close"); } catch { /* closing */ }
