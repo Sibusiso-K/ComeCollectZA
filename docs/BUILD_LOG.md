@@ -4,6 +4,8 @@ Dated record of decisions and work. Newest entries go at the top.
 
 ## 26 Oct 2026 (hackathon day 4)
 
+- **Deck and demo video submitted on Sonke.** The demo video is on Google Drive (anyone with the link) and linked from the last slide. The deck was exported from Canva as a 15-page PDF. At 18.6 MB it was over the 10 MB limit of the upload tool used, so the slide images were re-encoded as JPEG at quality 95 (5.0 MB, average pixel change about 1 of 255, text and the video link unchanged) and that file went into Submit Now beside the 20 s pitch video.
+
 - **Demo video has the owner's voice-over.** The 81 s recording was transcribed with faster-whisper (small.en, free and open source), cleaned, cut line by line and placed on the timeline, with a synthesised music bed that ducks under the voice. The scenes are cut a quarter second before each line, so each caption lands with the words. It is the same method as the pitch video. `tools/demo/voice.mjs` does it end to end, `tools/demo/music.mjs` makes the music, and `compose.mjs` takes `--durations` so scene lengths follow the voice. Pauses in the take were shortened, so the video runs 78.5 s. The voice says "your sale shows right on your home screen", so step 5 now shows the home screen with R23.36 and is captioned that way.
 
 ## 25 Oct 2026 (hackathon day 3)
