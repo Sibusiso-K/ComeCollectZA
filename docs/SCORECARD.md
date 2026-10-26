@@ -36,7 +36,9 @@ A check of the three things judges will see, against the way this hackathon says
 - **Free hosting:** Vercel Hobby for the app and Supabase Free for the database. The one risk is Supabase pausing a free project after 7 idle days. The keep-alive workflow pings a database-backed health route every six hours, and a failed run emails the repo owner.
 - **During judging:** keep "Confirm email" off so judges can sign up without waiting for an email (switch it back on after judging), keep the demo account's password unchanged, and do not merge risky changes to `main`.
 
-## Current score: 51 / 70 (25 Oct 2026, evening)
+## Current score: 52 / 70 (26 Oct 2026, morning)
+
+26 Oct morning: Presentation rose to 9. The deck now has a security slide, the logo on the title slide and the demo login on the last slide. The demo video shows real screens from the demo account in steps 4 and 5, fills the phone frame, ends on a QR code to the app, and has the owner's own voice-over, cut line by line to the captions. This counts only once the deck PDF and the video link are on Sonke before Mon 23:59. Nothing else moved: there are still no real users, no real sales and no outside check of the numbers, and those are where the remaining points are.
 
 25 Oct evening: Intelligence rose to 7 with sell-or-wait advice and a 30 day earnings estimate (rules over public 2026 prices and the person's own sales, not a trained model, so not higher). Product rose to 7. The demo reclaimer now has a recorded test sale, so a judge who signs in sees My money, the service fee, the demo payout and impact filled in. It is a test sale, not a real one, so Product stops at 7 and the traction answer is still none.
 
@@ -78,6 +80,7 @@ Scored against the exact questions on Sonke's Criteria tab, which put more weigh
 | 25 Oct, afternoon | 6 | 8 | 7 | 7 | 7 | 8 | 6 | 49 | Round check. Deck reworked to 14 slides (competitors, partners, sustainability, the ask), an 86.7 s demo video of the live app, keep-alive for judging. Scanner misread 3 of 3 can photos in the check |
 | 25 Oct, evening | 7 | 8 | 7 | 7 | 7 | 8 | 6 | 50 | Test sale recorded on the demo accounts (centre operator set up, 6.4 kg PET, R23.36). Not real traffic, so Product is 7, not higher |
 | 25 Oct, night | 7 | 8 | 7 | 7 | 7 | 8 | 7 | 51 | Sell-or-wait advice and a 30 day earnings estimate (rules, not a model). 25 app checks pass |
+| 26 Oct, morning | 7 | 8 | 7 | 7 | 7 | 9 | 7 | 52 | Security slide and logo in the deck. Demo video with real screens, a QR close and the owner's voice-over. Counts once the deck and video are on Sonke |
 
 The 21 Oct and morning rows were scored afterwards from the build log.
 
