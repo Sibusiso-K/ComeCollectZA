@@ -2,6 +2,10 @@
 
 Dated record of decisions and work. Newest entries go at the top.
 
+## 26 Oct 2026 (hackathon day 4)
+
+- **Demo video has the owner's voice-over.** The 81 s recording was transcribed with faster-whisper (small.en, free and open source), cleaned, cut line by line and placed on the timeline, with a synthesised music bed that ducks under the voice. The scenes are cut a quarter second before each line, so each caption lands with the words. It is the same method as the pitch video. `tools/demo/voice.mjs` does it end to end, `tools/demo/music.mjs` makes the music, and `compose.mjs` takes `--durations` so scene lengths follow the voice. Pauses in the take were shortened, so the video runs 78.5 s. The voice says "your sale shows right on your home screen", so step 5 now shows the home screen with R23.36 and is captioned that way.
+
 ## 25 Oct 2026 (hackathon day 3)
 
 - **Demo video steps 4 and 5 fill the phone frame.** The first real screenshots were desktop-shaped, so they sat in the frame with dark bands. The app blocks being framed in another page (its security headers), so the screens were captured from the owner's signed-in Chrome by shrinking the page until the phone-width column fitted the window, then cropping to it (368 to 386 px wide, phone-shaped). The builder now fills the frame edge to edge instead of fitting inside it. Step 4 now shows the code with the new Next 30 days card, and step 5 is My money again.
