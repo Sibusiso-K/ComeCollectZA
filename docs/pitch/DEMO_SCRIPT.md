@@ -41,6 +41,8 @@ Read each line when its caption appears. The times are when the line starts. Abo
 2. One take is fine. If a line runs late, carry on: the voice is laid under the picture afterwards and each line can be moved to its caption.
 3. Send the recording back and it is cleaned, levelled to broadcast loudness and mixed under the picture, the same way as the pitch video.
 
+The owner's recording is in the video now (78.5 s). To rebuild it: transcribe the take with `tools/pitch/transcribe.py` (word timings into `transcript.json` beside `take.m4a`), then run `node tools/demo/voice.mjs <voice dir> <recording dir> <code screenshot> <home screenshot> <out.mp4>`. It cuts each spoken line, shortens the pauses, sets each scene's length from its line, adds the ducked music and joins it all. If the script changes, update the line groups and scene anchors at the top of `voice.mjs`.
+
 ## What is live and what is example data
 
 - **Live:** every screen from the welcome screen to the electronics guide was recorded on https://comecollectza.vercel.app on 25 Oct 2026, in a phone-sized browser, signed out, in the app's dark theme. The scan, the ranking, the estimate (6.4 kg of PET at R3.80/kg is R24.32) and "My load" are the real app at work. The centres are the seeded demo centres, and the app says so in their names.

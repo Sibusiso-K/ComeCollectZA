@@ -13,7 +13,10 @@ import { QRCodeSVG } from "qrcode.react";
 
 // --real: steps 4 and 5 are real screens from the demo account, so they are not labelled as example data.
 const REAL = process.argv.includes("--real");
-const [REC, CODE_SHOT, MONEY_SHOT, OUT] = process.argv.slice(2).filter((a) => a !== "--real");
+// --durations <file.json>: scene lengths from the voice timeline (see voice.mjs), instead of the recording's own pace.
+const di = process.argv.indexOf("--durations");
+const DUR = di > 0 ? JSON.parse(readFileSync(process.argv[di + 1], "utf8")) : null;
+const [REC, CODE_SHOT, MONEY_SHOT, OUT] = process.argv.slice(2).filter((a, i, all) => a !== "--real" && a !== "--durations" && all[i - 1] !== "--durations");
 const FF = process.env.FFMPEG ?? execFileSync("python", ["-c", "import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())"], { encoding: "utf8" }).trim();
 const WORK = join(REC, "build");
 rmSync(WORK, { recursive: true, force: true });
@@ -44,8 +47,12 @@ const app = [
 ];
 const stills = [
   { shot: CODE_SHOT, dur: 4.2, step: 3, caption: "Show your code at the centre", sub: "The centre scans it and records the weighed sale." },
-  { shot: MONEY_SHOT, dur: 4.6, step: 4, caption: "Every sale and payout in My money", sub: REAL ? "The test sale shows as R23.36, with its fee owed and a demo payout." : "Fees owed and paid, and impact, from weighed sales." },
+  { shot: MONEY_SHOT, dur: 4.6, step: 4, caption: REAL ? "Your sale shows on your home screen" : "Every sale and payout in My money", sub: REAL ? "The test sale shows as R23.36 this month, with the fee owed." : "Fees owed and paid, and impact, from weighed sales." },
 ];
+
+// With a voice timeline, some scenes start later in the recording (to skip dead time) and last as long as their line.
+for (const [i, sh] of Object.entries(DUR?.shift ?? {})) app[i].from += sh;
+stills.forEach((s, i) => { if (DUR) s.dur = DUR.stills[i]; });
 
 const LOGO = (s) => `<svg viewBox="0 0 512 512" width="${s}" height="${s}"><rect width="512" height="512" rx="116" fill="#0F4A2A"/><path d="M331 179 A118 118 0 1 0 331 345" fill="none" stroke="#fff" stroke-width="58" stroke-linecap="round"/><circle cx="272" cy="262" r="46" fill="#A6E85A"/><path d="M338 166 C352 118 402 108 426 122 C424 176 382 200 338 166 Z" fill="#A6E85A"/></svg>`;
 // The closing QR code opens the live app. Same library the app uses for reclaimer codes.
@@ -138,23 +145,24 @@ chrome.kill();
 // Every segment gets the same format and colour range, so they can be joined without re-encoding.
 const ENC = ["-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-color_range", "tv", "-r", "30"];
 const fades = (d) => `fade=t=in:st=0:d=0.2,fade=t=out:st=${(d - 0.2).toFixed(2)}:d=0.2`;
-const PHONE = "[1:v]scale=406:880:force_original_aspect_ratio=increase,crop=406:880,setsar=1,format=rgba[ph];[2:v]crop=406:880:0:0,format=gray[m];[ph][m]alphamerge[p];[0:v][p]overlay=1240:100:shortest=1,scale=out_range=tv,format=yuv420p";
+const PHONE = "[1:v]tpad=stop_mode=clone:stop_duration=12,scale=406:880:force_original_aspect_ratio=increase,crop=406:880,setsar=1,format=rgba[ph];[2:v]crop=406:880:0:0,format=gray[m];[ph][m]alphamerge[p];[0:v][p]overlay=1240:100:shortest=1,scale=out_range=tv,format=yuv420p";
 const segs = [];
 const seg = (name, args) => { ff([...args, ...ENC, join(WORK, `${name}.mp4`)]); segs.push(`${name}.mp4`); };
 const card = (name, d) => seg(`s_${name}`, ["-loop", "1", "-t", String(d), "-i", join(WORK, `${name}.png`), "-vf", `scale=1920:1080:out_range=tv,setsar=1,format=yuv420p,${fades(d)}`, "-t", String(d)]);
 
-card("intro", 6);
+card("intro", DUR?.intro ?? 6);
 for (const [i, s] of app.entries()) {
-  const d = s.to - s.from;
-  seg(`s_app${i}`, ["-loop", "1", "-i", join(WORK, `app${i}.png`), "-ss", s.from.toFixed(3), "-t", d.toFixed(3), "-i", join(WORK, "phone.mp4"), "-loop", "1", "-i", join(WORK, "mask.png"),
+  const avail = s.to - s.from;
+  const d = DUR ? DUR.app[i] : avail;
+  seg(`s_app${i}`, ["-loop", "1", "-i", join(WORK, `app${i}.png`), "-ss", s.from.toFixed(3), "-t", Math.min(avail, d).toFixed(3), "-i", join(WORK, "phone.mp4"), "-loop", "1", "-i", join(WORK, "mask.png"),
     "-filter_complex", `${PHONE},${fades(d)}`, "-t", d.toFixed(3)]);
 }
 for (const [i, s] of stills.entries()) {
   seg(`s_still${i}`, ["-loop", "1", "-i", join(WORK, `still${i}.png`), "-loop", "1", "-t", String(s.dur), "-i", s.shot, "-loop", "1", "-i", join(WORK, "mask.png"),
     "-filter_complex", `${PHONE},${fades(s.dur)}`, "-t", String(s.dur)]);
 }
-card("proof", 7);
-card("close", 7.5);
+card("proof", DUR?.proof ?? 7);
+card("close", DUR?.close ?? 7.5);
 
 writeFileSync(join(WORK, "segments.txt"), segs.map((s) => `file '${s}'`).join("\n") + "\n");
 ff(["-f", "concat", "-safe", "0", "-i", join(WORK, "segments.txt"), "-c", "copy", "-movflags", "+faststart", OUT]);
